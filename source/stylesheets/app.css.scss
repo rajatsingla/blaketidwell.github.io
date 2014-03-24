@@ -1,5 +1,7 @@
 @import "compass/css3/box-shadow";
 
+$fi-path: "/fonts";
+
 @import "settings";
 @import "foundation";
 @import "foundation-icons";
@@ -16,6 +18,12 @@
   .avatar{
     @include box-shadow(1px 1px 3px gray);
   }
+}
+
+ul.social{
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 #container{ }
