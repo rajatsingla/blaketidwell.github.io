@@ -18,11 +18,12 @@
         .small-3.columns
           %img.avatar{:src => "http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png"}
       .row
-        %ul.social.inline-list.small-12.columns
-          - data.social.profiles.each do |p|
-            %li
-              %a{:href => p.url, :target => "_blank"}
-                %i{:class => "fi-social-#{p.name}"}
+        .small-12.medium-offset-9.medium-3.columns
+          %ul.social.inline-list
+            - data.social.profiles.each do |p|
+              %li
+                %a{:href => p.url, :target => "_blank"}
+                  %i{:class => "fi-social-#{p.name}"}
   #container.row
     #main.small-12.medium-8.columns{:role => "main"}
       = yield
