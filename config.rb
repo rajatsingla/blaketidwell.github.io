@@ -37,7 +37,7 @@ page "/feed.xml", layout: false
 
 # Change Compass configuration
 compass_config do |config|
-  config.additional_import_paths = ['../bower_components/foundation/scss']
+  config.additional_import_paths = ['../bower_components/foundation/scss', '../bower_components/foundation-icon-fonts']
 end
 
 ###

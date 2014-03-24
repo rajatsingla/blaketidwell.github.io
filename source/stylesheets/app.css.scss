@@ -2,6 +2,7 @@
 
 @import "settings";
 @import "foundation";
+@import "foundation-icons";
 
 #header{
   border-bottom: 2px solid $primary-color;
@@ -18,3 +19,13 @@
 }
 
 #container{ }
+
+#filters{
+  h2{
+    font-size: $h4-font-size;
+  }
+
+  ul{
+    list-style-type: square;
+  }
+}
