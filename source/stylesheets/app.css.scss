@@ -8,7 +8,7 @@ $fi-path: "/fonts";
 @import "foundation-icons";
 
 #header, #container{
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 #header{
@@ -50,9 +50,15 @@ ul.social{
   li{
     margin-left: 0;
     margin-right: rem-calc(20px);
-    i:before{
-      font-size: 60px;
-      line-height: 74px;
+    i{
+      color: $secondary-color;
+      &:hover{
+        color: lighten($secondary-color, 15%);
+      }
+      &:before{
+        font-size: 50px;
+        line-height: 60px;
+      }
     }
   }
 }
@@ -70,6 +76,9 @@ ul.social{
 }
 
 @media #{$medium-up} {
+  #header, #container{
+    padding: 20px 0;
+  }
   .avatar{
     float: right;
   }
