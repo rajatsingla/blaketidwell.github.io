@@ -87,6 +87,12 @@ set :images_dir, 'images'
 
 set :haml, :format => :html5
 
+activate :deploy do |deploy|
+  deploy.build_before = true # default: false
+  deploy.method = :git
+  deploy.branch = "master"
+end
+
 # Build-specific configuration
 configure :build do
   # For example, change the Compass output style for deployment
