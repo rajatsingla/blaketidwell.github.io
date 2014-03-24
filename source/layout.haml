@@ -9,14 +9,20 @@
   %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300,400,700", :rel => "stylesheet", :type => "text/css"}/
 %body
   #header.row
-    .small-12.medium-10.columns
-      %h1 Blake Tidwell
-      %h2 Code. Create. Connect.
-    .small-12.medium-2.columns
-      %img.avatar{:src => "http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png"}
-      %ul.social
-        %li
-          %i.fi-social-linkedin
+    .small-12.columns
+      .row
+        .small-9.columns
+          %h1
+            = link_to 'Blake Tidwell', '/'
+          %h2 Code. Create. Connect.
+        .small-3.columns
+          %img.avatar{:src => "http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png"}
+      .row
+        %ul.social.inline-list.small-12.columns
+          - data.social.profiles.each do |p|
+            %li
+              %a{:href => p.url, :target => "_blank"}
+                %i{:class => "fi-social-#{p.name}"}
   #container.row
     #main.small-12.medium-8.columns{:role => "main"}
       = yield

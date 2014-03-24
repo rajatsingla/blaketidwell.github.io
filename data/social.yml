@@ -1,0 +1,13 @@
+profiles:
+  -
+    name: 'linkedin'
+    url: 'http://www.linkedin.com/in/blaketidwell'
+  -
+    name: 'github'
+    url: 'https://github.com/blaketidwell'
+  -
+    name: 'twitter'
+    url: 'https://twitter.com/BATidwell'
+  -
+    name: 'delicious'
+    url: 'https://delicious.com/blake.tidwell'
