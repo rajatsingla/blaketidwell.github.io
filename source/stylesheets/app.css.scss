@@ -1,2 +1,20 @@
+@import "compass/css3/box-shadow";
+
 @import "settings";
 @import "foundation";
+
+#header{
+  border-bottom: 2px solid $primary-color;
+  padding: 20px 0;
+
+  h2{
+    font-size: rem-calc(16px);
+    margin-top: -2*$header-bottom-margin;
+  }
+
+  .avatar{
+    @include box-shadow(1px 1px 3px gray);
+  }
+}
+
+#container{ }

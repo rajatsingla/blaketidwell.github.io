@@ -8,9 +8,12 @@
   %link{:href => "/stylesheets/app.css", :rel => "stylesheet", :type => "text/css", :media => "screen"}/
 %body
   #header.row
-    .small-12.columns
-      %img{:src => "http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png"}
-  .row
+    .small-12.medium-10.columns
+      %h1 Blake Tidwell
+      %h2 Code. Create. Connect.
+    .small-12.medium-2.columns
+      %img.avatar{:src => "http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png"}
+  #container.row
     #main.small-12.medium-8.columns{:role => "main"}
       = yield
     %aside.small-12.medium-4.columns
