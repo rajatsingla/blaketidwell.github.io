@@ -6,6 +6,7 @@
     Blog Title#{' - ' + current_article.title unless current_article.nil?}
   = feed_tag :atom, "#{blog.options.prefix.to_s}/feed.xml", title: "Atom Feed"
   %link{:href => "/stylesheets/app.css", :rel => "stylesheet", :type => "text/css", :media => "screen"}/
+  %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300,400,700", :rel => "stylesheet", :type => "text/css"}/
 %body
   #header.row
     .small-12.medium-10.columns
