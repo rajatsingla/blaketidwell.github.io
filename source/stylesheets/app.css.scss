@@ -53,6 +53,12 @@ $fi-path: "/fonts";
 
 @import "foundation-icons";
 
+h1, h2, h3,
+h4, h5, h6,
+p, li, a {
+  font-weight: lighter;
+}
+
 #header, #container{
   padding: 10px 0;
 }
@@ -112,6 +118,20 @@ ul.social{
 
 #container{ }
 
+h1.article-title {
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  &:before {
+    background-color: #333;
+    height: 3px;
+    display: inline-block;
+    position: absolute;
+    top: 2.75rem;
+    width: 20px;
+    content: '\00a0';
+  }
+}
+
 #filters{
   h2{
     font-size: $h4-font-size;
@@ -123,6 +143,14 @@ ul.social{
 }
 
 @media #{$medium-up} {
+  h1.article-title {
+    margin-bottom: 2rem;
+    &:before {
+      height: 5px;
+      top: 3.35rem;
+      width: 25px;
+    }
+  }
   #header, #container{
     padding: 20px 0;
   }
