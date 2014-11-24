@@ -50,7 +50,7 @@ $fi-path: "/fonts";
 // @import "foundation/components/top-bar";
 @import "foundation/components/type";
 // @import "foundation/components/offcanvas";
-// @import "foundation/components/visibility";
+@import "foundation/components/visibility";
 
 @import "foundation-icons";
 
@@ -183,5 +183,13 @@ h1.article-title {
         line-height: 24px;
       }
     }
+  }
+}
+
+// Force icons on to two rows
+// at smallest widths
+@media (max-width: 320px) {
+  ul.social {
+    width: 115px;
   }
 }
