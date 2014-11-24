@@ -74,7 +74,9 @@ end
 # Reload the browser automatically whenever files change
 activate :livereload
 
-activate :imageoptim
+activate :imageoptim do |image_optim|
+  image_optim.pngout_options = false # Should disable pngout
+end
 
 activate :syntax
 
