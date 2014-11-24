@@ -80,6 +80,10 @@ end
 
 activate :syntax
 
+set :url_root, 'http://www.blaketidwell.com'
+
+activate :search_engine_sitemap
+
 # Methods defined in the helpers block are available in templates
 # helpers do
 #   def some_helper

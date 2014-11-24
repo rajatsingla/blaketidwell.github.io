@@ -97,6 +97,9 @@ GEM
       em-websocket (~> 0.5.1)
       middleman-core (~> 3.2)
       rack-livereload (~> 0.3.15)
+    middleman-search_engine_sitemap (1.1.0)
+      builder
+      middleman-core (~> 3.2)
     middleman-sprockets (3.3.10)
       middleman-core (~> 3.3)
       sprockets (~> 2.12.1)
@@ -164,6 +167,7 @@ DEPENDENCIES
   middleman-deploy (~> 1.0)
   middleman-imageoptim (~> 0.1.4)
   middleman-livereload (~> 3.3.4)
+  middleman-search_engine_sitemap (~> 1.1.0)
   middleman-syntax (~> 2.0.0)
   nokogiri (~> 1.6.4)
   redcarpet (~> 2.3.0)
