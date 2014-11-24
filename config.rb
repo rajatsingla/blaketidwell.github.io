@@ -2,17 +2,17 @@
 # Blog settings
 ###
 
-# Time.zone = "UTC"
+# Time.zone = 'UTC'
 
 activate :blog do |blog|
   # This will add a prefix to all links, template references and source paths
-  # blog.prefix = "blog"
+  # blog.prefix = 'blog'
 
   # blog.permalink = "{year}/{month}/{day}/{title}.html"
   # Matcher for blog source files
   # blog.sources = "{year}-{month}-{day}-{title}.html"
   # blog.taglink = "tags/{tag}.html"
-  blog.layout = "article"
+  blog.layout = 'article'
   # blog.summary_separator = /(READMORE)/
   # blog.summary_length = 250
   # blog.year_link = "{year}.html"
@@ -20,8 +20,8 @@ activate :blog do |blog|
   # blog.day_link = "{year}/{month}/{day}.html"
   # blog.default_extension = ".markdown"
 
-  blog.tag_template = "tag.html"
-  blog.calendar_template = "calendar.html"
+  blog.tag_template = 'tag.html'
+  blog.calendar_template = 'calendar.html'
 
   # Enable pagination
   # blog.paginate = true
@@ -29,7 +29,7 @@ activate :blog do |blog|
   # blog.page_link = "page/{num}"
 end
 
-page "/feed.xml", layout: false
+page '/feed.xml', layout: false
 
 ###
 # Compass
@@ -37,7 +37,10 @@ page "/feed.xml", layout: false
 
 # Change Compass configuration
 compass_config do |config|
-  config.additional_import_paths = ['../bower_components/foundation/scss', '../bower_components/foundation-icon-fonts']
+  config.additional_import_paths = [
+    '../bower_components/foundation/scss',
+    '../bower_components/foundation-icon-fonts'
+  ]
 end
 
 ###
@@ -47,19 +50,19 @@ end
 # Per-page layout changes:
 #
 # With no layout
-# page "/path/to/file.html", layout: false
+# page '/path/to/file.html', layout: false
 #
 # With alternative layout
-# page "/path/to/file.html", layout: :otherlayout
+# page '/path/to/file.html', layout: :otherlayout
 #
 # A path which all have the same layout
 # with_layout :admin do
-#   page "/admin/*"
+#   page '/admin/*'
 # end
 
 # Proxy pages (http://middlemanapp.com/dynamic-pages/)
-# proxy "/this-page-has-no-template.html", "/template-file.html", locals: {
-#  which_fake_page: "Rendering a fake page with a local variable" }
+# proxy '/this-page-has-no-template.html', '/template-file.html', locals: {
+#  which_fake_page: 'Rendering a fake page with a local variable' }
 
 ###
 # Helpers
@@ -74,7 +77,7 @@ activate :livereload
 # Methods defined in the helpers block are available in templates
 # helpers do
 #   def some_helper
-#     "Helping"
+#     'Helping'
 #   end
 # end
 set :layout_dir, ''
@@ -85,12 +88,12 @@ set :js_dir, 'javascripts'
 
 set :images_dir, 'images'
 
-set :haml, :format => :html5
+set :haml, format: :html5
 
 activate :deploy do |deploy|
   deploy.build_before = true # default: false
   deploy.method = :git
-  deploy.branch = "master"
+  deploy.branch = 'master'
 end
 
 # Build-specific configuration
@@ -108,5 +111,5 @@ configure :build do
   # activate :relative_assets
 
   # Or use a different image path
-  # set :http_prefix, "/Content/images/"
+  # set :http_prefix, '/Content/images/'
 end
