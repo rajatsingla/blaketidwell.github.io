@@ -14,7 +14,7 @@ READMORE
 
 # The Site
 
-I&apos;ve produced electronic tracks for over a decade now (going all the way back to Fruityloops 1.0). My current musical project, [LEDs and 303s](http://www.ledsand303s.com) has been long overdue for a proper home page. Soundcloud, Bandcamp, et al. are amazing, but it was time for a proper HQ. Plus, I now not only have renewed motivation to get back to writing music, but I also have another outlet for some design and front-end hackery.
+I&apos;ve produced electronic tracks for over a decade now (going all the way back to Fruityloops 1.0). My current musical project, [LEDs and 303s](http://www.ledsand303s.com) has been long overdue for its own HQ. Building a quick landing page for this purpose has not only given me renewed motivation to get back to writing music, but also provides another outlet for some design and front-end hackery.
 
 <a href="http://www.ledsand303s.com"><img alt="LEDs and 303s Home Page" src="/images/ledshome.png" /></a>
 
