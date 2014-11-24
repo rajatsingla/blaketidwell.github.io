@@ -6,7 +6,7 @@ Since you have already forgotten this like a hundred times...
 
 *Dear Future Blake,*
 
-* `source` is what it sounds like: source files. Do your work here.
+* `main` is what it sounds like: the main branch. Do your work here.
 * `middleman-deploy` provides a `deploy` task that does the dirty work. Use it like so:
 
         $ middleman build [--clean]
