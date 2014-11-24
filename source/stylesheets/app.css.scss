@@ -68,15 +68,11 @@ pre {
   @include border-radius(3px);
   @include box-shadow(-1px 1px 2px #ccc inset);
   background: #fff;
-  padding: 1rem;
-  line-height: 0;
+  padding: 1rem 1rem;
   margin-bottom: 30px;
   overflow-x: auto;
   word-break: inherit;
   word-wrap: inherit;
-  span {
-    line-height: 23px;
-  }
 }
 
 #header, #container{
