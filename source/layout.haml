@@ -15,7 +15,7 @@
   = feed_tag :atom, "#{blog.options.prefix.to_s}/feed.xml", title: "Atom Feed"
   %link{:href => "/stylesheets/app.css", :rel => "stylesheet", :type => "text/css", :media => "screen"}/
   %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300,400,700", :rel => "stylesheet", :type => "text/css"}/
-  %script{:src => "javascripts/vendor/modernizr-2.6.1.min.js"}
+  -# %script{:src => "/javascripts/vendor/modernizr-2.6.1.min.js"}
 %body
   /[if lt IE 7]
     <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
@@ -53,11 +53,11 @@
       %ul
         - blog.articles.group_by {|a| a.date.year }.each do |year, articles|
           %li= link_to "#{year} (#{articles.size})", blog_year_path(year)
-  %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"}
-  :javascript
-    window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')
-  %script{:src => "javascripts/plugins.js"}
-  -# %script{:src => "javascripts/app.js"}
+  -# %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"}
+  -# :javascript
+  -#   window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')
+  -# %script{:src => "/javascripts/plugins.js"}
+  -# %script{:src => "/javascripts/app.js"}
   :javascript
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
