@@ -74,6 +74,10 @@ end
 # Reload the browser automatically whenever files change
 activate :livereload
 
+activate :imageoptim
+
+activate :syntax
+
 # Methods defined in the helpers block are available in templates
 # helpers do
 #   def some_helper
@@ -90,6 +94,9 @@ set :images_dir, 'images'
 
 set :haml, format: :html5
 
+set :markdown_engine, :redcarpet
+set :markdown, fenced_code_blocks: true, smartypants: true
+
 activate :deploy do |deploy|
   deploy.build_before = true # default: false
   deploy.method = :git
@@ -103,6 +110,8 @@ configure :build do
 
   # Minify Javascript on build
   activate :minify_javascript
+
+  activate :gzip
 
   # Enable cache buster
   # activate :asset_hash

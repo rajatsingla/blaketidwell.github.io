@@ -1,5 +1,6 @@
 @import "compass/css3/box-shadow";
 @import "compass/css3/inline-block";
+@import "compass/css3/border-radius";
 
 $fi-path: "/fonts";
 
@@ -53,10 +54,29 @@ $fi-path: "/fonts";
 
 @import "foundation-icons";
 
+@import "syntax";
+
 h1, h2, h3,
 h4, h5, h6,
 p, li, a {
   font-weight: lighter;
+}
+
+pre {
+  padding-top: rem-calc(1);
+  border: solid 1px #ddd;
+  @include border-radius(3px);
+  @include box-shadow(-1px 1px 2px #ccc inset);
+  background: #fff;
+  padding: 1rem;
+  line-height: 0;
+  margin-bottom: 30px;
+  overflow-x: auto;
+  word-break: inherit;
+  word-wrap: inherit;
+  span {
+    line-height: 23px;
+  }
 }
 
 #header, #container{

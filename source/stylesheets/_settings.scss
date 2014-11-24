@@ -157,9 +157,10 @@ $header-font-weight: 300;
 // $paragraph-text-rendering: optimizeLegibility;
 
 // We use these to style <code> tags
-// $code-color: scale-color($alert-color, $lightness: -27%);
+$code-background-color: transparent;
 // $code-font-family: Consolas, 'Liberation Mono', Courier, monospace;
-// $code-font-weight: bold;
+$code-font-weight: normal;
+$code-padding: rem-calc(2);
 
 // We use these to style anchors
 // $anchor-text-decoration: none;
