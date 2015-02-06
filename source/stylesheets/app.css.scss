@@ -62,6 +62,26 @@ p, li, a {
   font-weight: lighter;
 }
 
+.image-wrapper {
+  width: 50%;
+  float: left;
+  padding: 20px 25px 20px 0;
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+  blockquote {
+    margin-top: 15px;
+    margin-bottom: 0;
+    padding: 0;
+    border: none;
+    font-size: 0.75rem;
+    font-style: italic;
+    text-align: left;
+  }
+}
+
 pre {
   padding-top: rem-calc(1);
   border: solid 1px #ddd;
@@ -191,5 +211,8 @@ h1.article-title {
 @media (max-width: 320px) {
   ul.social {
     width: 115px;
+  }
+  .image-wrapper {
+    width: 100%;
   }
 }

@@ -59,7 +59,13 @@ So, la la la, everything was great, and I rode off into the sunset, OKAY BUT NO,
 
 ### Okay, So Not So Ultimate
 
-And thank goodness, because this wouldn't be much of a blog post without a plot twist at the end where The Developer has to wrestle a flaming error message to the ground with their bare hands. So, I mounted my trusty steed or laptop or whatever, and like, opened up my Developer Tools in Chrome. And I was like "Show thy Lizard Face, that I may smite it." And The Foul Cookie Dragon of the Resources Tab was all like: <pre>"R8xp3FN5QrlQM12GLb28f6%2BtPsYkcYYNfRsYQ3q5ryq%2Bx387750%2BHI%2FCxVUrjZDCiX4eIL63V4BF4NcA7eLddg%3D%3D"</pre> And I said unto the dragon, "Wow, you must be blast at parties" or maybe it was like "Now Dragon, use your words." but actually I was like WAIT A MINUTE DRAGON what's with all that URL encoded mess you said toward the end there? that seems pretty important, I bet. And wouldn't you know it, that dragon solved the mystery. So I changed:
+And thank goodness, because this wouldn't be much of a blog post without a plot twist at the end where The Developer has to wrestle a flaming error message to the ground with their bare hands. So, I mounted my trusty steed or laptop or whatever, and like, opened up my Developer Tools in Chrome. And I was like "Show thy Lizard Face, that I may smite it." And The Foul Cookie Dragon of the Resources Tab was all like:
+
+```dragon
+R8xp3FN5QrlQM12GLb28f6%2BtPsYkcYYNfRsYQ3q5ryq%2Bx387750%2BHI%2FCxVUrjZDCiX4eIL63V4BF4NcA7eLddg%3D%3D
+```
+
+And I said unto the dragon, "Wow, you must be blast at parties" or maybe it was like "Now Dragon, use your words." but actually I was like WAIT A MINUTE DRAGON what's with all that URL encoded mess you said toward the end there? that seems pretty important, I bet. And wouldn't you know it, that dragon solved the mystery. So I changed:
 
 ```js
 return {
