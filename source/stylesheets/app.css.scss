@@ -92,9 +92,8 @@ article {
     color: white;
   }
   ul {
-    > li {
-      font-size: 0.75rem;
-    }
+    margin-left: 0;
+    list-style: none;
   }
   .tag-group {
     margin-bottom: 0;
@@ -228,6 +227,16 @@ h1.article-title {
 
   ul{
     list-style-type: square;
+  }
+}
+
+@media #{$medium-only} {
+  #footer {
+    ul {
+      > li {
+        font-size: 0.8rem;
+      }
+    }
   }
 }
 
