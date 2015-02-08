@@ -8,6 +8,3 @@ profiles:
   -
     name: 'twitter'
     url: 'https://twitter.com/BATidwell'
-  -
-    name: 'delicious'
-    url: 'https://delicious.com/blake.tidwell'
