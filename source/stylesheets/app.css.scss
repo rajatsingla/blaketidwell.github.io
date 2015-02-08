@@ -210,7 +210,11 @@ h1.article-title {
 // at smallest widths
 @media (max-width: 320px) {
   ul.social {
-    width: 115px;
+    width: 100%;
+    li {
+      margin: 0;
+      width: 25%;
+    }
   }
   .image-wrapper {
     width: 100%;
