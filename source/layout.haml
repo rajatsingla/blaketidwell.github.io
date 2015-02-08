@@ -8,12 +8,11 @@
   %head
   %meta{:charset => "utf-8"}/
   %meta{:content => "IE=edge;chrome=1", "http-equiv" => "X-UA-Compatible"}/
-  %meta{:content => "Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.", :name => "description"}
+  %meta{:content => data.site.description, :name => "description"}
   %meta{:content => "width=device-width", :name => "viewport"}/
-  -# %meta{:name => "google-site-verification", :content => "8g81CMNY_nX76fPS3Sp1ZyVkElJCA8WDtNtx9vIC5sA"}
   %title
-    Blake Tidwell#{' - ' + current_article.title unless current_article.nil?}
-  = feed_tag :atom, "#{blog.options.prefix.to_s}/feed.xml", title: "Atom Feed"
+    #{data.site.owner}#{' - ' + current_article.title unless current_article.nil?}
+  =feed_tag :atom, "#{blog.options.prefix.to_s}/feed.xml", title: "Atom Feed"
   %link{:rel => "shortcut icon", :href => "/favicon.ico?v=3"}
   %link{:href => "/stylesheets/app.css", :rel => "stylesheet", :type => "text/css", :media => "screen"}/
   %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:300,400,700", :rel => "stylesheet", :type => "text/css"}/
@@ -28,14 +27,14 @@
       .row
         .small-9.columns
           %h1
-            = link_to 'Blake Tidwell', '/'
-          %h2 Code. Create. Connect.
+            =link_to data.site.owner, '/'
+          %h2=data.site.tagline
         .small-3.columns
-          %img.avatar.show-for-medium-up{:src => "http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png"}
+          %img.avatar.show-for-medium-up{:src => data.site.gravatar}
       .row
         .small-12.medium-offset-9.medium-3.columns
           %ul.social.inline-list
-            - data.social.profiles.each do |p|
+            -data.social.profiles.each do |p|
               %li
                 %a{:href => p.url}
                   %i{:class => "fi-social-#{p.name}"}
@@ -45,17 +44,17 @@
     %aside#filters.small-12.medium-4.columns
       %h2 Recent Articles
       %ul
-        - blog.articles[0...10].each do |article|
+        -blog.articles[0...10].each do |article|
           %li
             = link_to article.title, article
             %span= article.date.strftime('%b %e')
       %h2 Tags
       %ul
-        - blog.tags.each do |tag, articles|
+        -blog.tags.each do |tag, articles|
           %li= link_to "#{tag} (#{articles.size})", tag_path(tag)
       %h2 By Year
       %ul
-        - blog.articles.group_by {|a| a.date.year }.each do |year, articles|
+        -blog.articles.group_by {|a| a.date.year }.each do |year, articles|
           %li= link_to "#{year} (#{articles.size})", blog_year_path(year)
       #social
         -# .fb-like{data: {layout: "button", action: "like", "show-faces" => false, share: "true"}}
