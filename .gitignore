@@ -22,3 +22,8 @@
 
 # Sublime Meta
 *.sublime-workspace
+
+# VIM Meta because I am such a hipster meow
+*~
+*.swp
+*.swo
