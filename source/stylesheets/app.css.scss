@@ -62,6 +62,49 @@ p, li, a {
   font-weight: lighter;
 }
 
+article {
+  a {
+    color: lighten($primary-color, 20%);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+#footer {
+  padding: 20px 0;
+  background-color: #222;
+  color: white;
+  h1, h2, h3,
+  h4, h5, h6 {
+    font-weight: lighter;
+    border-bottom: 1px solid white;
+  }
+  a {
+    color: lighten($primary-color, 40%);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  h1, h2, h3,
+  h4, h5, h6,
+  p, span{
+    color: white;
+  }
+  ul {
+    > li {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+.share {
+  margin-bottom: 15px;
+  iframe[id^="twitter-"]{
+    margin-bottom: -6px;
+  }
+}
+
 .image-wrapper {
   width: 50%;
   float: left;
@@ -109,6 +152,7 @@ pre {
       color: black;
       &:hover{
         color: $primary-color;
+        text-decoration: none;
         border-bottom: 1px solid $primary-color;
         margin-bottom: rem-calc(-1px);
       }
