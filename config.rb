@@ -128,3 +128,32 @@ configure :build do
   # Or use a different image path
   # set :http_prefix, '/Content/images/'
 end
+
+set :protocol, 'http://'
+set :host, 'www.blaketidwell.com'
+set :port, 80
+
+helpers do
+  def root_url
+    protocol + host
+  end
+
+  def host_with_port
+    [host, optional_port].compact.join(':')
+  end
+
+  def optional_port
+    port unless port.to_i == 80
+  end
+
+  def image_url(source)
+    protocol + host_with_port + image_path(source)
+  end
+
+end
+
+configure :development do
+  # Used for generating absolute URLs
+  set :host, Middleman::PreviewServer.host
+  set :port, Middleman::PreviewServer.port
+end
