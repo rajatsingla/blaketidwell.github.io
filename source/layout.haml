@@ -46,9 +46,23 @@
                 %a{:href => p.url}
                   %i{:class => "fi-social-#{p.name}"}
   #container.row
-    #main.small-12.columns{:role => "main"}
+    #main.small-12.medium-8.columns{:role => "main"}
       = yield
-    -# %aside#filters.small-12.medium-4.columns
+    %aside#filters.medium-4.columns.show-for-medium-up
+      %h3 Recent Articles
+      %ul
+        -blog.articles[0...10].each do |article|
+          %li
+            = link_to article.title, article
+            %span= article.date.strftime('%b %e')
+      %h3 Tags
+      %ul
+        -blog.tags.each do |tag, articles|
+          %li= link_to "#{tag} (#{articles.size})", tag_path(tag)
+      %h3 By Year
+      %ul
+        -blog.articles.group_by {|a| a.date.year }.each do |year, articles|
+          %li= link_to "#{year} (#{articles.size})", blog_year_path(year)
   #footer
     .row
       .small-12.medium-4.columns
@@ -63,11 +77,11 @@
         .row
           -row1, row2 = blog.tags.each_slice((blog.tags.length/2).ceil).to_a
           .small-12.medium-6.columns
-            %ul
+            %ul.tag-group
               -row1.each do |tag, articles|
                 %li= link_to "#{tag} (#{articles.size})", tag_path(tag)
           .small-12.medium-6.columns
-            %ul
+            %ul.tag-group.last
               -row2.each do |tag, articles|
                 %li= link_to "#{tag} (#{articles.size})", tag_path(tag)
       .small-12.medium-4.columns

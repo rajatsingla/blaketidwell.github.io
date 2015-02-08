@@ -72,7 +72,7 @@ article {
 }
 
 #footer {
-  padding: 20px 0;
+  padding: 20px 0 50px;
   background-color: #222;
   color: white;
   h1, h2, h3,
@@ -94,6 +94,12 @@ article {
   ul {
     > li {
       font-size: 0.75rem;
+    }
+  }
+  .tag-group {
+    margin-bottom: 0;
+    &.last {
+      margin-bottom: 1.25rem;
     }
   }
 }
@@ -200,7 +206,10 @@ ul.social{
 
 h1.article-title {
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  + .share-container {
+    margin-bottom: 0.5rem;
+  }
   &:before {
     background-color: #333;
     height: 3px;
@@ -224,7 +233,9 @@ h1.article-title {
 
 @media #{$medium-up} {
   h1.article-title {
-    margin-bottom: 2rem;
+    + .share-container {
+      margin-bottom: 1rem;
+    }
     &:before {
       height: 5px;
       top: 3.35rem;

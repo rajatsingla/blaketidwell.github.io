@@ -1,7 +1,7 @@
 = wrap_layout :layout do
   %article
     %h1.article-title= current_article.title
-    .row
+    .row.share-container
       .small-12.columns
         .share
           %a.twitter-share-button{href: "https://twitter.com/share", data: {text: @social_title, related: "BATidwell", count: "none", hashtags: "codecreateconnect"}}
@@ -10,7 +10,7 @@
     = yield
     .row
       .small-12.columns
-        .share.right
+        .share
           %a.twitter-share-button{href: "https://twitter.com/share", data: {text: @social_title, related: "BATidwell", count: "none", hashtags: "codecreateconnect"}}
             Tweet
           .fb-like{data: {layout: "button", action: "like", "show-faces" => false, share: "true"}}
