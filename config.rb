@@ -154,6 +154,12 @@ end
 
 configure :development do
   # Used for generating absolute URLs
-  set :host, Middleman::PreviewServer.host
-  set :port, Middleman::PreviewServer.port
+  begin
+    if Middleman.const_get 'PreviewServer'
+      set :host, Middleman::PreviewServer.host
+      set :port, Middleman::PreviewServer.port
+    end
+  rescue NameError
+    # Whoops.
+  end
 end
