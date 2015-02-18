@@ -2,6 +2,7 @@
 title: Ember Rails CSRF Handling
 date: 2015-01-27 07:24 UTC
 tags: emberjs,rails,ruby,technical,quickread,dragons
+disqus_identifier: /2015-01-27-ember-rails-csrf-handling.html
 ---
 
 To get some more practice with my new Vim + Tmux setup (a topic unto itself, I might add), I ran back through the Ember JS "Getting Started" guide and wired it to a simple Rails back-end. However, I wanted to adhere to a strict SPA/API architecture, and ran into some CSRF issues as a result.

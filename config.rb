@@ -127,6 +127,11 @@ configure :build do
 
   # Or use a different image path
   # set :http_prefix, '/Content/images/'
+  activate :disqus do |d|
+    # using a special shortname
+    d.shortname = 'blaketidwell'
+    d.root_url = root_url_with_port
+  end
 end
 
 set :protocol, 'http://'
@@ -136,6 +141,10 @@ set :port, 80
 helpers do
   def root_url
     protocol + host
+  end
+
+  def root_url_with_port
+    [root_url, optional_port].compact.join(':')
   end
 
   def host_with_port
@@ -149,15 +158,20 @@ helpers do
   def image_url(source)
     protocol + host_with_port + image_path(source)
   end
-
 end
 
 configure :development do
-  # Used for generating absolute URLs
   begin
     if Middleman.const_get 'PreviewServer'
       set :host, Middleman::PreviewServer.host
       set :port, Middleman::PreviewServer.port
+
+      activate :disqus do |d|
+        # using a special shortname
+        d.shortname = 'btlocal'
+        d.root_url = root_url_with_port
+      end
+      # Used for generating absolute URLs
     end
   rescue NameError
     # Whoops.

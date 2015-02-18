@@ -6,6 +6,7 @@ tags:
   - how-to
   - ruby
   - deployment
+disqus_identifier: /2014-11-24-leds-and-303s-static-page-on-divshot.html
 ---
 
 Took some time to spin up a home page for my music project this weekend, and decided it would be a great opportunity to not only level up my Middleman and design chops, but also try out a new (*to me anyway*) static hosting service called Divshot.

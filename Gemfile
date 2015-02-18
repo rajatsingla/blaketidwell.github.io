@@ -7,6 +7,7 @@ gem 'middleman-livereload', '~> 3.3.4'
 gem 'middleman-imageoptim', '~> 0.1.4'
 gem 'middleman-syntax', '~> 2.0.0'
 gem 'middleman-search_engine_sitemap', '~> 1.1.0'
+gem 'middleman-disqus', github: 'BlakeTidwell/middleman-disqus', branch: 'master'
 
 # For feed.xml.builder
 gem 'builder', '~> 3.0'

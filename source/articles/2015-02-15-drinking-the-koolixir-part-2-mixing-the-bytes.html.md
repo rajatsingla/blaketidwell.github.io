@@ -7,6 +7,7 @@ tags:
   - elixir
   - erlang
   - workspace
+disqus_identifier: /2015-02-15-drinking-the-koolixir-part-2-mixing-the-bytes
 published: false
 ---
 
