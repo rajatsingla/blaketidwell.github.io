@@ -8,6 +8,8 @@ To get some more practice with my new Vim + Tmux setup (a topic unto itself, I m
 
 READMORE
 
+_Update: Imagine my surprise when I tried to do some more Googling related to this topic and this very blog post showed up within the first few results a few times. I would like to add, as a Good Internet Citizen, that I am not a security expert, just a security advocate. This is a work in progress, so there is very likely some room for improvement. Specifically, StackOverflow tells me that ["passing the CSRF token through the API for login is a particularly bad practice"](http://stackoverflow.com/a/15056471). I will be personally confirming whether this applies to the approach outlined below and update accordingly._
+
 ## The Challenge
 
 To protect against CSRF attacks, Rails generates an authenticity token for each form submission. If the token isn't present, the request is rejected. This works great for apps that are served up by the Rails app (since said token is available as a meta-tag on the hosting page), but things start to get a little trickier when your single-page app is decoupled from the Rails server (say with something like an S3-oriented deployment, or Divshot). In this scenario, you have to write some custom glue code to ensure the SPA is able to retrieve and then provide the token on each request, and, likewise, to ensure the Rails app checks for it in the correct way. There are plenty of SO threads and blog posts available covering CSRF handling for SPAs, but they all seem to focus on Angular JS, and even then, only cover part of the total solution. I wound up stitching together resources from a handful of locations to get a CSRF fix for Ember that I was satisfied with.
