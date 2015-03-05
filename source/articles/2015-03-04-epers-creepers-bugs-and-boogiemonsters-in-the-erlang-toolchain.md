@@ -1,5 +1,5 @@
 ---
-title: EPERs Creepers, Bugs and Boogiemonsters in the Erlang Toolchain
+title: EPERs Creepers - Bugs and Boogiemonsters in the Erlang Toolchain
 date: 2015-03-04
 tags: functional, languages, erlang, elixir, technical
 disqus_identifier: /2015/03/04/epers-creepers-bugs-and-boogiemonsters-in-the-erlang-toolchain.html
