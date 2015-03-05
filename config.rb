@@ -2,6 +2,8 @@
 # Blog settings
 ###
 
+activate :emoji,  dir: '/images/emoji'
+
 # Time.zone = 'UTC'
 
 activate :blog do |blog|
@@ -39,7 +41,8 @@ page '/feed.xml', layout: false
 compass_config do |config|
   config.additional_import_paths = [
     '../bower_components/foundation/scss',
-    '../bower_components/foundation-icon-fonts'
+    '../bower_components/foundation-icon-fonts',
+    '../bower_components/js-emoji'
   ]
 end
 
