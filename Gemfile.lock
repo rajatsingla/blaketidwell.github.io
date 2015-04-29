@@ -176,12 +176,12 @@ PLATFORMS
 
 DEPENDENCIES
   builder (~> 3.0)
-  gemoji
+  gemoji (~> 1.5.0)
   middleman (~> 3.3.7)
   middleman-blog (~> 3.5.2)
   middleman-deploy (~> 1.0)
   middleman-disqus!
-  middleman-emoji
+  middleman-emoji (~> 0.1.0)
   middleman-imageoptim (~> 0.1.4)
   middleman-livereload (~> 3.4.2)
   middleman-search_engine_sitemap (~> 1.1.0)

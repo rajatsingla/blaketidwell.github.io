@@ -8,10 +8,10 @@ gem 'middleman-imageoptim', '~> 0.1.4'
 gem 'middleman-syntax', '~> 2.0.0'
 gem 'middleman-search_engine_sitemap', '~> 1.1.0'
 gem 'middleman-disqus', github: 'BlakeTidwell/middleman-disqus', branch: 'master'
-gem 'middleman-emoji'
+gem 'middleman-emoji', '~> 0.1.0'
 
 # For feed.xml.builder
 gem 'builder', '~> 3.0'
 gem 'nokogiri', '~> 1.6.4'
 gem 'redcarpet', '~> 2.3.0'
-gem 'gemoji'
+gem 'gemoji', '~> 1.5.0'
