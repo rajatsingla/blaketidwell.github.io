@@ -3,7 +3,6 @@ title: Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!
 date: 2015-03-04
 tags: functional, languages, erlang, elixir, technical
 disqus_identifier: /2015/03/04/epers-creepers-bugs-and-boogiemonsters-in-the-erlang-toolchain.html
-published: false
 ---
 To get a better handle on Erlang's behavior, I decided to install a popular set
 of tools for debugging and performance profiling: EPER. I *think* it stands for
