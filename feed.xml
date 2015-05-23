@@ -5,10 +5,158 @@
   <id>http://blog.url.com/</id>
   <link href="http://blog.url.com/"/>
   <link href="http://blog.url.com/feed.xml" rel="self"/>
-  <updated>2015-02-06T18:18:00-08:00</updated>
+  <updated>2015-03-03T16:00:00-08:00</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</title>
+    <link rel="alternate" href="http://blog.url.com/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html"/>
+    <id>http://blog.url.com/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html</id>
+    <published>2015-03-03T16:00:00-08:00</published>
+    <updated>2015-05-23T13:23:35-07:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;To get a better handle on Erlang&amp;rsquo;s behavior, I decided to install a popular set
+of tools for debugging and performance profiling: EPER. I &lt;em&gt;think&lt;/em&gt; it stands for
+&amp;ldquo;Erlang PERformance tools&amp;rdquo;, but it could also mean &amp;ldquo;Everything Proves Erlang
+Rules&amp;rdquo; or &amp;ldquo;Egrets Prefer to Eat Robots&amp;rdquo; or really anything for that matter. One
+thing is for certain, however: getting these tools built and running on Mac OS X
+was fraught with :fire:danger:fire: and :boom: build errors. :boom:.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2&gt;Running the Test Suit&lt;/h2&gt;
+
+&lt;p&gt;Before I got down to the business of trying to &lt;code&gt;make&lt;/code&gt; and &lt;code&gt;make install&lt;/code&gt; EPER,
+it made sense to run &lt;code&gt;make test&lt;/code&gt; to ensure everything was in working order. Why
+start there? I don&amp;rsquo;t know, I guess I :heart: tests or something. Maybe I was
+abandoned as a child with a tribe of poorly tested hunter-gatherers, so I HAVE
+TO CONFIRM STABILITY BEFORE CODING. Who knows?! :tired_face: Seemed like a
+decent way to figure out how the system ticks, and learn a little more about how
+the pieces of the Erlang environment fit together.&lt;/p&gt;
+
+&lt;h2&gt;Problems Arise&lt;/h2&gt;
+
+&lt;h3&gt;EPMD&lt;/h3&gt;
+
+&lt;p&gt;Le duh. Right off the bat, I ran into issues with &lt;code&gt;eunit&lt;/code&gt; tests not passing.
+Specifically, the first run of &lt;code&gt;make test&lt;/code&gt; yielded the following:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="o"&gt;=&lt;/span&gt;INFO &lt;span class="nv"&gt;REPORT&lt;/span&gt;&lt;span class="o"&gt;====&lt;/span&gt; 4-Mar-2015::19:05:02 &lt;span class="o"&gt;===&lt;/span&gt;
+Protocol: &lt;span class="s2"&gt;"inet_tcp"&lt;/span&gt;: register/listen error: econnrefused
+prfDog: t0_test &lt;span class="o"&gt;(&lt;/span&gt;module &lt;span class="s1"&gt;'prfDog'&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;...&lt;span class="k"&gt;*&lt;/span&gt;failed&lt;span class="k"&gt;*&lt;/span&gt;
+&lt;span class="k"&gt;in function &lt;/span&gt;prfHost:assert_proxy/1 &lt;span class="o"&gt;(&lt;/span&gt;src/prfHost.erl, line 67&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;in &lt;/span&gt;call from prfHost:start/4 &lt;span class="o"&gt;(&lt;/span&gt;src/prfHost.erl, line 26&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;in &lt;/span&gt;call from prfDog:t0_test/0 &lt;span class="o"&gt;(&lt;/span&gt;src/prfDog.erl, line 178&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;**&lt;/span&gt;&lt;span class="nb"&gt;exit&lt;/span&gt;:&lt;span class="o"&gt;{&lt;/span&gt;no_proxy,nonode@nohost&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The solution? Start &lt;code&gt;epmd&lt;/code&gt; in &amp;ldquo;daemon&amp;rdquo; mode:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;epmd -daemon
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That solved the issue, but does raise some more questions. Like: What the heck
+is &lt;code&gt;epmd&lt;/code&gt;? How do I manage this service on a Mac? Is it &lt;code&gt;lunchy&lt;/code&gt; compatible?
+&lt;code&gt;launchd&lt;/code&gt;? &lt;code&gt;initctl&lt;/code&gt;?  CAN I JUST SHOUT AT IT. Will definitely be digging deeper
+into &lt;code&gt;epmd&lt;/code&gt; in a future post. For now, we march onward through Error Canyon.&lt;/p&gt;
+
+&lt;h3&gt;GTKNode&lt;/h3&gt;
+
+&lt;p&gt;The installation process next failed because &lt;code&gt;gperfGtk&lt;/code&gt; claims it is missing
+something:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;src/gperfGtk.erl:386: Warning: gperfGtk:g/1 calls undefined &lt;span class="k"&gt;function &lt;/span&gt;gtknode:cmd/2 &lt;span class="o"&gt;(&lt;/span&gt;Xref&lt;span class="o"&gt;)&lt;/span&gt;
+src/gperfGtk.erl:37: Warning: gperfGtk:init/0 calls undefined &lt;span class="k"&gt;function &lt;/span&gt;gtknode:start/1 &lt;span class="o"&gt;(&lt;/span&gt;Xref&lt;span class="o"&gt;)&lt;/span&gt;
+src/sherk.erl:567: Warning: sherk:g/1 calls undefined &lt;span class="k"&gt;function &lt;/span&gt;gtknode:cmd/2 &lt;span class="o"&gt;(&lt;/span&gt;Xref&lt;span class="o"&gt;)&lt;/span&gt;
+src/sherk.erl:56: Warning: sherk:init/0 calls undefined &lt;span class="k"&gt;function &lt;/span&gt;gtknode:start/1 &lt;span class="o"&gt;(&lt;/span&gt;Xref&lt;span class="o"&gt;)&lt;/span&gt;
+ERROR: xref failed &lt;span class="k"&gt;while &lt;/span&gt;processing /Users/BTidwellGrio/Code/elx_workspace/eper: rebar_abort
+make: &lt;span class="k"&gt;***&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;xref] Error 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A little Garggling turned up the fact that &lt;code&gt;gtknode&lt;/code&gt; is an OSS Erlang library
+for mapping to the popular UI library, GTK. I pulled down &lt;a href="https://github.com/massemanet/gtknode"&gt;the
+repo&lt;/a&gt;, and after a little more digging,
+found the command for building and installing it:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;aclocal ; autoconf ; automake ; ./configure --prefix=/your/cool/prefix ; make ; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For the prefix here, I personally like to keep all of my shell/library Erlang in
+a &lt;code&gt;.erllib&lt;/code&gt; folder in my home directory. I track a couple of helper files in the
+same folder in a dotfiles repo, and ignore the build output of all the remaining
+libraries.&lt;/p&gt;
+
+&lt;p&gt;The first run of the &lt;code&gt;gtknode&lt;/code&gt; build exited with:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Checking for GTK... no
+configure: error: Package requirements (gmodule-2.0 libglade-2.0 gtk+-2.0,
+gdk-pixbuf-2.0) were not met:
+
+Package 'libxml-2.0', required by 'libglade-2.0', not found
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This story checks out; one can fairly safely assume that a library named
+&lt;code&gt;gtkWHATEVER&lt;/code&gt; will, in fact, need some other thing called &lt;code&gt;GTK&lt;/code&gt;. The &lt;code&gt;README&lt;/code&gt;
+for &lt;code&gt;gtknode&lt;/code&gt; encourages the use of Homebrew to install &lt;code&gt;glade&lt;/code&gt; (amongst myriad
+other things). This first required adding the X11 homebrew tap. Additionally, a
+couple more runs of the build script revealed a dependency on XQuart, which is
+easily managed using Homebrew Cask. As I had never used Cask up to this point, I
+have included it in the installation steps below:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;brew tap homebrew/x11
+brew install glade fontconfig freetype libpng
+brew install caskroom/cask/brew-cask
+brew cask doctor # This triggers a sudo prompt to configure needed directories
+brew cask install xquartz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since we installed &lt;code&gt;glade&lt;/code&gt; and some of the other libraries using Homebrew,
+running another build will result in &lt;code&gt;&amp;quot;Package &amp;#39;xcb-shm&amp;#39;, required by &amp;#39;cairo&amp;#39;,
+not found&amp;quot;&lt;/code&gt; (or any number of other &lt;code&gt;&amp;quot;[Package] not found&amp;quot;&lt;/code&gt; errors). I am not
+completely familiar with &lt;code&gt;pkg-config&lt;/code&gt;, but it seems the gist of the problem is
+that Homebrew installs binaries and libraries in non-default locations (at least
+from a Linux perspective). This can be fixed by exporting the &lt;code&gt;pkgconfig&lt;/code&gt;
+environment variable*:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;PKG_CONFIG_PATH=/usr/local/opt/libxml2/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;*&lt;em&gt;This lovely bit of minutiae comes courtesy of a completely unrelated page in
+the &lt;a href="https://github.com/Automattic/node-canvas/wiki/Installation---OSX"&gt;node-canvas Wiki&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;With all this in place, &lt;code&gt;gtknode&lt;/code&gt; should compile, and &lt;code&gt;make test&lt;/code&gt; from the
+&lt;code&gt;eper&lt;/code&gt; project root should pass. Then, the EPER project can be built using the
+same tune as &lt;code&gt;gtknode&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;aclocal ; autoconf ; automake ; ./configure --prefix=/your/cool/prefix ; make ; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Then What?&lt;/h2&gt;
+
+&lt;p&gt;Now that these libraries are compiled and installed using the prefix we provided
+earlier, we can add them to the Erlang shell using the &lt;code&gt;ERL_LIBS&lt;/code&gt; environment
+variable. If you used the same convention stated here (i.e. &lt;code&gt;.erllib&lt;/code&gt; in the
+home directory), then this variable should look like the following:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;export ERL_LIBS="$HOME/.erllib/lib/erlang/lib/eper-0.90.0:$HOME/.erllib/lib/erlang/lib/gtknode-0.32"
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;On startup, the Erlang shell will load any source code in the &lt;code&gt;ebin&lt;/code&gt; directory
+of any libraries spelled out in the &lt;code&gt;ERL_LIBS&lt;/code&gt; variable. If you refresh this
+environment variable and then run &lt;code&gt;erl&lt;/code&gt; from the command-line, you should be
+able to sanity-check installation of EPER by running &lt;code&gt;redbug:help().&lt;/code&gt; inside the
+Erlang shell. This should output a list of methods supported by Redbug.
+Additionally, if you do not include the compiled &lt;code&gt;gtknode&lt;/code&gt; libs using &lt;code&gt;ERL_LIBS&lt;/code&gt;
+as explained above, attempting to use &lt;code&gt;sherk&lt;/code&gt; performance tools from the Erlang
+shell will result in a bunch of errors related to being unable to find &lt;code&gt;gtkNode&lt;/code&gt;
+(similar to the installation process).&lt;/p&gt;
+
+&lt;p&gt;With this in place, I feel like I can move forward with learning Erlang in a
+much more disciplined way. Now, when something goes wrong deep in the depths of
+some wacky Erlang function, I can do some code spelunking courtesy of &lt;code&gt;redbug&lt;/code&gt;
+instead of being all like, &amp;ldquo;Hey Erlang, WHAT UP IN THERE YO like maybe you
+could JUST START WORKING NOW.&amp;rdquo; I may follow-up with a dedicated post
+on redbug or just interweave it with future blog posts, but either way you can
+expect to see more about proper &lt;code&gt;redbug&lt;/code&gt; usage here on my blarg.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Drinking The Koolixir (Part 1)</title>
     <link rel="alternate" href="http://blog.url.com/2015/02/07/drinking-the-koolixir.html"/>
