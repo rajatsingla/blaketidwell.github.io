@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Blog Name</title>
+  <subtitle>Blog subtitle</subtitle>
+  <id>http://blog.url.com/</id>
+  <link href="http://blog.url.com/"/>
+  <link href="http://blog.url.com/feed.xml" rel="self"/>
+  <updated>2015-02-06T18:18:00-08:00</updated>
+  <author>
+    <name>Blog Author</name>
+  </author>
+  <entry>
+    <title>Drinking The Koolixir (Part 1)</title>
+    <link rel="alternate" href="http://blog.url.com/2015/02/07/drinking-the-koolixir.html"/>
+    <id>http://blog.url.com/2015/02/07/drinking-the-koolixir.html</id>
+    <published>2015-02-06T18:18:00-08:00</published>
+    <updated>2015-04-29T00:24:30-07:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;In case you haven&amp;rsquo;t yet heard of it yet, Elixir is a functional programming language (technically, a collection of macros) written in Erlang. I have been persuaded to add it to my technical repertoire due to a good amount of recent buzz in the blogosphere (as well as some points I&amp;rsquo;ll get to later). To make sure I have a strong foundation for my Elixir learning experience, I am starting my adventure with a foray into the underlying syntax of Erlang.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;div style="text-align: center"&gt;
+&lt;h2&gt;Part 1&lt;/h2&gt;
+&lt;h5&gt;First Impressions with Erlang&lt;/h5&gt;
+&lt;h5&gt;&amp;ndash;or&amp;ndash;&lt;/h5&gt;
+&lt;h5&gt;&lt;i&gt;Taking Apart the Car To Learn How to Drive&lt;/i&gt;&lt;/h5&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br/&gt;
+Yes, functional programming: Land of Lambdas and Bindings and Parenthesis and you&amp;rsquo;re all like &lt;code&gt;(where(am(I(will)(I)(ever)(return)?)!)1)&lt;/code&gt; and so-forth. To be fair, my only formal experience with FP was a short section in a programming languages course in college (&lt;em&gt;unless you count Javascript?&lt;/em&gt;&amp;thinsp;) that gave me probably just enough time to learn how to recursively crash my LISP interpreter. Even that was sufficient to give me the impression that functional programming was something that all Serious Programmers should learn during their Careers as Professionals.&lt;/p&gt;
+
+&lt;p&gt;I actually started out wanting to learn Elixir because of some impressive benchmarks I read about &lt;a href="https://github.com/mroth/phoenix-showdown"&gt;over here&lt;/a&gt;. &lt;strong&gt;tldr;&lt;/strong&gt; Phoenix pwns all yes even Node.js &lt;em&gt;and&lt;/em&gt; I&amp;rsquo;m pretty sure you still get Hipster Cred for writing in Elixir, yey!&lt;/p&gt;
+
+&lt;p&gt;Naturally, I was all like, &amp;ldquo;I want to &lt;strike&gt;be a hipster&lt;/strike&gt; write fast APIs!&amp;rdquo; so I set out straightaway to install Elixir (&lt;em&gt;using Homebrew, no doy&lt;/em&gt;&amp;thinsp;), started hacking away all furiously (&lt;em&gt;a Sublime Text syntax package! and a framework! and package managers! and the author like, wrote Ruby! and I write Ruby!&lt;/em&gt;&amp;thinsp;) only to realize pretty quickly that I was going to be at something of a disadvantage if I didn&amp;rsquo;t learn at least &lt;em&gt;some&lt;/em&gt; Erlang.&lt;/p&gt;
+
+&lt;p&gt;At the very least, I started imagining all the &lt;span style="font-family: monospace; font-size: 14px"&gt;&amp;#9679;&amp;Delta;True&amp;nbsp;Hipster&amp;nbsp;Programmers&amp;Delta;&amp;#9679;&lt;/span&gt; calling me out. &amp;ldquo;You write Elixir but you&amp;rsquo;ve never even written Erlang DIE TRYHARD POSEUR SCUM PEW PEW PEW!&amp;rdquo; (&lt;em&gt;Fun Fact: Hipster Programmers spontaneously emit lasers upon the unworthy.&lt;/em&gt;)There was also the fact that all of the good debuggers and tooling and whatnot were written with Erlang in mind. Also, I&amp;rsquo;m a sucker for a knowledge.&lt;/p&gt;
+
+&lt;div class="image-wrapper"&gt;
+  &lt;img alt="A space cat obliterating a planet of unworthy programmers writing at an unacceptable level of abstraction" src="/articles/hipster_programmer_cat.jpg" /&gt;
+  &lt;blockquote&gt;&amp;ldquo;Oh what&amp;rsquo;s that ur &amp;lsquo;getting around&amp;rsquo; to learning assembly PEW PEW PEW I CANT HEER U UR DEAD&amp;rdquo;&lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So here I be.&lt;/p&gt;
+
+&lt;h3&gt;But Wait, Why Learn &amp;ldquo;Tonic&amp;rdquo;&amp;hellip;er&amp;hellip;whatever?&lt;/h3&gt;
+
+&lt;p&gt;I blame college for biasing me, but something about functional programming really does feel like The One True Way. I can remember writing my first few recursive algorithms and feeling like &amp;ldquo;YES THIS IS IT I AM DOING PROGRAMMING.&amp;rdquo; So, yeah, that&amp;rsquo;s a big plus: it just &lt;em&gt;feels&lt;/em&gt; so much more computer sciency to me (this may or may not proverbially light your proverbial fire). I can say that I am legitimately excited to learn a new language for the first time in years, and that excitement will go a long way toward conquering a potentially powerful new tool.&lt;/p&gt;
+
+&lt;p&gt;That being said, there are also some &amp;ldquo;serious&amp;rdquo; reasons why I chose to learn Erlang/Elixir. By far the most important of these reasons is that Erlang touts concurrency and fault-tolerance as being core benefits of the language and the accompanying BEAM VM. Given the current push in the tech industry for increasingly real-time, highly concurrent applications (read: wearables sending tons of data back to the mothership), I think this is an area in which it is worth building expertise. Put another way, I believe levels of concurrency that were once only the concern of massive corporate giants will become a concern for more wearable/IoT startups.&lt;/p&gt;
+
+&lt;p&gt;In addition to all this, Elixir was created by Jos&amp;eacute; Valim, a basically kick-ass developer who co-founded his own consultancy, was the core developer of the Devise authentication gem (and who knows what else), and just generally eats Ruby and code for breakfast. What this means for Elixir is that it is very much influenced by Ruby&amp;rsquo;s syntax, making my own transition (as a Ruby developer) that much more enjoyable. Furthermore, Valim clearly knows how to carry a project, so Elixir is very likely to be well-maintained.&lt;/p&gt;
+
+&lt;h2&gt;The Jourlang Begins&lt;/h2&gt;
+
+&lt;p&gt;I remembered reading over on Hacker News about a book on Erlang with a particularly clever title: &lt;a href="http://learnyousomeerlang.com/"&gt;&amp;ldquo;Learn You Some Erlang For Great Good&amp;rdquo;&lt;/a&gt; (written in the spirit of &amp;ldquo;Learn You a Haskell For Great Good&amp;rdquo; SUCH FUNNY).&lt;/p&gt;
+
+&lt;div class="image-wrapper"&gt;
+  &lt;img src="/articles/IMG_1100.PNG" alt="A mustachioed octopus on the cover of 'Learn You Some Erlang For Great Good', the riveting tale of a tremendously talented mollusk functional programming practitioner" /&gt;
+  &lt;blockquote&gt;A mustachioed octopus on the cover of &amp;lsquo;Learn You Some Erlang For Great Good&amp;rsquo;, the riveting tale of a tremendously talented mollusk functional programming practitioner&lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;p&gt;At the time, Erlang didn&amp;rsquo;t really mean much to me, other than I knew there was some vague connection between Elixir and Erlang, and less-so between Haskell and Erlang. BUT since I had always wanted to Crush It Hard with FP, I made a mental note to go back to the book when the time was right. After reading about the Phoenix API Mega Hi-Score, I decided the time was indeed right.&lt;/p&gt;
+
+&lt;p&gt;As of this post, I am about a quarter of the way through the book, having covered syntax, types, and recursion. With some justification for learning Elixir specifically, I will breaking out my experience with Erlang into upcoming blog posts. Specifically, I will cover how I set up my machine for Erlang and Elixir development (tools, editor plugins, etc.), some thoughts on pros, cons, and oddities of the language and framework, and finally a walkthrough of a yet-to-be-determined First Application in Elixir. Assuming, of course, that I don&amp;rsquo;t fall into some kind of &lt;a href="/2015/02/07/drinking-the-koolixir.html"&gt;infinite recursion&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Ember Rails CSRF Handling</title>
+    <link rel="alternate" href="http://blog.url.com/2015/01/27/ember-rails-csrf-handling.html"/>
+    <id>http://blog.url.com/2015/01/27/ember-rails-csrf-handling.html</id>
+    <published>2015-01-26T23:24:00-08:00</published>
+    <updated>2015-02-17T22:01:13-08:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;To get some more practice with my new Vim + Tmux setup (a topic unto itself, I might add), I ran back through the Ember JS &amp;ldquo;Getting Started&amp;rdquo; guide and wired it to a simple Rails back-end. However, I wanted to adhere to a strict SPA/API architecture, and ran into some CSRF issues as a result.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Update: Imagine my surprise when I tried to do some more Googling related to this topic and this very blog post showed up within the first few results a few times. I would like to add, as a Good Internet Citizen, that I am not a security expert, just a security advocate. This is a work in progress, so there is very likely some room for improvement. Specifically, StackOverflow tells me that &lt;a href="http://stackoverflow.com/a/15056471"&gt;&amp;ldquo;passing the CSRF token through the API for login is a particularly bad practice&amp;rdquo;&lt;/a&gt;. I will be personally confirming whether this applies to the approach outlined below and update accordingly.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2&gt;The Challenge&lt;/h2&gt;
+
+&lt;p&gt;To protect against CSRF attacks, Rails generates an authenticity token for each form submission. If the token isn&amp;rsquo;t present, the request is rejected. This works great for apps that are served up by the Rails app (since said token is available as a meta-tag on the hosting page), but things start to get a little trickier when your single-page app is decoupled from the Rails server (say with something like an S3-oriented deployment, or Divshot). In this scenario, you have to write some custom glue code to ensure the SPA is able to retrieve and then provide the token on each request, and, likewise, to ensure the Rails app checks for it in the correct way. There are plenty of SO threads and blog posts available covering CSRF handling for SPAs, but they all seem to focus on Angular JS, and even then, only cover part of the total solution. I wound up stitching together resources from a handful of locations to get a CSRF fix for Ember that I was satisfied with.&lt;/p&gt;
+
+&lt;h2&gt;Server Side Glue&lt;/h2&gt;
+
+&lt;p&gt;The Angular JS docs make a &lt;a href="https://docs.angularjs.org/api/ng/service/$http#cross-site-request-forgery-xsrf-protection"&gt;suggestion&lt;/a&gt; which prompted &lt;a href="http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on/15761835#15761835"&gt;this response posted to SO by HyungYuHei&lt;/a&gt;. I&amp;rsquo;ve included the relevant snippet below for completeness:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/controllers/application_controller.rb&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Turn on request forgery protection&lt;/span&gt;
+&lt;span class="n"&gt;protect_from_forgery&lt;/span&gt;
+
+&lt;span class="n"&gt;after_filter&lt;/span&gt; &lt;span class="ss"&gt;:set_csrf_cookie&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;set_csrf_cookie&lt;/span&gt;
+  &lt;span class="n"&gt;cookies&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'XSRF-TOKEN'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;form_authenticity_token&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;protect_against_forgery?&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="kp"&gt;protected&lt;/span&gt;
+
+  &lt;span class="c1"&gt;# In Rails 4.2 and above&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;verified_request?&lt;/span&gt;
+    &lt;span class="k"&gt;super&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;valid_authenticity_token?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'X-XSRF-TOKEN'&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This sets the authenticity token as a cookie, and then checks for it in the headers on every request. The snippet worked flawlessly, and provided a great starting point for integrating the front-end of this exercise and Everything Was Amazing&amp;trade;.&lt;/p&gt;
+
+&lt;h2&gt;Front End Goop&lt;/h2&gt;
+
+&lt;p&gt;The next step is to configure the Ember app to snag the authenticity token out of the cookies and send it with each API request. Unfortunately, as mentioned, the SO thread only covers Angular JS. This left me to dig through the Ember JS docs for a bit, before coming upon &lt;a href="http://emberjs.com/api/data/classes/DS.RESTAdapter.html"&gt;this entry&lt;/a&gt;. Toward the bottom is a section on customizing request headers. To this effect, I added the following to &lt;code&gt;adapters/application.js&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ActiveModelAdapter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+  &lt;span class="na"&gt;namespace&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'api'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="na"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="s2"&gt;"X-XSRF-TOKEN"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cookie&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;match&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/XSRF&lt;/span&gt;&lt;span class="se"&gt;\-&lt;/span&gt;&lt;span class="sr"&gt;TOKEN&lt;/span&gt;&lt;span class="se"&gt;\=([^&lt;/span&gt;&lt;span class="sr"&gt;;&lt;/span&gt;&lt;span class="se"&gt;]&lt;/span&gt;&lt;span class="sr"&gt;*&lt;/span&gt;&lt;span class="se"&gt;)&lt;/span&gt;&lt;span class="sr"&gt;/&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s2"&gt;"1"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nx"&gt;property&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="kr"&gt;volatile&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Ultimate Victory&lt;/h2&gt;
+
+&lt;p&gt;So, la la la, everything was great, and I rode off into the sunset, OKAY BUT NO, SERIOUSLY, why was I still getting &lt;code&gt;Invalid Authenticity Token: U SUCK&lt;/code&gt; error messages?&lt;/p&gt;
+
+&lt;h3&gt;Okay, So Not So Ultimate&lt;/h3&gt;
+
+&lt;p&gt;And thank goodness, because this wouldn&amp;rsquo;t be much of a blog post without a plot twist at the end where The Developer has to wrestle a flaming error message to the ground with their bare hands. So, I mounted my trusty steed or laptop or whatever, and like, opened up my Developer Tools in Chrome. And I was like &amp;ldquo;Show thy Lizard Face, that I may smite it.&amp;rdquo; And The Foul Cookie Dragon of the Resources Tab was all like:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;R8xp3FN5QrlQM12GLb28f6%2BtPsYkcYYNfRsYQ3q5ryq%2Bx387750%2BHI%2FCxVUrjZDCiX4eIL63V4BF4NcA7eLddg%3D%3D
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And I said unto the dragon, &amp;ldquo;Wow, you must be blast at parties&amp;rdquo; or maybe it was like &amp;ldquo;Now Dragon, use your words.&amp;rdquo; but actually I was like WAIT A MINUTE DRAGON what&amp;rsquo;s with all that URL encoded mess you said toward the end there? that seems pretty important, I bet. And wouldn&amp;rsquo;t you know it, that dragon solved the mystery. So I changed:&lt;/p&gt;
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="s2"&gt;"X-XSRF-TOKEN"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cookie&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;match&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/XSRF&lt;/span&gt;&lt;span class="se"&gt;\-&lt;/span&gt;&lt;span class="sr"&gt;TOKEN&lt;/span&gt;&lt;span class="se"&gt;\=([^&lt;/span&gt;&lt;span class="sr"&gt;;&lt;/span&gt;&lt;span class="se"&gt;]&lt;/span&gt;&lt;span class="sr"&gt;*&lt;/span&gt;&lt;span class="se"&gt;)&lt;/span&gt;&lt;span class="sr"&gt;/&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s2"&gt;"1"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;to&amp;hellip;&lt;/p&gt;
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="s2"&gt;"X-XSRF-TOKEN"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;decodeURIComponent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cookie&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;match&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/XSRF&lt;/span&gt;&lt;span class="se"&gt;\-&lt;/span&gt;&lt;span class="sr"&gt;TOKEN&lt;/span&gt;&lt;span class="se"&gt;\=([^&lt;/span&gt;&lt;span class="sr"&gt;;&lt;/span&gt;&lt;span class="se"&gt;]&lt;/span&gt;&lt;span class="sr"&gt;*&lt;/span&gt;&lt;span class="se"&gt;)&lt;/span&gt;&lt;span class="sr"&gt;/&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s2"&gt;"1"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;YES! decodeURIComponent!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;And the dragon was all like, &amp;ldquo;Geez, dude, you have no idea how hard is to talk in percent signs and stuff all the time, thanks for URI decoding me.&amp;rdquo; And there was peace and API integration throughout the land FOREVER AND EVER HAPPILY EVER AFTER.&lt;/p&gt;
+
+&lt;h1&gt;THE END&lt;/h1&gt;
+</content>
+  </entry>
+  <entry>
+    <title>LEDs and 303s Static Page on Divshot</title>
+    <link rel="alternate" href="http://blog.url.com/2014/11/24/leds-and-303s-static-page-on-divshot.html"/>
+    <id>http://blog.url.com/2014/11/24/leds-and-303s-static-page-on-divshot.html</id>
+    <published>2014-11-23T16:53:00-08:00</published>
+    <updated>2015-02-17T21:59:12-08:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;Took some time to spin up a home page for my music project this weekend, and decided it would be a great opportunity to not only level up my Middleman and design chops, but also try out a new (&lt;em&gt;to me anyway&lt;/em&gt;) static hosting service called Divshot.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h1&gt;The Site&lt;/h1&gt;
+
+&lt;p&gt;I&amp;rsquo;ve produced electronic tracks for over a decade now (going all the way back to Fruityloops 1.0). My current musical project, &lt;a href="http://www.ledsand303s.com"&gt;LEDs and 303s&lt;/a&gt; has been long overdue for its own HQ. Building a quick landing page for this purpose has not only given me renewed motivation to get back to writing music, but also provides another outlet for some design and front-end hackery.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://www.ledsand303s.com"&gt;&lt;img alt="LEDs and 303s Home Page" src="/images/ledshome.png" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Since I&amp;rsquo;ve been so happy with Middleman for this site, I chose to stick with it for the L303 home page. To keep things simple, it leverages the HTML5 Boilerplate template:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;  &lt;span class="nv"&gt;$ &lt;/span&gt;middleman init ledsand303s.com --template&lt;span class="o"&gt;=&lt;/span&gt;html5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;All other CSS was handcoded to keep the CSS size down. As a comparison, this site&amp;rsquo;s primary CSS file comes in at 46.5KB, while &lt;em&gt;LEDs and 303s&lt;/em&gt; is a piddly 7.4KB. There are other differences in approach between the two stylesheets and this is arguably negligible, but the relative size is still telling. This isn&amp;rsquo;t to say I would use this approach for every site, but it is nice to arrive back at this point from a couple years of jumping straight to Bootstrap or Foundation to kick off a site. I also modified the root CSS file slightly to combine all CSS into single file. Instead of using &lt;code&gt;import&lt;/code&gt; statements at the top of &lt;code&gt;main.css&lt;/code&gt;, I opted for the following:&lt;/p&gt;
+&lt;pre class="highlight scss"&gt;&lt;code&gt;&lt;span class="cm"&gt;/*
+ *= require normalize
+ *= require main
+*/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;Background Effect&lt;/h1&gt;
+
+&lt;p&gt;For Le Coolness++, I decided to add a background effect. Actually, it was because the background loading into place one row of pixels at a time was sort of a buzzkill, but same diff. I manage Javascript dependencies using &lt;a href="http://bower.io/"&gt;Bower&lt;/a&gt;. The only configuration tweak of note here is the addition of a &lt;code&gt;.bowerrc&lt;/code&gt; file at the root of the project containing the following:&lt;/p&gt;
+&lt;pre class="highlight json"&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="s2"&gt;"directory"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"source/js/bower_components"&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This installs all of the Bower packages into a location where they can be easily referenced from the Middleman asset pipeline. This is not strictly necessary, but it does prevent coming back in a few months and being all like:&lt;/p&gt;
+&lt;pre class="highlight coffeescript"&gt;&lt;code&gt;&lt;span class="c1"&gt;#= require ../../../why_isnt_this_in_the_assets_dir/sulk
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You&amp;rsquo;ll also want to add &lt;code&gt;bower_components&lt;/code&gt; to your &lt;code&gt;.gitignore&lt;/code&gt;, to be sure. &lt;a href="https://github.com/alexanderdickson/waitForImages"&gt;waitForImages&lt;/a&gt; is used to detect when the background image is ready, and combined with a smattering of CSS and a simple JS function for the Full Effect:&lt;/p&gt;
+&lt;pre class="highlight scss"&gt;&lt;code&gt;&lt;span class="nv"&gt;$bg-image-tiny&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nf"&gt;image-path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"fall-in-to-the-gap-tiny.jpeg"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Rest of the CSS here...
+&lt;/span&gt;
+&lt;span class="nc"&gt;.background&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;position&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;fixed&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;bottom&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;left&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;right&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;background-image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="sx"&gt;url('&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nv"&gt;$bg-image-tiny&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sx"&gt;')&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;background-size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;cover&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;background-position&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;center&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;@include&lt;/span&gt; &lt;span class="nd"&gt;single-transition&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;opacity&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="m"&gt;12s&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ease-in&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nc"&gt;.show&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nl"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="mi"&gt;.7&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You may notice the background is &amp;#8220;mobile-first&amp;#8221; , i.e. the smallest possible image is used as the default, and media queries are used to display images of increasingly higher resolution.&lt;/p&gt;
+
+&lt;p&gt;Coffeescript to display the background when it is ready is as follows:&lt;/p&gt;
+&lt;pre class="highlight coffeescript"&gt;&lt;code&gt;&lt;span class="c1"&gt;#= require bower_components/waitForImages/dist/jquery.waitforimages.min
+&lt;/span&gt;
+&lt;span class="nx"&gt;$&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
+  &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'.background'&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="na"&gt;waitForImages&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
+    &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="na"&gt;addClass&lt;/span&gt; &lt;span class="s"&gt;'show'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;Divshot&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href="https://divshot.com/"&gt;Divshot&lt;/a&gt; makes it super simple to deploy static sites to their managed hosting platform. You should follow their setup instructions to install the CLI utility, and then log in from the command line. Once that&amp;rsquo;s done, run &lt;code&gt;divshot init&lt;/code&gt;, and when prompted to set the root for the project use &lt;code&gt;./build&lt;/code&gt;. The default values can be used for all of the other options. With this done, run &lt;code&gt;divshot push&lt;/code&gt;, and &lt;em&gt;poof&lt;/em&gt; a website. Divshot goes so far as to offer development, staging, and production instances. If your project benefits from this, you can &amp;#8220;promote&amp;#8221; your app by running &lt;code&gt;divshot promote [source_environment] [target_environment]&lt;/code&gt;. I only use the development and production instances for &lt;em&gt;LEDs and 303s&lt;/em&gt;, but even that&amp;rsquo;s helpful for avoiding blowing up the live site with some unexpected configuration issue.&lt;/p&gt;
+
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;This workflow is definitely my new go-to for static sites. There&amp;rsquo;s never been a better time to get to work on my Cats In Space visualization project.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Starting From the Middle(Man)</title>
+    <link rel="alternate" href="http://blog.url.com/2014/03/23/starting-from-the-middleman.html"/>
+    <id>http://blog.url.com/2014/03/23/starting-from-the-middleman.html</id>
+    <published>2014-03-22T17:00:00-07:00</published>
+    <updated>2015-04-28T23:51:06-07:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;Decided to give &lt;a href="http://middlemanapp.com/"&gt;Middleman&lt;/a&gt; a try for the new blog, after trying out about a dozen static site generators (and a handful of CMS&amp;rsquo;s). The rundown went a little like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;(links included for posterity, and in case you choose to explore something other than Middleman):&lt;/p&gt;
+
+&lt;h2&gt;Ruby&lt;/h2&gt;
+
+&lt;h3&gt;&lt;a href="http://jekyllrb.com/"&gt;Jekyll&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Seems to be the de facto static site generator built on Ruby (it&amp;rsquo;s the engine powering Github&amp;rsquo;s blog/pages/something of the sort). I gave Jekyll a try before attempting any of the other options. Some of the development tools I consider standard required additional configuration (e.g. SASS and Livereload) and Middleman had these tools integrated standard.&lt;/p&gt;
+
+&lt;h3&gt;&lt;a href="http://octopress.org/"&gt;Octopress&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;I formerly ran this site on Octopress. Far too much &amp;ldquo;voodoo magic&amp;rdquo; going on for me; something would work one week, and then mysteriously (or at least mysteriously from my perspective) blow up after an update to the core or installation of a new theme. Ultimately, having a simpler starting point that I understood instinctively felt like the better choice. v3 finally seems to be coming along (as of a month or so ago), but given progress-to-date this may or may not be finished soon enough to warrant waiting.&lt;/p&gt;
+
+&lt;h2&gt;Node&lt;/h2&gt;
+
+&lt;h3&gt;&lt;a href="http://wintersmith.io/"&gt;Wintersmith&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Worked well out the door, and basically looks like Middleman&amp;rsquo;s cousin in Node. Middleman still seemed to have the slight edge in terms of existing plugins and community support, but I think Wintersmith &lt;em&gt;might&lt;/em&gt; be something worth exploring in a future update of this blog or smaller brand site implementations.&lt;/p&gt;
+
+&lt;h3&gt;&lt;a href="http://www.metalsmith.io/"&gt;Metalsmith&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Could not get SASS or Livereload working on initial install. Docs were a little too sparse to help troubleshoot, so I was forced to move on.&lt;/p&gt;
+
+&lt;h3&gt;&lt;a href="http://assemble.io/"&gt;Assemble&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The promise of being able to use Grunt as the foundation of the publishing workflow makes Assemble a very strong candidate. Unfortunately, this being my first real foray into a static generated blog, I needed little more hand holding than Assemble provided. I could also see this being a good option for something a little less opinionated than a blog, so I may come back to it for custom site builds.&lt;/p&gt;
+
+&lt;h3&gt;&lt;a href="https://ghost.org/"&gt;Ghost&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Mobile support is still underway, and the plugin architecture has yet to be implemented. Having a strong core team implementing something like a stats dashboard does have a lot of appeal, but this might be a bigger appeal for a non-/semi-technical blogger who doesn&amp;rsquo;t have the same itch to tweak settings that I have as a developer.&lt;/p&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Middleman&amp;rsquo;s stable initial blog configuration, solid plugin community, clear documentation, and balance of opinion and modularity ended up being the best fit for me. That being said, there are a lot of strong contenders in this arena, and the needs of your project or blog might make one or the other tool better suited to your particular needs.&lt;/p&gt;
+
+&lt;p&gt;What&amp;rsquo;s most important is that this setup is minimal enough to allow me to make new posts without worrying that updates or versioning issues will melt down my generator. This means I can focus on the most important part of having a blog: &lt;strong&gt;writing&lt;/strong&gt;.&lt;/p&gt;
+</content>
+  </entry>
+</feed>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> ><! <![endif]-->
+<html class='no-js'>
+<!-- <![endif] -->
+<head></head>
+<meta charset='utf-8'>
+<meta content='IE=edge;chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='description'>
+<meta content='width=device-width' name='viewport'>
+<meta content='summary' name='twitter:card'>
+<meta content='@BATidwell' name='twitter:site'>
+<meta content='Drinking The Koolixir (Part 1)' name='twitter:title'>
+<meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='twitter:description'>
+<meta content='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png' name='twitter:image'>
+<meta content='http://www.blaketidwell.com/2015/02/07/drinking-the-koolixir.html' name='twitter:url'>
+<title>
+Blake Tidwell - Drinking The Koolixir (Part 1)
+</title>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/stylesheets/app.css" rel="stylesheet" type="text/css" />
+<link href='/favicon.ico?v=3' rel='shortcut icon'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
+</html>
+<body>
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+<![endif]-->
+<div id='fb-root'></div>
+<div class='row' id='header'>
+<div class='small-12 columns'>
+<div class='row'>
+<div class='small-9 columns'>
+<h1>
+<a href="/">Blake Tidwell</a>
+</h1>
+<h2>Code. Create. Connect.</h2>
+</div>
+<div class='small-3 columns'>
+<img class='avatar show-for-medium-up' src='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png'>
+</div>
+</div>
+<div class='row'>
+<div class='small-12 medium-offset-9 medium-3 columns'>
+<ul class='social inline-list'>
+<li>
+<a href='http://www.linkedin.com/in/blaketidwell'>
+<i class='fi-social-linkedin'></i>
+</a>
+</li>
+<li>
+<a href='https://github.com/blaketidwell'>
+<i class='fi-social-github'></i>
+</a>
+</li>
+<li>
+<a href='https://twitter.com/BATidwell'>
+<i class='fi-social-twitter'></i>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class='row' id='container'>
+<div class='small-12 medium-8 columns' id='main' role='main'>
+<article>
+<h1 class='article-title'>Drinking The Koolixir (Part 1)</h1>
+<div class='row share-container'>
+<div class='small-12 columns'>
+<div class='share'>
+<a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+Tweet
+</a>
+<div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+</div>
+</div>
+</div>
+<p>In case you haven&rsquo;t yet heard of it yet, Elixir is a functional programming language (technically, a collection of macros) written in Erlang. I have been persuaded to add it to my technical repertoire due to a good amount of recent buzz in the blogosphere (as well as some points I&rsquo;ll get to later). To make sure I have a strong foundation for my Elixir learning experience, I am starting my adventure with a foray into the underlying syntax of Erlang.</p>
+
+<p></p>
+
+<div style="text-align: center">
+<h2>Part 1</h2>
+<h5>First Impressions with Erlang</h5>
+<h5>&ndash;or&ndash;</h5>
+<h5><i>Taking Apart the Car To Learn How to Drive</i></h5>
+</div>
+
+<p><br/>
+Yes, functional programming: Land of Lambdas and Bindings and Parenthesis and you&rsquo;re all like <code>(where(am(I(will)(I)(ever)(return)?)!)1)</code> and so-forth. To be fair, my only formal experience with FP was a short section in a programming languages course in college (<em>unless you count Javascript?</em>&thinsp;) that gave me probably just enough time to learn how to recursively crash my LISP interpreter. Even that was sufficient to give me the impression that functional programming was something that all Serious Programmers should learn during their Careers as Professionals.</p>
+
+<p>I actually started out wanting to learn Elixir because of some impressive benchmarks I read about <a href="https://github.com/mroth/phoenix-showdown">over here</a>. <strong>tldr;</strong> Phoenix pwns all yes even Node.js <em>and</em> I&rsquo;m pretty sure you still get Hipster Cred for writing in Elixir, yey!</p>
+
+<p>Naturally, I was all like, &ldquo;I want to <strike>be a hipster</strike> write fast APIs!&rdquo; so I set out straightaway to install Elixir (<em>using Homebrew, no doy</em>&thinsp;), started hacking away all furiously (<em>a Sublime Text syntax package! and a framework! and package managers! and the author like, wrote Ruby! and I write Ruby!</em>&thinsp;) only to realize pretty quickly that I was going to be at something of a disadvantage if I didn&rsquo;t learn at least <em>some</em> Erlang.</p>
+
+<p>At the very least, I started imagining all the <span style="font-family: monospace; font-size: 14px">&#9679;&Delta;True&nbsp;Hipster&nbsp;Programmers&Delta;&#9679;</span> calling me out. &ldquo;You write Elixir but you&rsquo;ve never even written Erlang DIE TRYHARD POSEUR SCUM PEW PEW PEW!&rdquo; (<em>Fun Fact: Hipster Programmers spontaneously emit lasers upon the unworthy.</em>)There was also the fact that all of the good debuggers and tooling and whatnot were written with Erlang in mind. Also, I&rsquo;m a sucker for a knowledge.</p>
+
+<div class="image-wrapper">
+  <img alt="A space cat obliterating a planet of unworthy programmers writing at an unacceptable level of abstraction" src="/articles/hipster_programmer_cat.jpg" />
+  <blockquote>&ldquo;Oh what&rsquo;s that ur &lsquo;getting around&rsquo; to learning assembly PEW PEW PEW I CANT HEER U UR DEAD&rdquo;</blockquote>
+</div>
+
+<p>So here I be.</p>
+
+<h3>But Wait, Why Learn &ldquo;Tonic&rdquo;&hellip;er&hellip;whatever?</h3>
+
+<p>I blame college for biasing me, but something about functional programming really does feel like The One True Way. I can remember writing my first few recursive algorithms and feeling like &ldquo;YES THIS IS IT I AM DOING PROGRAMMING.&rdquo; So, yeah, that&rsquo;s a big plus: it just <em>feels</em> so much more computer sciency to me (this may or may not proverbially light your proverbial fire). I can say that I am legitimately excited to learn a new language for the first time in years, and that excitement will go a long way toward conquering a potentially powerful new tool.</p>
+
+<p>That being said, there are also some &ldquo;serious&rdquo; reasons why I chose to learn Erlang/Elixir. By far the most important of these reasons is that Erlang touts concurrency and fault-tolerance as being core benefits of the language and the accompanying BEAM VM. Given the current push in the tech industry for increasingly real-time, highly concurrent applications (read: wearables sending tons of data back to the mothership), I think this is an area in which it is worth building expertise. Put another way, I believe levels of concurrency that were once only the concern of massive corporate giants will become a concern for more wearable/IoT startups.</p>
+
+<p>In addition to all this, Elixir was created by Jos&eacute; Valim, a basically kick-ass developer who co-founded his own consultancy, was the core developer of the Devise authentication gem (and who knows what else), and just generally eats Ruby and code for breakfast. What this means for Elixir is that it is very much influenced by Ruby&rsquo;s syntax, making my own transition (as a Ruby developer) that much more enjoyable. Furthermore, Valim clearly knows how to carry a project, so Elixir is very likely to be well-maintained.</p>
+
+<h2>The Jourlang Begins</h2>
+
+<p>I remembered reading over on Hacker News about a book on Erlang with a particularly clever title: <a href="http://learnyousomeerlang.com/">&ldquo;Learn You Some Erlang For Great Good&rdquo;</a> (written in the spirit of &ldquo;Learn You a Haskell For Great Good&rdquo; SUCH FUNNY).</p>
+
+<div class="image-wrapper">
+  <img src="/articles/IMG_1100.PNG" alt="A mustachioed octopus on the cover of 'Learn You Some Erlang For Great Good', the riveting tale of a tremendously talented mollusk functional programming practitioner" />
+  <blockquote>A mustachioed octopus on the cover of &lsquo;Learn You Some Erlang For Great Good&rsquo;, the riveting tale of a tremendously talented mollusk functional programming practitioner</blockquote>
+</div>
+
+<p>At the time, Erlang didn&rsquo;t really mean much to me, other than I knew there was some vague connection between Elixir and Erlang, and less-so between Haskell and Erlang. BUT since I had always wanted to Crush It Hard with FP, I made a mental note to go back to the book when the time was right. After reading about the Phoenix API Mega Hi-Score, I decided the time was indeed right.</p>
+
+<p>As of this post, I am about a quarter of the way through the book, having covered syntax, types, and recursion. With some justification for learning Elixir specifically, I will breaking out my experience with Erlang into upcoming blog posts. Specifically, I will cover how I set up my machine for Erlang and Elixir development (tools, editor plugins, etc.), some thoughts on pros, cons, and oddities of the language and framework, and finally a walkthrough of a yet-to-be-determined First Application in Elixir. Assuming, of course, that I don&rsquo;t fall into some kind of <a href="/2015/02/07/drinking-the-koolixir.html">infinite recursion</a>.</p>
+
+<div class='row'>
+<div class='small-12 columns'>
+<div class='share'>
+<a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+Tweet
+</a>
+<div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+</div>
+</div>
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+//<![CDATA[
+                  var disqus_title = 'Drinking The Koolixir (Part 1)'
+                                var disqus_shortname = 'blaketidwell';
+                                          var disqus_identifier = '/2015-02-07-drinking-the-koolixir.html';
+          var disqus_url = 'http://www.blaketidwell.com/2015-02-07-drinking-the-koolixir.html';
+                  
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+//]]>
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script type="text/javascript">
+//<![CDATA[
+    var disqus_shortname = 'blaketidwell';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+//]]>
+</script>
+
+</article>
+
+</div>
+<aside class='medium-4 columns show-for-medium-up' id='filters'>
+<h3>Recent Articles</h3>
+<ul>
+<li>
+<a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
+<span>Feb&nbsp; 7</span>
+</li>
+<li>
+<a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
+<span>Jan&nbsp;27</span>
+</li>
+<li>
+<a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
+<span>Nov&nbsp;24</span>
+</li>
+<li>
+<a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
+<span>Mar&nbsp;23</span>
+</li>
+</ul>
+<h3>Tags</h3>
+<ul>
+<li><a href="/tags/technical.html">technical (4)</a></li>
+<li><a href="/tags/ruby.html">ruby (3)</a></li>
+<li><a href="/tags/blog.html">blog (1)</a></li>
+<li><a href="/tags/how-to.html">how-to (1)</a></li>
+<li><a href="/tags/deployment.html">deployment (1)</a></li>
+<li><a href="/tags/emberjs.html">emberjs (1)</a></li>
+<li><a href="/tags/rails.html">rails (1)</a></li>
+<li><a href="/tags/quickread.html">quickread (1)</a></li>
+<li><a href="/tags/dragons.html">dragons (1)</a></li>
+<li><a href="/tags/functional.html">functional (1)</a></li>
+<li><a href="/tags/languages.html">languages (1)</a></li>
+<li><a href="/tags/erlang.html">erlang (1)</a></li>
+<li><a href="/tags/elixir.html">elixir (1)</a></li>
+</ul>
+<h3>By Year</h3>
+<ul>
+<li><a href="/2015.html">2015 (2)</a></li>
+<li><a href="/2014.html">2014 (2)</a></li>
+</ul>
+</aside>
+</div>
+<div id='footer'>
+<div class='row'>
+<div class='small-12 medium-4 columns'>
+<h3>Recent Articles</h3>
+<ul>
+<li>
+<a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
+<span>Feb&nbsp; 7</span>
+</li>
+<li>
+<a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
+<span>Jan&nbsp;27</span>
+</li>
+<li>
+<a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
+<span>Nov&nbsp;24</span>
+</li>
+<li>
+<a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
+<span>Mar&nbsp;23</span>
+</li>
+</ul>
+</div>
+<div class='small-12 medium-4 columns'>
+<h3>Tags</h3>
+<div class='row'>
+<div class='small-12 medium-6 columns'>
+<ul class='tag-group'>
+<li><a href="/tags/technical.html">technical (4)</a></li>
+<li><a href="/tags/ruby.html">ruby (3)</a></li>
+<li><a href="/tags/blog.html">blog (1)</a></li>
+<li><a href="/tags/how-to.html">how-to (1)</a></li>
+<li><a href="/tags/deployment.html">deployment (1)</a></li>
+<li><a href="/tags/emberjs.html">emberjs (1)</a></li>
+</ul>
+</div>
+<div class='small-12 medium-6 columns'>
+<ul class='tag-group last'>
+<li><a href="/tags/rails.html">rails (1)</a></li>
+<li><a href="/tags/quickread.html">quickread (1)</a></li>
+<li><a href="/tags/dragons.html">dragons (1)</a></li>
+<li><a href="/tags/functional.html">functional (1)</a></li>
+<li><a href="/tags/languages.html">languages (1)</a></li>
+<li><a href="/tags/erlang.html">erlang (1)</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class='small-12 medium-4 columns'>
+<h3>By Year</h3>
+<ul>
+<li><a href="/2015.html">2015 (2)</a></li>
+<li><a href="/2014.html">2014 (2)</a></li>
+</ul>
+</div>
+</div>
+</div>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-22797683-1', 'blaketidwell.com');
+  ga('send', 'pageview');
+</script>
+</body>
