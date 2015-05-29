@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://blog.url.com/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html"/>
     <id>http://blog.url.com/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html</id>
     <published>2015-03-03T16:00:00-08:00</published>
-    <updated>2015-05-23T13:23:35-07:00</updated>
+    <updated>2015-05-28T22:26:35-07:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -135,18 +135,14 @@ same tune as &lt;code&gt;gtknode&lt;/code&gt;:&lt;/p&gt;
 earlier, we can add them to the Erlang shell using the &lt;code&gt;ERL_LIBS&lt;/code&gt; environment
 variable. If you used the same convention stated here (i.e. &lt;code&gt;.erllib&lt;/code&gt; in the
 home directory), then this variable should look like the following:&lt;/p&gt;
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;export ERL_LIBS="$HOME/.erllib/lib/erlang/lib/eper-0.90.0:$HOME/.erllib/lib/erlang/lib/gtknode-0.32"
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;export ERL_LIBS="$HOME/.erllib/lib/erlang/lib"
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;On startup, the Erlang shell will load any source code in the &lt;code&gt;ebin&lt;/code&gt; directory
-of any libraries spelled out in the &lt;code&gt;ERL_LIBS&lt;/code&gt; variable. If you refresh this
+of any libraries contained under the &lt;code&gt;ERL_LIBS&lt;/code&gt; directory. If you refresh this
 environment variable and then run &lt;code&gt;erl&lt;/code&gt; from the command-line, you should be
 able to sanity-check installation of EPER by running &lt;code&gt;redbug:help().&lt;/code&gt; inside the
-Erlang shell. This should output a list of methods supported by Redbug.
-Additionally, if you do not include the compiled &lt;code&gt;gtknode&lt;/code&gt; libs using &lt;code&gt;ERL_LIBS&lt;/code&gt;
-as explained above, attempting to use &lt;code&gt;sherk&lt;/code&gt; performance tools from the Erlang
-shell will result in a bunch of errors related to being unable to find &lt;code&gt;gtkNode&lt;/code&gt;
-(similar to the installation process).&lt;/p&gt;
+Erlang shell. This should output a list of methods supported by Redbug.&lt;/p&gt;
 
 &lt;p&gt;With this in place, I feel like I can move forward with learning Erlang in a
 much more disciplined way. Now, when something goes wrong deep in the depths of
