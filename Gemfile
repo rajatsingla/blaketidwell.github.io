@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.2.2'
+
 gem 'middleman', '~> 3.3.7'
 gem 'middleman-blog', '~> 3.5.2'
 gem 'middleman-deploy', '~> 1.0'
