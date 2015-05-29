@@ -134,18 +134,14 @@ variable. If you used the same convention stated here (i.e. `.erllib` in the
 home directory), then this variable should look like the following:
 
 ```
-export ERL_LIBS="$HOME/.erllib/lib/erlang/lib/eper-0.90.0:$HOME/.erllib/lib/erlang/lib/gtknode-0.32"
+export ERL_LIBS="$HOME/.erllib/lib/erlang/lib"
 ```
 
 On startup, the Erlang shell will load any source code in the `ebin` directory
-of any libraries spelled out in the `ERL_LIBS` variable. If you refresh this
+of any libraries contained under the `ERL_LIBS` directory. If you refresh this
 environment variable and then run `erl` from the command-line, you should be
 able to sanity-check installation of EPER by running `redbug:help().` inside the
 Erlang shell. This should output a list of methods supported by Redbug.
-Additionally, if you do not include the compiled `gtknode` libs using `ERL_LIBS`
-as explained above, attempting to use `sherk` performance tools from the Erlang
-shell will result in a bunch of errors related to being unable to find `gtkNode`
-(similar to the installation process).
 
 With this in place, I feel like I can move forward with learning Erlang in a
 much more disciplined way. Now, when something goes wrong deep in the depths of
