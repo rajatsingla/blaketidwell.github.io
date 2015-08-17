@@ -50,7 +50,7 @@ upcoming sprint:
 </div>
 
 
-Let's get our project set up to implement and test these simple features.
+Let's get our project set up to test and implement these simple features.
 
 ## Putting Stuff Together
 
@@ -63,7 +63,8 @@ rails new cash_cats
 
 ### Installing the Test Suite
 
-Let's first switch everything over to RSpec by adding a few gems:
+Let's first switch everything over to RSpec by adding a few gems, and also add
+Capybara Webkit for Javascript and browser testing:
 
 ```ruby
 # Gemfile
@@ -73,6 +74,7 @@ group :test do
   # For dummy data
   gem 'faker'
   gem 'database_cleaner'
+  gem 'capybara-webkit'
 end
 ```
 
@@ -85,30 +87,18 @@ $ rails generate rspec:install
 $ rm -rf test
 ```
 
-We will also add `capybara-webkit` for Javascript and browser testing:
-
-```ruby
-# Gemfile
-group :test do
-  #...
-  gem 'capybara-webkit'
-  #...
-end
-```
-
-Add the following line to the Rails spec helper to get everything working:
-
-```ruby
-# spec/rails_helper
-Capybara.javascript_driver = :webkit
-```
-
-Now, add the boilerplate for RSpec with Capybara provided by the
-[`database_cleaner`
-README](https://github.com/DatabaseCleaner/database_cleaner#rspec-with-capybara-example):
+Next, modify the Rails spec helper to use both DatabaseCleaner and Capybara
+Webkit. The boilerplate for Database Cleaner shown below can be found
+[in the repo README](https://github.com/DatabaseCleaner/database_cleaner#rspec-with-capybara-example):
 
 ```ruby
 # spec/rails_helper.rb
+# ...
+
+Capybara.javascript_driver = :webkit
+
+# ...
+
 RSpec.configure do |config|
   # Other stuff.
   config.use_transactional_fixtures = false
@@ -154,24 +144,78 @@ FactoryGirl instead of Minitest and fixtures. Additionally, we hide the
 `test_unit` generator namespace so that it doesn't muddy up the help menu output
 when `rails g` is run without any arguments.
 
-### Write out the specs
+### Drive Straight to Town on Rails of Ruby
 
-To drive this puppy, we will write out a handful of feature specs, then work on
-getting them to pass. A method I have found helpful when working with a fairly
-well-defined set of features is to write out a number of them ahead of time
-using placeholder specs. This acts both as a todo list of sorts, as well as an
-indicator of progress. I also find that it  helps me to keep a high-level
+To test-drive this puppy, we will write out a handful of feature specs, then
+work on getting them to pass. A method I have found helpful when working with a
+fairly well-defined set of features is to write out a number of them ahead of
+time using placeholder specs. This acts both as a todo list of sorts, as well as
+an indicator of progress. I also find that it  helps me to keep a high-level
 picture of the current application component in mind. Your mileage may vary,
 etc., etc., `[insert other disclaimers and anti-troll bait here]`.
 
 Let's make two feature groups:
+
 ```bash
-rails g rspec:feature login_and_authentication
-rails g rspec:feature recording_munny
+$ rails g rspec:feature login_and_authentication
+$ rails g rspec:feature recording_munny
 ```
 
-...and add a handful of specs to them.
+...and add a handful of specs to them:
+
+```ruby
+# spec/features/login_and_authentication
+require 'rails_helper'
+
+RSpec.feature "Login And Authentication", type: :feature do
+  it 'can register for an account'
+
+  context 'after creating an account' do
+    it 'can log into my account'
+  end
+end
+
+# spec/features/recording_munnies
+require 'rails_helper'
+
+RSpec.feature "Recording Munnies", type: :feature do
+  context 'when logged in' do
+    it 'can register for an account'
+  end
+end
+
+```
+
+Running `rake` now should display three pending specs.
 
 ### Speed Up This Train
 
-## Drive Straight to Town on Rails of Ruby
+Running `rake` manually is great and all, but wouldn't it be more awesomer if we
+could automate that a bit? Let's add `guard-rspec` to the mix to do just that:
+
+```ruby
+# Gemfile
+group :development, :test do
+  # ...
+  gem 'guard'
+  gem 'guard-rspec'
+  # ...
+end
+```
+
+Now, bundle, install the Guard gem, and start it up:
+
+```bash
+$ bundle
+$ bundle exec guard init
+$ bundle exec guard
+```
+
+If all goes as expected, you should now be able to save a spec file, and trigger
+a test run for only that file. This works only for files suffixed with `_spec`,
+which is the default for generated files. Give it a try by opening up one of the
+two feature spec files and saving them. You should see the specs in that file
+running in automatically. There are a number of other settings that can be
+tweaked in Guard to make it focus failed tests, use Spring, etc., but we will
+skip those features for the sake of this walkthrough.
+
