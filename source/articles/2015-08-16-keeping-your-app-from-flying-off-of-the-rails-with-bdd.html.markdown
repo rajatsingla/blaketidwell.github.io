@@ -1,7 +1,7 @@
 ---
 title: Keeping Your App from Flying Off of the Rails with BDD
 date: 2015-08-16 23:59 UTC
-tags:
+tags: technical, ruby, how-to, rails
 ---
 
 _The following blarg assumes working knowledge of user story mapping, user
