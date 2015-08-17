@@ -70,6 +70,7 @@ Let's first switch everything over to RSpec by adding a few gems:
 group :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'database_cleaner'
 end
 ```
 
@@ -80,6 +81,32 @@ From the command-line, we bundle, set up RSpec, and remove the (now) unused
 $ bundle
 $ rails generate rspec:install
 $ rm -rf test
+```
+
+Now, add the boilerplate for RSpec with Capybara provided by the
+[`database_cleaner`
+README](https://github.com/DatabaseCleaner/database_cleaner#rspec-with-capybara-example):
+
+```ruby
+# spec/rails_helper.rb
+RSpec.configure do |config|
+  # Other stuff.
+  config.use_transactional_fixtures = false
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do |example|
+    DatabaseCleaner.strategy= example.metadata[:js] ? :truncation : :transaction
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+  # Maybe some more other stuff.
+end
 ```
 
 At this point, if you run `rake` from the root of the project, you should see
@@ -107,8 +134,18 @@ FactoryGirl instead of Minitest and fixtures. Additionally, we hide the
 `test_unit` generator namespace so that it doesn't muddy up the help menu output
 when `rails g` is run without any arguments.
 
-### Speed Up This Train
-
 ### Write out the specs
+
+To drive this puppy, we will write out a handful of feature specs, then work on
+getting them to pass. A method I have found helpful when working with a fairly
+well-defined set of features is to write out a number of them ahead of time
+using placeholder specs. This acts both as a todo list of sorts, as well as an
+indicator of progress. I also find that it  helps me to keep a high-level
+picture of the current application component in mind. Your mileage may vary,
+etc., etc., `[insert other disclaimers and anti-troll bait here]`.
+
+Let's make two feature suites, and add a handful of specs to them:
+
+### Speed Up This Train
 
 ## Drive Straight to Town on Rails of Ruby
