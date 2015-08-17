@@ -14,7 +14,7 @@ the development team has chosen to ride the Rails of Ruby forward into
 user-acquisition glory. How can we ensure that their vision of the app is
 executed flawlessly? Well, we can't, and if you do come up with a way to write
 literally bug-free code, please promptly write an AI and cash your check before
-SkyNet becomes sentient. What we will do is set up tools and a workflow for
+SkyNet becomes sentient. We will, however, set up tools and a workflow for
 building the app using behavior-driven development: Rails, RSpec, Capybara,
 FactoryGirl, and Guard, to be precise.
 
@@ -41,16 +41,74 @@ upcoming sprint:
 >
 > As a Cash Cat...
 
-<img alt="Double digit user acquisition rates got me eatin dis here cash money."
+<div class="image-wrapper">
+  <img alt="Double digit user acquisition rates got me eatin dis here cash money."
        src="/images/eating_munniez.jpg" />
+  <blockquote>
+    Sorry, got a little carried away there...nom nom nom...
+  </blockquote>
+</div>
+
 
 Let's get our project set up to implement and test these simple features.
 
 ## Putting Stuff Together
 
-1. Start a new project.
-1. Install and configure the test suite.
-1. Write out the specs.
-1. Make each one work.
+Start out by laying down some fresh Rails to start driving this train into the
+future, and watch the sweet, sweet bundles download from the ether:
+
+```
+rails new cash_cats
+```
+
+### Installing the Test Suite
+
+Let's first switch everything over to RSpec by adding a few gems:
+
+```ruby
+# Gemfile
+group :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end
+```
+
+From the command-line, we bundle, set up RSpec, and remove the (now) unused
+`test` directory:
+
+```bash
+$ bundle
+$ rails generate rspec:install
+$ rm -rf test
+```
+
+At this point, if you run `rake` from the root of the project, you should see
+some output indicating that RSpec is running, albeit with `0 examples` as the
+result. One last bit of cleanup before we move on is to update the generators in
+the application config so that they use RSpec instead of Minitest:
+
+```ruby
+# config/application.rb
+module CashCats
+  class Application < Rails::Application
+    # ...a bunch of other stuff.
+    config.generators do |g|
+      g.hidden_namespaces << "test_unit"
+      g.test_framework :rspec, fixture: false
+      g.fixture_replacement :factory_girl
+    end
+    # blah blah blah more stuff.
+  end
+end
+```
+
+Now, when we run a generator that creates a test, it will use RSpec and
+FactoryGirl instead of Minitest and fixtures. Additionally, we hide the
+`test_unit` generator namespace so that it doesn't muddy up the help menu output
+when `rails g` is run without any arguments.
+
+### Speed Up This Train
+
+### Write out the specs
 
 ## Drive Straight to Town on Rails of Ruby
