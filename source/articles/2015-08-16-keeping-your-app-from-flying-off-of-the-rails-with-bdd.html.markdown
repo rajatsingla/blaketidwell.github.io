@@ -70,6 +70,8 @@ Let's first switch everything over to RSpec by adding a few gems:
 group :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  # For dummy data
+  gem 'faker'
   gem 'database_cleaner'
 end
 ```
@@ -81,6 +83,24 @@ From the command-line, we bundle, set up RSpec, and remove the (now) unused
 $ bundle
 $ rails generate rspec:install
 $ rm -rf test
+```
+
+We will also add `capybara-webkit` for Javascript and browser testing:
+
+```ruby
+# Gemfile
+group :test do
+  #...
+  gem 'capybara-webkit'
+  #...
+end
+```
+
+Add the following line to the Rails spec helper to get everything working:
+
+```ruby
+# spec/rails_helper
+Capybara.javascript_driver = :webkit
 ```
 
 Now, add the boilerplate for RSpec with Capybara provided by the
@@ -144,7 +164,13 @@ indicator of progress. I also find that it  helps me to keep a high-level
 picture of the current application component in mind. Your mileage may vary,
 etc., etc., `[insert other disclaimers and anti-troll bait here]`.
 
-Let's make two feature suites, and add a handful of specs to them:
+Let's make two feature groups:
+```bash
+rails g rspec:feature login_and_authentication
+rails g rspec:feature recording_munny
+```
+
+...and add a handful of specs to them.
 
 ### Speed Up This Train
 
