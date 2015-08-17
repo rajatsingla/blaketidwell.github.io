@@ -20,6 +20,12 @@ FactoryGirl, and Guard, to be precise.
 
 READMORE
 
+#### _Before we go any further:_
+_If you are the kind of person who hates to read, you
+can jump straight over to the demo repo for this blog post and download everything
+there, even though it will make me cry. But we both know you're not that kind of
+person, right? :cry:_
+
 ## So What Are We Building, Exactly?
 
 Mantra-like, the steady rhythm of _"As a Cash Cat"_ droning in
@@ -55,7 +61,7 @@ Let's get our project set up to test and implement these simple features.
 ## Putting Stuff Together
 
 Start out by laying down some fresh Rails to start driving this train into the
-future, and watch the sweet, sweet bundles download from the ether:
+future:
 
 ```
 rails new cash_cats
@@ -88,8 +94,8 @@ $ rm -rf test
 ```
 
 Next, modify the Rails spec helper to use both DatabaseCleaner and Capybara
-Webkit. The boilerplate for Database Cleaner shown below can be found
-[in the repo README](https://github.com/DatabaseCleaner/database_cleaner#rspec-with-capybara-example):
+Webkit. The boilerplate for Database Cleaner shown below can be found in
+[the README for the repo](https://github.com/DatabaseCleaner/database_cleaner#rspec-with-capybara-example):
 
 ```ruby
 # spec/rails_helper.rb
@@ -142,11 +148,11 @@ end
 Now, when we run a generator that creates a test, it will use RSpec and
 FactoryGirl instead of Minitest and fixtures. Additionally, we hide the
 `test_unit` generator namespace so that it doesn't muddy up the help menu output
-when `rails g` is run without any arguments.
+when `rails g` is run without any arguments. :grapes::tada:
 
 ### Drive Straight to Town on Rails of Ruby
 
-To test-drive this puppy, we will write out a handful of feature specs, then
+To test-drive this cat party, we will write out a handful of feature specs, then
 work on getting them to pass. A method I have found helpful when working with a
 fairly well-defined set of features is to write out a number of them ahead of
 time using placeholder specs. This acts both as a todo list of sorts, as well as
@@ -186,12 +192,17 @@ end
 
 ```
 
-Running `rake` now should display three pending specs.
+You may notice that the format of these specs _fairly_ closely matches the format
+of the user stories. This is intentional: the goal is to map the specs back to
+the stories as closely as possible. Running `rake` should now display three pending
+specs.
 
 ### Speed Up This Train
 
-Running `rake` manually is great and all, but wouldn't it be more awesomer if we
-could automate that a bit? Let's add `guard-rspec` to the mix to do just that:
+With our mini feature suite in place, we are just about ready to drive full speed ahead
+toward Internet-dominating MVP-dom. But first, let's stop and make one final improvement
+to our test cycle. Running `rake` manually is great and all, but wouldn't it be more awesomer
+if we could automate that a bit? Let's add `guard-rspec` to the mix to do just that:
 
 ```ruby
 # Gemfile
@@ -211,11 +222,9 @@ $ bundle exec guard init
 $ bundle exec guard
 ```
 
-If all goes as expected, you should now be able to save a spec file, and trigger
-a test run for only that file. This works only for files suffixed with `_spec`,
-which is the default for generated files. Give it a try by opening up one of the
-two feature spec files and saving them. You should see the specs in that file
-running in automatically. There are a number of other settings that can be
-tweaked in Guard to make it focus failed tests, use Spring, etc., but we will
+If all goes as expected, saving a spec file should now trigger a test run for
+only that file. Keep in mind that this works only for files suffixed with `_spec`,
+which is the default for generated specs. Give it a try by opening up one of the
+two feature spec files and saving them. There are a number of other settings that
+can be tweaked in Guard to make it focus failed tests, use Spring, etc., but we will
 skip those features for the sake of this walkthrough.
-
