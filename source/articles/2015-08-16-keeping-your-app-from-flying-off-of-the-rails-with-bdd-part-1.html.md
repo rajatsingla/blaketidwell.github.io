@@ -102,7 +102,7 @@ $ bundle exec rails generate rspec:install
 $ rm -rf test
 ```
 
-Next, modify the Rails spec helper to use both DatabaseCleaner and Capybara
+Next, modify the Rails spec helper to use both Database Cleaner and Capybara
 Webkit. The boilerplate for Database Cleaner shown below can be found in
 [the README for the repo](https://github.com/DatabaseCleaner/database_cleaner#rspec-with-capybara-example):
 
@@ -243,7 +243,7 @@ etc., but we will skip those features for the sake of this walkthrough.
 
 ### NOT SO FAST.
 
-That's it for the first part of this blog post.  In the follow-up to this post,
+That's it for the first part of this blog series.  In the follow-up to this post,
 we'll go about implementing the actual code to get these feature specs passing.
 There's technically enough in place at this point to allow one to fly off into
 :computer:The Future:computer: on :train2:Rails of Glory:pray: or something,
