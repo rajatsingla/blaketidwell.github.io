@@ -1,5 +1,5 @@
 ---
-title: Keeping Your App from Flying Off of the Rails with BDD
+title: Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark
 date: 2015-08-16 23:59 UTC
 tags: technical, ruby, how-to, rails
 ---
@@ -9,21 +9,31 @@ stories, and other such techniques of Le M&eacute;thode Agile._
 
 Through a nigh omniscient understanding of the needs of The Cash Cat, your
 product team has painstakingly produced a sublime list of :sparkles:User
-Stories:sparkles:, seemingly from thin air. Trusting the wisdom of the Ancients,
+Stories:sparkles:, seemingly from thin air. Trusting the Wisdom of the Ancients,
 the development team has chosen to ride the Rails of Ruby forward into
 user-acquisition glory. How can we ensure that their vision of the app is
-executed flawlessly? Well, we can't, and if you do come up with a way to write
-literally bug-free code, please promptly write an AI and cash your check before
-SkyNet becomes sentient. We will, however, set up tools and a workflow for
-building the app using behavior-driven development: Rails, RSpec, Capybara,
-FactoryGirl, and Guard, to be precise.
+executed flawlessly?
 
 READMORE
 
-#### _Before we go any further:_
+> # :tada:Skynet:tada:
+
+JK.
+
+What we will do is set up tools (_Rails, RSpec, Capybara, FactoryGirl, and
+Guard, to be precise_) and a workflow for building our app using behavior-driven
+development.  This isn't a guarantee per se that we will deliver literally
+_flawless_ code, any more than flossing is a guarantee that we'll never get
+cavities. **HOWEVER** structuring our app in this way does give us much better
+odds of producing robust, low-defect code that delivers on the requirements we
+set out to build.
+
+##### _Before we go any further:_
+
 _If you are the kind of person who hates to read, you can jump straight over to
-the demo repo for this blog post and download everything there, even though it
-will make me cry. But we both know you're not that kind of person, right? :cry:_
+the [demo repo](https://github.com/BlakeTidwell/cash_cats) for this blog post
+and download everything there, even though it will make me cry. But we both know
+you're not that kind of person, right? :cry:_
 
 ## So What Are We Building, Exactly?
 
@@ -50,7 +60,7 @@ upcoming sprint:
   <img alt="Double digit user acquisition rates got me eatin dis here cash money."
        src="/images/eating_munniez.jpg" />
   <blockquote>
-    Sorry, got a little carried away there...nom nom nom...
+    Sorry, got a little carried away there. Eating dis money nao.
   </blockquote>
 </div>
 
@@ -88,7 +98,7 @@ From the command-line, we bundle, set up RSpec, and remove the (now) unused
 
 ```bash
 $ bundle
-$ rails generate rspec:install
+$ bundle exec rails generate rspec:install
 $ rm -rf test
 ```
 
@@ -162,8 +172,8 @@ etc., etc., `[insert other disclaimers and anti-troll bait here]`.
 Let's make two feature groups:
 
 ```bash
-$ rails g rspec:feature login_and_authentication
-$ rails g rspec:feature recording_munny
+$ bundle exec rails g rspec:feature login_and_authentication
+$ bundle exec rails g rspec:feature recording_munny
 ```
 
 ...and add a handful of specs to them:
@@ -185,7 +195,7 @@ require 'rails_helper'
 
 RSpec.feature "Recording Munnies", type: :feature do
   context 'when logged in' do
-    it 'can register for an account'
+    it 'can add munny to my total and show it off on my profile'
   end
 end
 
@@ -214,7 +224,7 @@ group :development, :test do
 end
 ```
 
-Now, bundle, install the Guard gem, and start it up:
+Now bundle, initialize the Guard gem, and start it up:
 
 ```bash
 $ bundle
@@ -225,6 +235,19 @@ $ bundle exec guard
 If all goes as expected, saving a spec file should now trigger a test run for
 only that file. Keep in mind that this works only for files suffixed with
 `_spec`, which is the default for generated specs. Give it a try by opening up
-one of the two feature spec files and saving them. There are a number of other
+one of the two feature spec files and saving it. There are a number of other
 settings that can be tweaked in Guard to make it focus failed tests, use Spring,
 etc., but we will skip those features for the sake of this walkthrough.
+
+## Holy Moly WOW Let's Build The Whole Thing Now
+
+### NOT SO FAST.
+
+That's it for the first part of this blog post.  In the follow-up to this post,
+we'll go about implementing the actual code to get these feature specs passing.
+There's technically enough in place at this point to allow one to fly off into
+:computer:The Future:computer: on :train2:Rails of Glory:pray: or something,
+BDDing straight to the top of :mount\_fuji:Mount Conversion
+Rate:sunrise\_over\_mountains:. You may want to tackle this as a personal
+challenge, out of impatience, or for any number of reasons, really. Otherwise,
+drop by again in the next week or two to see everything come together.
