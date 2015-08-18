@@ -21,10 +21,9 @@ FactoryGirl, and Guard, to be precise.
 READMORE
 
 #### _Before we go any further:_
-_If you are the kind of person who hates to read, you
-can jump straight over to the demo repo for this blog post and download everything
-there, even though it will make me cry. But we both know you're not that kind of
-person, right? :cry:_
+_If you are the kind of person who hates to read, you can jump straight over to
+the demo repo for this blog post and download everything there, even though it
+will make me cry. But we both know you're not that kind of person, right? :cry:_
 
 ## So What Are We Building, Exactly?
 
@@ -192,17 +191,18 @@ end
 
 ```
 
-You may notice that the format of these specs _fairly_ closely matches the format
-of the user stories. This is intentional: the goal is to map the specs back to
-the stories as closely as possible. Running `rake` should now display three pending
-specs.
+You may notice that the format of these specs _fairly_ closely matches the
+format of the user stories. This is intentional: the goal is to map the specs
+back to the stories as closely as possible. Running `rake` should now display
+three pending specs.
 
 ### Speed Up This Train
 
-With our mini feature suite in place, we are just about ready to drive full speed ahead
-toward Internet-dominating MVP-dom. But first, let's stop and make one final improvement
-to our test cycle. Running `rake` manually is great and all, but wouldn't it be more awesomer
-if we could automate that a bit? Let's add `guard-rspec` to the mix to do just that:
+With our mini feature suite in place, we are just about ready to drive full
+speed ahead toward Internet-dominating MVP-dom. But first, let's stop and make
+one final improvement to our test cycle. Running `rake` manually is great and
+all, but wouldn't it be more awesomer if we could automate that a bit? Let's add
+`guard-rspec` to the mix to do just that:
 
 ```ruby
 # Gemfile
@@ -223,8 +223,8 @@ $ bundle exec guard
 ```
 
 If all goes as expected, saving a spec file should now trigger a test run for
-only that file. Keep in mind that this works only for files suffixed with `_spec`,
-which is the default for generated specs. Give it a try by opening up one of the
-two feature spec files and saving them. There are a number of other settings that
-can be tweaked in Guard to make it focus failed tests, use Spring, etc., but we will
-skip those features for the sake of this walkthrough.
+only that file. Keep in mind that this works only for files suffixed with
+`_spec`, which is the default for generated specs. Give it a try by opening up
+one of the two feature spec files and saving them. There are a number of other
+settings that can be tweaked in Guard to make it focus failed tests, use Spring,
+etc., but we will skip those features for the sake of this walkthrough.
