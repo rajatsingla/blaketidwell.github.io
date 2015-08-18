@@ -79,53 +79,125 @@ Tweet
 </div>
 </div>
 </div>
-<p>In case you haven&rsquo;t yet heard of it yet, Elixir is a functional programming language (technically, a collection of macros) written in Erlang. I have been persuaded to add it to my technical repertoire due to a good amount of recent buzz in the blogosphere (as well as some points I&rsquo;ll get to later). To make sure I have a strong foundation for my Elixir learning experience, I am starting my adventure with a foray into the underlying syntax of Erlang.</p>
+<p>In case you haven&rsquo;t yet heard of it yet, Elixir is a functional programming
+language (technically, a collection of macros) written in Erlang. I have been
+persuaded to add it to my technical repertoire due to a good amount of recent
+buzz in the blogosphere (as well as some points I&rsquo;ll get to later). To make sure
+I have a strong foundation for my Elixir learning experience, I am starting my
+adventure with a foray into the underlying syntax of Erlang.</p>
 
 <p></p>
 
 <div style="text-align: center">
-<h2>Part 1</h2>
-<h5>First Impressions with Erlang</h5>
-<h5>&ndash;or&ndash;</h5>
-<h5><i>Taking Apart the Car To Learn How to Drive</i></h5>
+  <h2>Part 1</h2>
+  <h5>First Impressions with Erlang</h5>
+  <h5>&ndash;or&ndash;</h5>
+  <h5>
+    <i>Taking Apart the Car To Learn How to Drive</i>
+  </h5>
 </div>
 
 <p><br/>
-Yes, functional programming: Land of Lambdas and Bindings and Parenthesis and you&rsquo;re all like <code>(where(am(I(will)(I)(ever)(return)?)!)1)</code> and so-forth. To be fair, my only formal experience with FP was a short section in a programming languages course in college (<em>unless you count Javascript?</em>&thinsp;) that gave me probably just enough time to learn how to recursively crash my LISP interpreter. Even that was sufficient to give me the impression that functional programming was something that all Serious Programmers should learn during their Careers as Professionals.</p>
+Yes, functional programming: Land of Lambdas and Bindings and Parenthesis and
+you&rsquo;re all like <code>(where(am(I(will)(I)(ever)(return)?)!)1)</code> and so-forth. To be
+fair, my only formal experience with FP was a short section in a programming
+languages course in college (<em>unless you count Javascript?</em>&thinsp;) that gave
+me probably just enough time to learn how to recursively crash my LISP
+interpreter. Even that was sufficient to give me the impression that functional
+programming was something that all Serious Programmers should learn during their
+Careers as Professionals.</p>
 
-<p>I actually started out wanting to learn Elixir because of some impressive benchmarks I read about <a href="https://github.com/mroth/phoenix-showdown">over here</a>. <strong>tldr;</strong> Phoenix pwns all yes even Node.js <em>and</em> I&rsquo;m pretty sure you still get Hipster Cred for writing in Elixir, yey!</p>
+<p>I actually started out wanting to learn Elixir because of some impressive
+benchmarks I read about <a href="https://github.com/mroth/phoenix-showdown">over here</a>.
+<strong>tldr;</strong> Phoenix pwns all yes even Node.js <em>and</em> I&rsquo;m pretty sure you still get
+Hipster Cred for writing in Elixir, yey!</p>
 
-<p>Naturally, I was all like, &ldquo;I want to <strike>be a hipster</strike> write fast APIs!&rdquo; so I set out straightaway to install Elixir (<em>using Homebrew, no doy</em>&thinsp;), started hacking away all furiously (<em>a Sublime Text syntax package! and a framework! and package managers! and the author like, wrote Ruby! and I write Ruby!</em>&thinsp;) only to realize pretty quickly that I was going to be at something of a disadvantage if I didn&rsquo;t learn at least <em>some</em> Erlang.</p>
+<p>Naturally, I was all like, &ldquo;I want to <strike>be a hipster</strike> write fast
+APIs!&rdquo; so I set out straightaway to install Elixir (<em>using Homebrew, no
+doy</em>&thinsp;), started hacking away all furiously (<em>a Sublime Text syntax
+package! and a framework! and package managers! and the author like, wrote Ruby!
+and I write Ruby!</em>&thinsp;) only to realize pretty quickly that I was going to
+be at something of a disadvantage if I didn&rsquo;t learn at least <em>some</em> Erlang.</p>
 
-<p>At the very least, I started imagining all the <span style="font-family: monospace; font-size: 14px">&#9679;&Delta;True&nbsp;Hipster&nbsp;Programmers&Delta;&#9679;</span> calling me out. &ldquo;You write Elixir but you&rsquo;ve never even written Erlang DIE TRYHARD POSEUR SCUM PEW PEW PEW!&rdquo; (<em>Fun Fact: Hipster Programmers spontaneously emit lasers upon the unworthy.</em>)There was also the fact that all of the good debuggers and tooling and whatnot were written with Erlang in mind. Also, I&rsquo;m a sucker for a knowledge.</p>
+<p>At the very least, I started imagining all the
+<span style="font-family: monospace; font-size: 14px">&#9679;&Delta;True&nbsp;Hipster&nbsp;Programmers&Delta;&#9679;</span>
+calling me out. &ldquo;You write Elixir but you&rsquo;ve never even written Erlang DIE
+TRYHARD POSEUR SCUM PEW PEW PEW!&rdquo; (<em>Fun Fact: Hipster Programmers spontaneously
+emit lasers upon the unworthy.</em>)There was also the fact that all of the good
+debuggers and tooling and whatnot were written with Erlang in mind. Also, I&rsquo;m a
+sucker for a knowledge.</p>
 
 <div class="image-wrapper">
-  <img alt="A space cat obliterating a planet of unworthy programmers writing at an unacceptable level of abstraction" src="/articles/hipster_programmer_cat.jpg" />
-  <blockquote>&ldquo;Oh what&rsquo;s that ur &lsquo;getting around&rsquo; to learning assembly PEW PEW PEW I CANT HEER U UR DEAD&rdquo;</blockquote>
+  <img alt="A space cat obliterating a planet of unworthy programmers writing at an unacceptable level of abstraction"
+       src="/articles/hipster_programmer_cat.jpg" />
+  <blockquote>
+    &ldquo;Oh what&rsquo;s that ur &lsquo;getting around&rsquo; to learning assembly PEW PEW PEW I CANT
+    HEER U UR DEAD&rdquo;
+  </blockquote>
 </div>
 
 <p>So here I be.</p>
 
 <h3>But Wait, Why Learn &ldquo;Tonic&rdquo;&hellip;er&hellip;whatever?</h3>
 
-<p>I blame college for biasing me, but something about functional programming really does feel like The One True Way. I can remember writing my first few recursive algorithms and feeling like &ldquo;YES THIS IS IT I AM DOING PROGRAMMING.&rdquo; So, yeah, that&rsquo;s a big plus: it just <em>feels</em> so much more computer sciency to me (this may or may not proverbially light your proverbial fire). I can say that I am legitimately excited to learn a new language for the first time in years, and that excitement will go a long way toward conquering a potentially powerful new tool.</p>
+<p>I blame college for biasing me, but something about functional programming
+really does feel like The One True Way. I can remember writing my first few
+recursive algorithms and feeling like &ldquo;YES THIS IS IT I AM DOING PROGRAMMING.&rdquo;
+So, yeah, that&rsquo;s a big plus: it just <em>feels</em> so much more computer sciency to me
+(this may or may not proverbially light your proverbial fire). I can say that I
+am legitimately excited to learn a new language for the first time in years, and
+that excitement will go a long way toward conquering a potentially powerful new
+tool.</p>
 
-<p>That being said, there are also some &ldquo;serious&rdquo; reasons why I chose to learn Erlang/Elixir. By far the most important of these reasons is that Erlang touts concurrency and fault-tolerance as being core benefits of the language and the accompanying BEAM VM. Given the current push in the tech industry for increasingly real-time, highly concurrent applications (read: wearables sending tons of data back to the mothership), I think this is an area in which it is worth building expertise. Put another way, I believe levels of concurrency that were once only the concern of massive corporate giants will become a concern for more wearable/IoT startups.</p>
+<p>That being said, there are also some &ldquo;serious&rdquo; reasons why I chose to learn
+Erlang/Elixir. By far the most important of these reasons is that Erlang touts
+concurrency and fault-tolerance as being core benefits of the language and the
+accompanying BEAM VM. Given the current push in the tech industry for
+increasingly real-time, highly concurrent applications (read: wearables sending
+tons of data back to the mothership), I think this is an area in which it is
+worth building expertise. Put another way, I believe levels of concurrency that
+were once only the concern of massive corporate giants will become a concern for
+more wearable/IoT startups.</p>
 
-<p>In addition to all this, Elixir was created by Jos&eacute; Valim, a basically kick-ass developer who co-founded his own consultancy, was the core developer of the Devise authentication gem (and who knows what else), and just generally eats Ruby and code for breakfast. What this means for Elixir is that it is very much influenced by Ruby&rsquo;s syntax, making my own transition (as a Ruby developer) that much more enjoyable. Furthermore, Valim clearly knows how to carry a project, so Elixir is very likely to be well-maintained.</p>
+<p>In addition to all this, Elixir was created by Jos&eacute; Valim, a basically
+kick-ass developer who co-founded his own consultancy, was the core developer of
+the Devise authentication gem (and who knows what else), and just generally eats
+Ruby and code for breakfast. What this means for Elixir is that it is very much
+influenced by Ruby&rsquo;s syntax, making my own transition (as a Ruby developer) that
+much more enjoyable. Furthermore, Valim clearly knows how to carry a project, so
+Elixir is very likely to be well-maintained.</p>
 
 <h2>The Jourlang Begins</h2>
 
-<p>I remembered reading over on Hacker News about a book on Erlang with a particularly clever title: <a href="http://learnyousomeerlang.com/">&ldquo;Learn You Some Erlang For Great Good&rdquo;</a> (written in the spirit of &ldquo;Learn You a Haskell For Great Good&rdquo; SUCH FUNNY).</p>
+<p>I remembered reading over on Hacker News about a book on Erlang with a
+particularly clever title: <a href="http://learnyousomeerlang.com/">&ldquo;Learn You Some Erlang For Great
+Good&rdquo;</a> (written in the spirit of &ldquo;Learn You a
+Haskell For Great Good&rdquo; SUCH FUNNY).</p>
 
 <div class="image-wrapper">
-  <img src="/articles/IMG_1100.PNG" alt="A mustachioed octopus on the cover of 'Learn You Some Erlang For Great Good', the riveting tale of a tremendously talented mollusk functional programming practitioner" />
-  <blockquote>A mustachioed octopus on the cover of &lsquo;Learn You Some Erlang For Great Good&rsquo;, the riveting tale of a tremendously talented mollusk functional programming practitioner</blockquote>
+  <img src="/articles/IMG_1100.PNG"
+       alt="A mustachioed octopus on the cover of 'Learn You Some Erlang For Great Good', the riveting tale of a tremendously talented mollusk functional programming practitioner" />
+  <blockquote>
+    A mustachioed octopus on the cover of &lsquo;Learn You Some Erlang For Great Good&rsquo;,
+    the riveting tale of a tremendously talented mollusk functional programming
+    practitioner
+  </blockquote>
 </div>
 
-<p>At the time, Erlang didn&rsquo;t really mean much to me, other than I knew there was some vague connection between Elixir and Erlang, and less-so between Haskell and Erlang. BUT since I had always wanted to Crush It Hard with FP, I made a mental note to go back to the book when the time was right. After reading about the Phoenix API Mega Hi-Score, I decided the time was indeed right.</p>
+<p>At the time, Erlang didn&rsquo;t really mean much to me, other than I knew there was
+some vague connection between Elixir and Erlang, and less-so between Haskell and
+Erlang. BUT since I had always wanted to Crush It Hard with FP, I made a mental
+note to go back to the book when the time was right. After reading about the
+Phoenix API Mega Hi-Score, I decided the time was indeed right.</p>
 
-<p>As of this post, I am about a quarter of the way through the book, having covered syntax, types, and recursion. With some justification for learning Elixir specifically, I will breaking out my experience with Erlang into upcoming blog posts. Specifically, I will cover how I set up my machine for Erlang and Elixir development (tools, editor plugins, etc.), some thoughts on pros, cons, and oddities of the language and framework, and finally a walkthrough of a yet-to-be-determined First Application in Elixir. Assuming, of course, that I don&rsquo;t fall into some kind of <a href="/2015/02/07/drinking-the-koolixir.html">infinite recursion</a>.</p>
+<p>As of this post, I am about a quarter of the way through the book, having
+covered syntax, types, and recursion. With some justification for learning
+Elixir specifically, I will breaking out my experience with Erlang into upcoming
+blog posts. Specifically, I will cover how I set up my machine for Erlang and
+Elixir development (tools, editor plugins, etc.), some thoughts on pros, cons,
+and oddities of the language and framework, and finally a walkthrough of a
+yet-to-be-determined First Application in Elixir. Assuming, of course, that I
+don&rsquo;t fall into some kind of <a href="/2015/02/07/drinking-the-koolixir.html">infinite recursion</a>.</p>
 
 <div class='row'>
 <div class='small-12 columns'>
@@ -174,6 +246,10 @@ Tweet
 <h3>Recent Articles</h3>
 <ul>
 <li>
+<a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
+<span>Aug&nbsp;16</span>
+</li>
+<li>
 <a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
 <span>Mar&nbsp; 4</span>
 </li>
@@ -196,13 +272,13 @@ Tweet
 </ul>
 <h3>Tags</h3>
 <ul>
-<li><a href="/tags/technical.html">technical (5)</a></li>
-<li><a href="/tags/ruby.html">ruby (3)</a></li>
+<li><a href="/tags/technical.html">technical (6)</a></li>
+<li><a href="/tags/ruby.html">ruby (4)</a></li>
 <li><a href="/tags/blog.html">blog (1)</a></li>
-<li><a href="/tags/how-to.html">how-to (1)</a></li>
+<li><a href="/tags/how-to.html">how-to (2)</a></li>
 <li><a href="/tags/deployment.html">deployment (1)</a></li>
 <li><a href="/tags/emberjs.html">emberjs (1)</a></li>
-<li><a href="/tags/rails.html">rails (1)</a></li>
+<li><a href="/tags/rails.html">rails (2)</a></li>
 <li><a href="/tags/quickread.html">quickread (1)</a></li>
 <li><a href="/tags/dragons.html">dragons (1)</a></li>
 <li><a href="/tags/functional.html">functional (2)</a></li>
@@ -212,7 +288,7 @@ Tweet
 </ul>
 <h3>By Year</h3>
 <ul>
-<li><a href="/2015.html">2015 (3)</a></li>
+<li><a href="/2015.html">2015 (4)</a></li>
 <li><a href="/2014.html">2014 (2)</a></li>
 </ul>
 </aside>
@@ -222,6 +298,10 @@ Tweet
 <div class='small-12 medium-4 columns'>
 <h3>Recent Articles</h3>
 <ul>
+<li>
+<a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
+<span>Aug&nbsp;16</span>
+</li>
 <li>
 <a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
 <span>Mar&nbsp; 4</span>
@@ -249,17 +329,17 @@ Tweet
 <div class='row'>
 <div class='small-12 medium-6 columns'>
 <ul class='tag-group'>
-<li><a href="/tags/technical.html">technical (5)</a></li>
-<li><a href="/tags/ruby.html">ruby (3)</a></li>
+<li><a href="/tags/technical.html">technical (6)</a></li>
+<li><a href="/tags/ruby.html">ruby (4)</a></li>
 <li><a href="/tags/blog.html">blog (1)</a></li>
-<li><a href="/tags/how-to.html">how-to (1)</a></li>
+<li><a href="/tags/how-to.html">how-to (2)</a></li>
 <li><a href="/tags/deployment.html">deployment (1)</a></li>
 <li><a href="/tags/emberjs.html">emberjs (1)</a></li>
 </ul>
 </div>
 <div class='small-12 medium-6 columns'>
 <ul class='tag-group last'>
-<li><a href="/tags/rails.html">rails (1)</a></li>
+<li><a href="/tags/rails.html">rails (2)</a></li>
 <li><a href="/tags/quickread.html">quickread (1)</a></li>
 <li><a href="/tags/dragons.html">dragons (1)</a></li>
 <li><a href="/tags/functional.html">functional (2)</a></li>
@@ -272,7 +352,7 @@ Tweet
 <div class='small-12 medium-4 columns'>
 <h3>By Year</h3>
 <ul>
-<li><a href="/2015.html">2015 (3)</a></li>
+<li><a href="/2015.html">2015 (4)</a></li>
 <li><a href="/2014.html">2014 (2)</a></li>
 </ul>
 </div>

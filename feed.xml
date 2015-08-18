@@ -5,16 +5,259 @@
   <id>http://blog.url.com/</id>
   <link href="http://blog.url.com/"/>
   <link href="http://blog.url.com/feed.xml" rel="self"/>
-  <updated>2015-03-03T16:00:00-08:00</updated>
+  <updated>2015-08-16T16:59:00-07:00</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</title>
+    <link rel="alternate" href="http://blog.url.com/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html"/>
+    <id>http://blog.url.com/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html</id>
+    <published>2015-08-16T16:59:00-07:00</published>
+    <updated>2015-08-17T23:02:27-07:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;&lt;em&gt;The following blarg assumes working knowledge of user story mapping, user
+stories, and other such techniques of Le M&amp;eacute;thode Agile.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Through a nigh omniscient understanding of the needs of The Cash Cat, your
+product team has painstakingly produced a sublime list of :sparkles:User
+Stories:sparkles:, seemingly from thin air. Trusting the Wisdom of the Ancients,
+the development team has chosen to ride the Rails of Ruby forward into
+user-acquisition glory. How can we ensure that their vision of the app is
+executed flawlessly?&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;h1&gt;:tada:Skynet:tada:&lt;/h1&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;JK.&lt;/p&gt;
+
+&lt;p&gt;What we will do is set up tools (&lt;em&gt;Rails, RSpec, Capybara, FactoryGirl, and
+Guard, to be precise&lt;/em&gt;) and a workflow for building our app using behavior-driven
+development.  This isn&amp;rsquo;t a guarantee per se that we will deliver literally
+&lt;em&gt;flawless&lt;/em&gt; code, any more than flossing is a guarantee that we&amp;rsquo;ll never get
+cavities. &lt;strong&gt;HOWEVER&lt;/strong&gt; structuring our app in this way does give us much better
+odds of producing robust, low-defect code that delivers on the requirements we
+set out to build.&lt;/p&gt;
+
+&lt;h5&gt;&lt;em&gt;Before we go any further:&lt;/em&gt;&lt;/h5&gt;
+
+&lt;p&gt;&lt;em&gt;If you are the kind of person who hates to read, you can jump straight over to
+the &lt;a href="https://github.com/BlakeTidwell/cash_cats"&gt;demo repo&lt;/a&gt; for this blog post
+and download everything there, even though it will make me cry. But we both know
+you&amp;rsquo;re not that kind of person, right? :cry:&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2&gt;So What Are We Building, Exactly?&lt;/h2&gt;
+
+&lt;p&gt;Mantra-like, the steady rhythm of &lt;em&gt;&amp;ldquo;As a Cash Cat&amp;rdquo;&lt;/em&gt; droning in
+your mind&amp;rsquo;s eye, you mentally intone The Stories in preparation for your
+upcoming sprint:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;As a Cash Cat, so that I can claim my rightful place on the Interwebs, I can
+sign up for a Cash Cats account when I first visit the site.&lt;/p&gt;
+
+&lt;p&gt;As a Cash Cat, so that I can recall my mind-numbingly vast sums of cash, I can
+log into my Cash Cat account.&lt;/p&gt;
+
+&lt;p&gt;As a Cash Cat, so that I can show off my wads of dough, I can record my cash
+when logged in.&lt;/p&gt;
+
+&lt;p&gt;As a Cash Cat&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;As a Cash Cat&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;As a Cash Cat&amp;hellip;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class="image-wrapper"&gt;
+  &lt;img alt="Double digit user acquisition rates got me eatin dis here cash money."
+       src="/images/eating_munniez.jpg" /&gt;
+  &lt;blockquote&gt;
+    Sorry, got a little carried away there. Eating dis money nao.
+  &lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Let&amp;rsquo;s get our project set up to test and implement these simple features.&lt;/p&gt;
+
+&lt;h2&gt;Putting Stuff Together&lt;/h2&gt;
+
+&lt;p&gt;Start out by laying down some fresh Rails to start driving this train into the
+future:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;rails new cash_cats
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Installing the Test Suite&lt;/h3&gt;
+
+&lt;p&gt;Let&amp;rsquo;s first switch everything over to RSpec by adding a few gems, and also add
+Capybara Webkit for Javascript and browser testing:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# Gemfile&lt;/span&gt;
+&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;:test&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rspec-rails'&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'factory_girl_rails'&lt;/span&gt;
+  &lt;span class="c1"&gt;# For dummy data&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'faker'&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'database_cleaner'&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'capybara-webkit'&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From the command-line, we bundle, set up RSpec, and remove the (now) unused
+&lt;code&gt;test&lt;/code&gt; directory:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;bundle
+&lt;span class="gp"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rails generate rspec:install
+&lt;span class="gp"&gt;$ &lt;/span&gt;rm -rf &lt;span class="nb"&gt;test&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, modify the Rails spec helper to use both Database Cleaner and Capybara
+Webkit. The boilerplate for Database Cleaner shown below can be found in
+&lt;a href="https://github.com/DatabaseCleaner/database_cleaner#rspec-with-capybara-example"&gt;the README for the repo&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# spec/rails_helper.rb&lt;/span&gt;
+&lt;span class="c1"&gt;# ...&lt;/span&gt;
+
+&lt;span class="no"&gt;Capybara&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;javascript_driver&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;:webkit&lt;/span&gt;
+
+&lt;span class="c1"&gt;# ...&lt;/span&gt;
+
+&lt;span class="no"&gt;RSpec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+  &lt;span class="c1"&gt;# Other stuff.&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;use_transactional_fixtures&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;before&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:suite&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="no"&gt;DatabaseCleaner&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;clean_with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:truncation&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;before&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="no"&gt;DatabaseCleaner&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;strategy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:js&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="ss"&gt;:truncation&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;:transaction&lt;/span&gt;
+    &lt;span class="no"&gt;DatabaseCleaner&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;after&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="no"&gt;DatabaseCleaner&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;clean&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="c1"&gt;# Maybe some more other stuff.&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point, if you run &lt;code&gt;rake&lt;/code&gt; from the root of the project, you should see
+some output indicating that RSpec is running, albeit with &lt;code&gt;0 examples&lt;/code&gt; as the
+result. One last bit of cleanup before we move on is to update the generators in
+the application config so that they use RSpec instead of Minitest:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# config/application.rb&lt;/span&gt;
+&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CashCats&lt;/span&gt;
+  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Application&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Application&lt;/span&gt;
+    &lt;span class="c1"&gt;# ...a bunch of other stuff.&lt;/span&gt;
+    &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;generators&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+      &lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;hidden_namespaces&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s2"&gt;"test_unit"&lt;/span&gt;
+      &lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;test_framework&lt;/span&gt; &lt;span class="ss"&gt;:rspec&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;fixture: &lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;
+      &lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;fixture_replacement&lt;/span&gt; &lt;span class="ss"&gt;:factory_girl&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="c1"&gt;# blah blah blah more stuff.&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, when we run a generator that creates a test, it will use RSpec and
+FactoryGirl instead of Minitest and fixtures. Additionally, we hide the
+&lt;code&gt;test_unit&lt;/code&gt; generator namespace so that it doesn&amp;rsquo;t muddy up the help menu output
+when &lt;code&gt;rails g&lt;/code&gt; is run without any arguments. :grapes::tada:&lt;/p&gt;
+
+&lt;h3&gt;Drive Straight to Town on Rails of Ruby&lt;/h3&gt;
+
+&lt;p&gt;To test-drive this cat party, we will write out a handful of feature specs, then
+work on getting them to pass. A method I have found helpful when working with a
+fairly well-defined set of features is to write out a number of them ahead of
+time using placeholder specs. This acts both as a todo list of sorts, as well as
+an indicator of progress. I also find that it  helps me to keep a high-level
+picture of the current application component in mind. Your mileage may vary,
+etc., etc., &lt;code&gt;[insert other disclaimers and anti-troll bait here]&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s make two feature groups:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rails g rspec:feature login_and_authentication
+&lt;span class="gp"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rails g rspec:feature recording_munny
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;hellip;and add a handful of specs to them:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# spec/features/login_and_authentication&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'rails_helper'&lt;/span&gt;
+
+&lt;span class="no"&gt;RSpec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;feature&lt;/span&gt; &lt;span class="s2"&gt;"Login And Authentication"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;type: :feature&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'can register for an account'&lt;/span&gt;
+
+  &lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'after creating an account'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'can log into my account'&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="c1"&gt;# spec/features/recording_munnies&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'rails_helper'&lt;/span&gt;
+
+&lt;span class="no"&gt;RSpec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;feature&lt;/span&gt; &lt;span class="s2"&gt;"Recording Munnies"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;type: :feature&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'when logged in'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'can add munny to my total and show it off on my profile'&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You may notice that the format of these specs &lt;em&gt;fairly&lt;/em&gt; closely matches the
+format of the user stories. This is intentional: the goal is to map the specs
+back to the stories as closely as possible. Running &lt;code&gt;rake&lt;/code&gt; should now display
+three pending specs.&lt;/p&gt;
+
+&lt;h3&gt;Speed Up This Train&lt;/h3&gt;
+
+&lt;p&gt;With our mini feature suite in place, we are just about ready to drive full
+speed ahead toward Internet-dominating MVP-dom. But first, let&amp;rsquo;s stop and make
+one final improvement to our test cycle. Running &lt;code&gt;rake&lt;/code&gt; manually is great and
+all, but wouldn&amp;rsquo;t it be more awesomer if we could automate that a bit? Let&amp;rsquo;s add
+&lt;code&gt;guard-rspec&lt;/code&gt; to the mix to do just that:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# Gemfile&lt;/span&gt;
+&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;:development&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:test&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="c1"&gt;# ...&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'guard'&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'guard-rspec'&lt;/span&gt;
+  &lt;span class="c1"&gt;# ...&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now bundle, initialize the Guard gem, and start it up:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;bundle
+&lt;span class="gp"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;guard init
+&lt;span class="gp"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;guard
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If all goes as expected, saving a spec file should now trigger a test run for
+only that file. Keep in mind that this works only for files suffixed with
+&lt;code&gt;_spec&lt;/code&gt;, which is the default for generated specs. Give it a try by opening up
+one of the two feature spec files and saving it. There are a number of other
+settings that can be tweaked in Guard to make it focus failed tests, use Spring,
+etc., but we will skip those features for the sake of this walkthrough.&lt;/p&gt;
+
+&lt;h2&gt;Holy Moly WOW Let&amp;rsquo;s Build The Whole Thing Now&lt;/h2&gt;
+
+&lt;h3&gt;NOT SO FAST.&lt;/h3&gt;
+
+&lt;p&gt;That&amp;rsquo;s it for the first part of this blog series.  In the follow-up to this post,
+we&amp;rsquo;ll go about implementing the actual code to get these feature specs passing.
+There&amp;rsquo;s technically enough in place at this point to allow one to fly off into
+:computer:The Future:computer: on :train2:Rails of Glory:pray: or something,
+BDDing straight to the top of :mount_fuji:Mount Conversion
+Rate:sunrise_over_mountains:. You may want to tackle this as a personal
+challenge, out of impatience, or for any number of reasons, really. Otherwise,
+drop by again in the next week or two to see everything come together.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</title>
     <link rel="alternate" href="http://blog.url.com/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html"/>
     <id>http://blog.url.com/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html</id>
     <published>2015-03-03T16:00:00-08:00</published>
-    <updated>2015-05-28T22:26:35-07:00</updated>
+    <updated>2015-08-08T09:34:29-07:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -158,57 +401,129 @@ expect to see more about proper &lt;code&gt;redbug&lt;/code&gt; usage here on my
     <link rel="alternate" href="http://blog.url.com/2015/02/07/drinking-the-koolixir.html"/>
     <id>http://blog.url.com/2015/02/07/drinking-the-koolixir.html</id>
     <published>2015-02-06T18:18:00-08:00</published>
-    <updated>2015-04-29T00:24:30-07:00</updated>
+    <updated>2015-08-16T21:20:46-07:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;p&gt;In case you haven&amp;rsquo;t yet heard of it yet, Elixir is a functional programming language (technically, a collection of macros) written in Erlang. I have been persuaded to add it to my technical repertoire due to a good amount of recent buzz in the blogosphere (as well as some points I&amp;rsquo;ll get to later). To make sure I have a strong foundation for my Elixir learning experience, I am starting my adventure with a foray into the underlying syntax of Erlang.&lt;/p&gt;
+    <content type="html">&lt;p&gt;In case you haven&amp;rsquo;t yet heard of it yet, Elixir is a functional programming
+language (technically, a collection of macros) written in Erlang. I have been
+persuaded to add it to my technical repertoire due to a good amount of recent
+buzz in the blogosphere (as well as some points I&amp;rsquo;ll get to later). To make sure
+I have a strong foundation for my Elixir learning experience, I am starting my
+adventure with a foray into the underlying syntax of Erlang.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
 &lt;div style="text-align: center"&gt;
-&lt;h2&gt;Part 1&lt;/h2&gt;
-&lt;h5&gt;First Impressions with Erlang&lt;/h5&gt;
-&lt;h5&gt;&amp;ndash;or&amp;ndash;&lt;/h5&gt;
-&lt;h5&gt;&lt;i&gt;Taking Apart the Car To Learn How to Drive&lt;/i&gt;&lt;/h5&gt;
+  &lt;h2&gt;Part 1&lt;/h2&gt;
+  &lt;h5&gt;First Impressions with Erlang&lt;/h5&gt;
+  &lt;h5&gt;&amp;ndash;or&amp;ndash;&lt;/h5&gt;
+  &lt;h5&gt;
+    &lt;i&gt;Taking Apart the Car To Learn How to Drive&lt;/i&gt;
+  &lt;/h5&gt;
 &lt;/div&gt;
 
 &lt;p&gt;&lt;br/&gt;
-Yes, functional programming: Land of Lambdas and Bindings and Parenthesis and you&amp;rsquo;re all like &lt;code&gt;(where(am(I(will)(I)(ever)(return)?)!)1)&lt;/code&gt; and so-forth. To be fair, my only formal experience with FP was a short section in a programming languages course in college (&lt;em&gt;unless you count Javascript?&lt;/em&gt;&amp;thinsp;) that gave me probably just enough time to learn how to recursively crash my LISP interpreter. Even that was sufficient to give me the impression that functional programming was something that all Serious Programmers should learn during their Careers as Professionals.&lt;/p&gt;
+Yes, functional programming: Land of Lambdas and Bindings and Parenthesis and
+you&amp;rsquo;re all like &lt;code&gt;(where(am(I(will)(I)(ever)(return)?)!)1)&lt;/code&gt; and so-forth. To be
+fair, my only formal experience with FP was a short section in a programming
+languages course in college (&lt;em&gt;unless you count Javascript?&lt;/em&gt;&amp;thinsp;) that gave
+me probably just enough time to learn how to recursively crash my LISP
+interpreter. Even that was sufficient to give me the impression that functional
+programming was something that all Serious Programmers should learn during their
+Careers as Professionals.&lt;/p&gt;
 
-&lt;p&gt;I actually started out wanting to learn Elixir because of some impressive benchmarks I read about &lt;a href="https://github.com/mroth/phoenix-showdown"&gt;over here&lt;/a&gt;. &lt;strong&gt;tldr;&lt;/strong&gt; Phoenix pwns all yes even Node.js &lt;em&gt;and&lt;/em&gt; I&amp;rsquo;m pretty sure you still get Hipster Cred for writing in Elixir, yey!&lt;/p&gt;
+&lt;p&gt;I actually started out wanting to learn Elixir because of some impressive
+benchmarks I read about &lt;a href="https://github.com/mroth/phoenix-showdown"&gt;over here&lt;/a&gt;.
+&lt;strong&gt;tldr;&lt;/strong&gt; Phoenix pwns all yes even Node.js &lt;em&gt;and&lt;/em&gt; I&amp;rsquo;m pretty sure you still get
+Hipster Cred for writing in Elixir, yey!&lt;/p&gt;
 
-&lt;p&gt;Naturally, I was all like, &amp;ldquo;I want to &lt;strike&gt;be a hipster&lt;/strike&gt; write fast APIs!&amp;rdquo; so I set out straightaway to install Elixir (&lt;em&gt;using Homebrew, no doy&lt;/em&gt;&amp;thinsp;), started hacking away all furiously (&lt;em&gt;a Sublime Text syntax package! and a framework! and package managers! and the author like, wrote Ruby! and I write Ruby!&lt;/em&gt;&amp;thinsp;) only to realize pretty quickly that I was going to be at something of a disadvantage if I didn&amp;rsquo;t learn at least &lt;em&gt;some&lt;/em&gt; Erlang.&lt;/p&gt;
+&lt;p&gt;Naturally, I was all like, &amp;ldquo;I want to &lt;strike&gt;be a hipster&lt;/strike&gt; write fast
+APIs!&amp;rdquo; so I set out straightaway to install Elixir (&lt;em&gt;using Homebrew, no
+doy&lt;/em&gt;&amp;thinsp;), started hacking away all furiously (&lt;em&gt;a Sublime Text syntax
+package! and a framework! and package managers! and the author like, wrote Ruby!
+and I write Ruby!&lt;/em&gt;&amp;thinsp;) only to realize pretty quickly that I was going to
+be at something of a disadvantage if I didn&amp;rsquo;t learn at least &lt;em&gt;some&lt;/em&gt; Erlang.&lt;/p&gt;
 
-&lt;p&gt;At the very least, I started imagining all the &lt;span style="font-family: monospace; font-size: 14px"&gt;&amp;#9679;&amp;Delta;True&amp;nbsp;Hipster&amp;nbsp;Programmers&amp;Delta;&amp;#9679;&lt;/span&gt; calling me out. &amp;ldquo;You write Elixir but you&amp;rsquo;ve never even written Erlang DIE TRYHARD POSEUR SCUM PEW PEW PEW!&amp;rdquo; (&lt;em&gt;Fun Fact: Hipster Programmers spontaneously emit lasers upon the unworthy.&lt;/em&gt;)There was also the fact that all of the good debuggers and tooling and whatnot were written with Erlang in mind. Also, I&amp;rsquo;m a sucker for a knowledge.&lt;/p&gt;
+&lt;p&gt;At the very least, I started imagining all the
+&lt;span style="font-family: monospace; font-size: 14px"&gt;&amp;#9679;&amp;Delta;True&amp;nbsp;Hipster&amp;nbsp;Programmers&amp;Delta;&amp;#9679;&lt;/span&gt;
+calling me out. &amp;ldquo;You write Elixir but you&amp;rsquo;ve never even written Erlang DIE
+TRYHARD POSEUR SCUM PEW PEW PEW!&amp;rdquo; (&lt;em&gt;Fun Fact: Hipster Programmers spontaneously
+emit lasers upon the unworthy.&lt;/em&gt;)There was also the fact that all of the good
+debuggers and tooling and whatnot were written with Erlang in mind. Also, I&amp;rsquo;m a
+sucker for a knowledge.&lt;/p&gt;
 
 &lt;div class="image-wrapper"&gt;
-  &lt;img alt="A space cat obliterating a planet of unworthy programmers writing at an unacceptable level of abstraction" src="/articles/hipster_programmer_cat.jpg" /&gt;
-  &lt;blockquote&gt;&amp;ldquo;Oh what&amp;rsquo;s that ur &amp;lsquo;getting around&amp;rsquo; to learning assembly PEW PEW PEW I CANT HEER U UR DEAD&amp;rdquo;&lt;/blockquote&gt;
+  &lt;img alt="A space cat obliterating a planet of unworthy programmers writing at an unacceptable level of abstraction"
+       src="/articles/hipster_programmer_cat.jpg" /&gt;
+  &lt;blockquote&gt;
+    &amp;ldquo;Oh what&amp;rsquo;s that ur &amp;lsquo;getting around&amp;rsquo; to learning assembly PEW PEW PEW I CANT
+    HEER U UR DEAD&amp;rdquo;
+  &lt;/blockquote&gt;
 &lt;/div&gt;
 
 &lt;p&gt;So here I be.&lt;/p&gt;
 
 &lt;h3&gt;But Wait, Why Learn &amp;ldquo;Tonic&amp;rdquo;&amp;hellip;er&amp;hellip;whatever?&lt;/h3&gt;
 
-&lt;p&gt;I blame college for biasing me, but something about functional programming really does feel like The One True Way. I can remember writing my first few recursive algorithms and feeling like &amp;ldquo;YES THIS IS IT I AM DOING PROGRAMMING.&amp;rdquo; So, yeah, that&amp;rsquo;s a big plus: it just &lt;em&gt;feels&lt;/em&gt; so much more computer sciency to me (this may or may not proverbially light your proverbial fire). I can say that I am legitimately excited to learn a new language for the first time in years, and that excitement will go a long way toward conquering a potentially powerful new tool.&lt;/p&gt;
+&lt;p&gt;I blame college for biasing me, but something about functional programming
+really does feel like The One True Way. I can remember writing my first few
+recursive algorithms and feeling like &amp;ldquo;YES THIS IS IT I AM DOING PROGRAMMING.&amp;rdquo;
+So, yeah, that&amp;rsquo;s a big plus: it just &lt;em&gt;feels&lt;/em&gt; so much more computer sciency to me
+(this may or may not proverbially light your proverbial fire). I can say that I
+am legitimately excited to learn a new language for the first time in years, and
+that excitement will go a long way toward conquering a potentially powerful new
+tool.&lt;/p&gt;
 
-&lt;p&gt;That being said, there are also some &amp;ldquo;serious&amp;rdquo; reasons why I chose to learn Erlang/Elixir. By far the most important of these reasons is that Erlang touts concurrency and fault-tolerance as being core benefits of the language and the accompanying BEAM VM. Given the current push in the tech industry for increasingly real-time, highly concurrent applications (read: wearables sending tons of data back to the mothership), I think this is an area in which it is worth building expertise. Put another way, I believe levels of concurrency that were once only the concern of massive corporate giants will become a concern for more wearable/IoT startups.&lt;/p&gt;
+&lt;p&gt;That being said, there are also some &amp;ldquo;serious&amp;rdquo; reasons why I chose to learn
+Erlang/Elixir. By far the most important of these reasons is that Erlang touts
+concurrency and fault-tolerance as being core benefits of the language and the
+accompanying BEAM VM. Given the current push in the tech industry for
+increasingly real-time, highly concurrent applications (read: wearables sending
+tons of data back to the mothership), I think this is an area in which it is
+worth building expertise. Put another way, I believe levels of concurrency that
+were once only the concern of massive corporate giants will become a concern for
+more wearable/IoT startups.&lt;/p&gt;
 
-&lt;p&gt;In addition to all this, Elixir was created by Jos&amp;eacute; Valim, a basically kick-ass developer who co-founded his own consultancy, was the core developer of the Devise authentication gem (and who knows what else), and just generally eats Ruby and code for breakfast. What this means for Elixir is that it is very much influenced by Ruby&amp;rsquo;s syntax, making my own transition (as a Ruby developer) that much more enjoyable. Furthermore, Valim clearly knows how to carry a project, so Elixir is very likely to be well-maintained.&lt;/p&gt;
+&lt;p&gt;In addition to all this, Elixir was created by Jos&amp;eacute; Valim, a basically
+kick-ass developer who co-founded his own consultancy, was the core developer of
+the Devise authentication gem (and who knows what else), and just generally eats
+Ruby and code for breakfast. What this means for Elixir is that it is very much
+influenced by Ruby&amp;rsquo;s syntax, making my own transition (as a Ruby developer) that
+much more enjoyable. Furthermore, Valim clearly knows how to carry a project, so
+Elixir is very likely to be well-maintained.&lt;/p&gt;
 
 &lt;h2&gt;The Jourlang Begins&lt;/h2&gt;
 
-&lt;p&gt;I remembered reading over on Hacker News about a book on Erlang with a particularly clever title: &lt;a href="http://learnyousomeerlang.com/"&gt;&amp;ldquo;Learn You Some Erlang For Great Good&amp;rdquo;&lt;/a&gt; (written in the spirit of &amp;ldquo;Learn You a Haskell For Great Good&amp;rdquo; SUCH FUNNY).&lt;/p&gt;
+&lt;p&gt;I remembered reading over on Hacker News about a book on Erlang with a
+particularly clever title: &lt;a href="http://learnyousomeerlang.com/"&gt;&amp;ldquo;Learn You Some Erlang For Great
+Good&amp;rdquo;&lt;/a&gt; (written in the spirit of &amp;ldquo;Learn You a
+Haskell For Great Good&amp;rdquo; SUCH FUNNY).&lt;/p&gt;
 
 &lt;div class="image-wrapper"&gt;
-  &lt;img src="/articles/IMG_1100.PNG" alt="A mustachioed octopus on the cover of 'Learn You Some Erlang For Great Good', the riveting tale of a tremendously talented mollusk functional programming practitioner" /&gt;
-  &lt;blockquote&gt;A mustachioed octopus on the cover of &amp;lsquo;Learn You Some Erlang For Great Good&amp;rsquo;, the riveting tale of a tremendously talented mollusk functional programming practitioner&lt;/blockquote&gt;
+  &lt;img src="/articles/IMG_1100.PNG"
+       alt="A mustachioed octopus on the cover of 'Learn You Some Erlang For Great Good', the riveting tale of a tremendously talented mollusk functional programming practitioner" /&gt;
+  &lt;blockquote&gt;
+    A mustachioed octopus on the cover of &amp;lsquo;Learn You Some Erlang For Great Good&amp;rsquo;,
+    the riveting tale of a tremendously talented mollusk functional programming
+    practitioner
+  &lt;/blockquote&gt;
 &lt;/div&gt;
 
-&lt;p&gt;At the time, Erlang didn&amp;rsquo;t really mean much to me, other than I knew there was some vague connection between Elixir and Erlang, and less-so between Haskell and Erlang. BUT since I had always wanted to Crush It Hard with FP, I made a mental note to go back to the book when the time was right. After reading about the Phoenix API Mega Hi-Score, I decided the time was indeed right.&lt;/p&gt;
+&lt;p&gt;At the time, Erlang didn&amp;rsquo;t really mean much to me, other than I knew there was
+some vague connection between Elixir and Erlang, and less-so between Haskell and
+Erlang. BUT since I had always wanted to Crush It Hard with FP, I made a mental
+note to go back to the book when the time was right. After reading about the
+Phoenix API Mega Hi-Score, I decided the time was indeed right.&lt;/p&gt;
 
-&lt;p&gt;As of this post, I am about a quarter of the way through the book, having covered syntax, types, and recursion. With some justification for learning Elixir specifically, I will breaking out my experience with Erlang into upcoming blog posts. Specifically, I will cover how I set up my machine for Erlang and Elixir development (tools, editor plugins, etc.), some thoughts on pros, cons, and oddities of the language and framework, and finally a walkthrough of a yet-to-be-determined First Application in Elixir. Assuming, of course, that I don&amp;rsquo;t fall into some kind of &lt;a href="/2015/02/07/drinking-the-koolixir.html"&gt;infinite recursion&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As of this post, I am about a quarter of the way through the book, having
+covered syntax, types, and recursion. With some justification for learning
+Elixir specifically, I will breaking out my experience with Erlang into upcoming
+blog posts. Specifically, I will cover how I set up my machine for Erlang and
+Elixir development (tools, editor plugins, etc.), some thoughts on pros, cons,
+and oddities of the language and framework, and finally a walkthrough of a
+yet-to-be-determined First Application in Elixir. Assuming, of course, that I
+don&amp;rsquo;t fall into some kind of &lt;a href="/2015/02/07/drinking-the-koolixir.html"&gt;infinite recursion&lt;/a&gt;.&lt;/p&gt;
 </content>
   </entry>
   <entry>
