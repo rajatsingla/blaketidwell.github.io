@@ -12,12 +12,12 @@
 <meta content='width=device-width' name='viewport'>
 <meta content='summary' name='twitter:card'>
 <meta content='@BATidwell' name='twitter:site'>
-<meta content='Blake Tidwell - Code. Create. Connect.' name='twitter:title'>
+<meta content='Emulate Default Scope with Around Filter and Scoping' name='twitter:title'>
 <meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='twitter:description'>
 <meta content='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png' name='twitter:image'>
-<meta content='http://www.blaketidwell.com/tags/ruby.html' name='twitter:url'>
+<meta content='http://www.blaketidwell.com/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html' name='twitter:url'>
 <title>
-Blake Tidwell
+Blake Tidwell - Emulate Default Scope with Around Filter and Scoping
 </title>
 <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
 <link href="/stylesheets/app.css" rel="stylesheet" type="text/css" />
@@ -67,31 +67,132 @@ Blake Tidwell
 </div>
 <div class='row' id='container'>
 <div class='small-12 medium-8 columns' id='main' role='main'>
-<h1>
-Articles tagged 'ruby'
-</h1>
-<ul>
-<li>
-<a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
-<span>Aug 21</span>
-</li>
-<li>
-<a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
-<span>Aug 16</span>
-</li>
-<li>
-<a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
-<span>Jan 27</span>
-</li>
-<li>
-<a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
-<span>Nov 24</span>
-</li>
-<li>
-<a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
-<span>Mar 23</span>
-</li>
-</ul>
+<article>
+<h1 class='article-title'>Emulate Default Scope with Around Filter and Scoping</h1>
+<div class='row share-container'>
+<div class='small-12 columns'>
+<div class='share'>
+<a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+Tweet
+</a>
+<div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+</div>
+</div>
+</div>
+<p>We all know that <a href="http://rails-bestpractices.com/posts/2013/06/15/default_scope-is-evil/"><code>default_scope</code> is
+evil</a>.
+But sometimes, you really <em>do</em> want to make sure that a condition is <em>almost</em>
+always applied to the queries for a particular model. Draft vs. published posts,
+approved vs. unapproved content, soft deletes, cat videos vs. not-cat videos,
+etc., etc.  What&rsquo;s a well-behaved Rails developer to do?  Recently, I
+encountered this exact issue on a project I was working on, and was not
+satisfied with the choice between Being Evil &agrave; la <code>default_scope</code> or
+being repetitive and scattering <code>where(whatever: true)</code> conditions throughout
+the code.  After some searching, I came across a combination of methods that
+accomplishes essentially the same goal without all of the bizarre side effects
+of <code>default_scope</code>.</p>
+
+<p></p>
+
+<h2>Le Hypothetical Situation</h2>
+
+<p>Imagine that we want to build a blogging platform in Rails with the usual
+draft-before-publish workflow. Basically, we want to make sure that drafts only
+ever show up when an admin is logged in. The first solution that comes to mind
+for a problem like this is to chuck the condition into a <code>default_scope</code> on your
+model:</p>
+<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">Post</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">default_scope</span> <span class="n">where</span><span class="p">(</span><span class="ss">draft: </span><span class="kp">false</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+
+<p>I won&rsquo;t rehash the challenges of using <code>default_scope</code> in this post; give the
+Rails Best Practices link at the top of this post a good read and you should at
+least get the general idea that there are a lot of weird things to account for
+with this approach.</p>
+
+<h2>Le Alternative Different</h2>
+
+<p>Enter <code>after_filter</code> and <code>scoping</code>. Below is a simple example of using this
+approach in the <code>ApplicationController</code> to accomplish the same draft filtering:</p>
+<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">protect_from_forgery</span> <span class="ss">with: :exception</span>
+
+  <span class="n">around_filter</span> <span class="ss">:scope_to_published</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">scope_to_published</span>
+    <span class="no">Post</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">draft: </span><span class="kp">false</span><span class="p">).</span><span class="nf">scoping</span> <span class="k">do</span>
+      <span class="k">yield</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+
+<p>This results in the <code>Post</code> model being &ldquo;globally&rdquo; scoped before running the rest
+of the controller method. Since it happens in the <code>ApplicationController</code>, it
+will apply to all subclassed controllers. (Worth noting is that <code>where(draft:
+false)</code> can of course be converted to an equivalent scope named <code>published</code> or
+some such.) Using this approach, and some thoughtful placement in the controller
+hieararchy, it is possible to increase or decrease the granularity of a
+&ldquo;default&rdquo; condition. It is easy to imagine having an <code>AdminController</code> that does
+not inherit from <code>ApplicationController</code> and would therefore not be subject to
+this global scoping. Alternatively, a <code>skip_filter</code> directive could be added
+only to those controllers where this scoping should not apply. In the direction
+of more specificity, the <code>around_filter</code> could be moved further down the class
+hierarchy and explicitly applied to the <code>PostsController</code> or any number of
+related controllers.</p>
+
+<h1>Un Caveat</h1>
+
+<p>As a disclaimer, I have not benchmarked the effect this might have at the
+<code>ApplicationController</code> level. I would guess that in the best case, it should
+incur no more performance overhead than an explicit <code>where</code> clause, and in
+the worst case, it would incur a trivial impact more than made up for by
+conciseness. Can&rsquo;t say for certain without running benchmarks, but I invite any
+interested readers to share any findings or insights they might have in this
+regard.</p>
+
+<div class='row'>
+<div class='small-12 columns'>
+<div class='share'>
+<a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+Tweet
+</a>
+<div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+</div>
+</div>
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+//<![CDATA[
+                  var disqus_title = 'Emulate Default Scope with Around Filter and Scoping'
+                                var disqus_shortname = 'blaketidwell';
+                  
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+//]]>
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script type="text/javascript">
+//<![CDATA[
+    var disqus_shortname = 'blaketidwell';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+//]]>
+</script>
+
+</article>
 
 </div>
 <aside class='medium-4 columns show-for-medium-up' id='filters'>

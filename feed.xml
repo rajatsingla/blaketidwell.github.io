@@ -5,10 +5,95 @@
   <id>http://blog.url.com/</id>
   <link href="http://blog.url.com/"/>
   <link href="http://blog.url.com/feed.xml" rel="self"/>
-  <updated>2015-08-16T16:59:00-07:00</updated>
+  <updated>2015-08-20T20:04:00-07:00</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Emulate Default Scope with Around Filter and Scoping</title>
+    <link rel="alternate" href="http://blog.url.com/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html"/>
+    <id>http://blog.url.com/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html</id>
+    <published>2015-08-20T20:04:00-07:00</published>
+    <updated>2015-08-20T22:03:56-07:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;We all know that &lt;a href="http://rails-bestpractices.com/posts/2013/06/15/default_scope-is-evil/"&gt;&lt;code&gt;default_scope&lt;/code&gt; is
+evil&lt;/a&gt;.
+But sometimes, you really &lt;em&gt;do&lt;/em&gt; want to make sure that a condition is &lt;em&gt;almost&lt;/em&gt;
+always applied to the queries for a particular model. Draft vs. published posts,
+approved vs. unapproved content, soft deletes, cat videos vs. not-cat videos,
+etc., etc.  What&amp;rsquo;s a well-behaved Rails developer to do?  Recently, I
+encountered this exact issue on a project I was working on, and was not
+satisfied with the choice between Being Evil &amp;agrave; la &lt;code&gt;default_scope&lt;/code&gt; or
+being repetitive and scattering &lt;code&gt;where(whatever: true)&lt;/code&gt; conditions throughout
+the code.  After some searching, I came across a combination of methods that
+accomplishes essentially the same goal without all of the bizarre side effects
+of &lt;code&gt;default_scope&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2&gt;Le Hypothetical Situation&lt;/h2&gt;
+
+&lt;p&gt;Imagine that we want to build a blogging platform in Rails with the usual
+draft-before-publish workflow. Basically, we want to make sure that drafts only
+ever show up when an admin is logged in. The first solution that comes to mind
+for a problem like this is to chuck the condition into a &lt;code&gt;default_scope&lt;/code&gt; on your
+model:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Post&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveRecord&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
+  &lt;span class="n"&gt;default_scope&lt;/span&gt; &lt;span class="n"&gt;where&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;draft: &lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I won&amp;rsquo;t rehash the challenges of using &lt;code&gt;default_scope&lt;/code&gt; in this post; give the
+Rails Best Practices link at the top of this post a good read and you should at
+least get the general idea that there are a lot of weird things to account for
+with this approach.&lt;/p&gt;
+
+&lt;h2&gt;Le Alternative Different&lt;/h2&gt;
+
+&lt;p&gt;Enter &lt;code&gt;after_filter&lt;/code&gt; and &lt;code&gt;scoping&lt;/code&gt;. Below is a simple example of using this
+approach in the &lt;code&gt;ApplicationController&lt;/code&gt; to accomplish the same draft filtering:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
+  &lt;span class="n"&gt;protect_from_forgery&lt;/span&gt; &lt;span class="ss"&gt;with: :exception&lt;/span&gt;
+
+  &lt;span class="n"&gt;around_filter&lt;/span&gt; &lt;span class="ss"&gt;:scope_to_published&lt;/span&gt;
+
+  &lt;span class="kp"&gt;private&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;scope_to_published&lt;/span&gt;
+    &lt;span class="no"&gt;Post&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;where&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;draft: &lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;scoping&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="k"&gt;yield&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This results in the &lt;code&gt;Post&lt;/code&gt; model being &amp;ldquo;globally&amp;rdquo; scoped before running the rest
+of the controller method. Since it happens in the &lt;code&gt;ApplicationController&lt;/code&gt;, it
+will apply to all subclassed controllers. (Worth noting is that &lt;code&gt;where(draft:
+false)&lt;/code&gt; can of course be converted to an equivalent scope named &lt;code&gt;published&lt;/code&gt; or
+some such.) Using this approach, and some thoughtful placement in the controller
+hieararchy, it is possible to increase or decrease the granularity of a
+&amp;ldquo;default&amp;rdquo; condition. It is easy to imagine having an &lt;code&gt;AdminController&lt;/code&gt; that does
+not inherit from &lt;code&gt;ApplicationController&lt;/code&gt; and would therefore not be subject to
+this global scoping. Alternatively, a &lt;code&gt;skip_filter&lt;/code&gt; directive could be added
+only to those controllers where this scoping should not apply. In the direction
+of more specificity, the &lt;code&gt;around_filter&lt;/code&gt; could be moved further down the class
+hierarchy and explicitly applied to the &lt;code&gt;PostsController&lt;/code&gt; or any number of
+related controllers.&lt;/p&gt;
+
+&lt;h1&gt;Un Caveat&lt;/h1&gt;
+
+&lt;p&gt;As a disclaimer, I have not benchmarked the effect this might have at the
+&lt;code&gt;ApplicationController&lt;/code&gt; level. I would guess that in the best case, it should
+incur no more performance overhead than an explicit &lt;code&gt;where&lt;/code&gt; clause, and in
+the worst case, it would incur a trivial impact more than made up for by
+conciseness. Can&amp;rsquo;t say for certain without running benchmarks, but I invite any
+interested readers to share any findings or insights they might have in this
+regard.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</title>
     <link rel="alternate" href="http://blog.url.com/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html"/>
@@ -401,7 +486,7 @@ expect to see more about proper &lt;code&gt;redbug&lt;/code&gt; usage here on my
     <link rel="alternate" href="http://blog.url.com/2015/02/07/drinking-the-koolixir.html"/>
     <id>http://blog.url.com/2015/02/07/drinking-the-koolixir.html</id>
     <published>2015-02-06T18:18:00-08:00</published>
-    <updated>2015-08-16T21:20:46-07:00</updated>
+    <updated>2015-08-20T22:03:57-07:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -692,56 +777,6 @@ don&amp;rsquo;t fall into some kind of &lt;a href="/2015/02/07/drinking-the-kool
 &lt;h1&gt;Conclusion&lt;/h1&gt;
 
 &lt;p&gt;This workflow is definitely my new go-to for static sites. There&amp;rsquo;s never been a better time to get to work on my Cats In Space visualization project.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Starting From the Middle(Man)</title>
-    <link rel="alternate" href="http://blog.url.com/2014/03/23/starting-from-the-middleman.html"/>
-    <id>http://blog.url.com/2014/03/23/starting-from-the-middleman.html</id>
-    <published>2014-03-22T17:00:00-07:00</published>
-    <updated>2015-04-28T23:51:06-07:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;p&gt;Decided to give &lt;a href="http://middlemanapp.com/"&gt;Middleman&lt;/a&gt; a try for the new blog, after trying out about a dozen static site generators (and a handful of CMS&amp;rsquo;s). The rundown went a little like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;(links included for posterity, and in case you choose to explore something other than Middleman):&lt;/p&gt;
-
-&lt;h2&gt;Ruby&lt;/h2&gt;
-
-&lt;h3&gt;&lt;a href="http://jekyllrb.com/"&gt;Jekyll&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Seems to be the de facto static site generator built on Ruby (it&amp;rsquo;s the engine powering Github&amp;rsquo;s blog/pages/something of the sort). I gave Jekyll a try before attempting any of the other options. Some of the development tools I consider standard required additional configuration (e.g. SASS and Livereload) and Middleman had these tools integrated standard.&lt;/p&gt;
-
-&lt;h3&gt;&lt;a href="http://octopress.org/"&gt;Octopress&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;I formerly ran this site on Octopress. Far too much &amp;ldquo;voodoo magic&amp;rdquo; going on for me; something would work one week, and then mysteriously (or at least mysteriously from my perspective) blow up after an update to the core or installation of a new theme. Ultimately, having a simpler starting point that I understood instinctively felt like the better choice. v3 finally seems to be coming along (as of a month or so ago), but given progress-to-date this may or may not be finished soon enough to warrant waiting.&lt;/p&gt;
-
-&lt;h2&gt;Node&lt;/h2&gt;
-
-&lt;h3&gt;&lt;a href="http://wintersmith.io/"&gt;Wintersmith&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Worked well out the door, and basically looks like Middleman&amp;rsquo;s cousin in Node. Middleman still seemed to have the slight edge in terms of existing plugins and community support, but I think Wintersmith &lt;em&gt;might&lt;/em&gt; be something worth exploring in a future update of this blog or smaller brand site implementations.&lt;/p&gt;
-
-&lt;h3&gt;&lt;a href="http://www.metalsmith.io/"&gt;Metalsmith&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Could not get SASS or Livereload working on initial install. Docs were a little too sparse to help troubleshoot, so I was forced to move on.&lt;/p&gt;
-
-&lt;h3&gt;&lt;a href="http://assemble.io/"&gt;Assemble&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The promise of being able to use Grunt as the foundation of the publishing workflow makes Assemble a very strong candidate. Unfortunately, this being my first real foray into a static generated blog, I needed little more hand holding than Assemble provided. I could also see this being a good option for something a little less opinionated than a blog, so I may come back to it for custom site builds.&lt;/p&gt;
-
-&lt;h3&gt;&lt;a href="https://ghost.org/"&gt;Ghost&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Mobile support is still underway, and the plugin architecture has yet to be implemented. Having a strong core team implementing something like a stats dashboard does have a lot of appeal, but this might be a bigger appeal for a non-/semi-technical blogger who doesn&amp;rsquo;t have the same itch to tweak settings that I have as a developer.&lt;/p&gt;
-
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Middleman&amp;rsquo;s stable initial blog configuration, solid plugin community, clear documentation, and balance of opinion and modularity ended up being the best fit for me. That being said, there are a lot of strong contenders in this arena, and the needs of your project or blog might make one or the other tool better suited to your particular needs.&lt;/p&gt;
-
-&lt;p&gt;What&amp;rsquo;s most important is that this setup is minimal enough to allow me to make new posts without worrying that updates or versioning issues will melt down my generator. This means I can focus on the most important part of having a blog: &lt;strong&gt;writing&lt;/strong&gt;.&lt;/p&gt;
 </content>
   </entry>
 </feed>

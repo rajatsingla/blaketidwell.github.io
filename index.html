@@ -68,6 +68,29 @@ Blake Tidwell
 <div class='row' id='container'>
 <div class='small-12 medium-8 columns' id='main' role='main'>
 <h2>
+<a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
+<span>Aug&nbsp;21</span>
+</h2>
+<!--
+use article.summary(250) if you have Nokogiri available to show just
+the first 250 characters
+-->
+<p>We all know that <a href="http://rails-bestpractices.com/posts/2013/06/15/default_scope-is-evil/"><code>default_scope</code> is
+evil</a>.
+But sometimes, you really <em>do</em> want to make sure that a condition is <em>almost</em>
+always applied to the queries for a particular model. Draft vs. published posts,
+approved vs. unapproved content, soft deletes, cat videos vs. not-cat videos,
+etc., etc.  What&rsquo;s a well-behaved Rails developer to do?  Recently, I
+encountered this exact issue on a project I was working on, and was not
+satisfied with the choice between Being Evil &agrave; la <code>default_scope</code> or
+being repetitive and scattering <code>where(whatever: true)</code> conditions throughout
+the code.  After some searching, I came across a combination of methods that
+accomplishes essentially the same goal without all of the bizarre side effects
+of <code>default_scope</code>.</p>
+
+<p>
+<a class="button" href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Read More</a>
+<h2>
 <a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
 <span>Aug&nbsp;16</span>
 </h2>
@@ -163,6 +186,10 @@ the first 250 characters
 <h3>Recent Articles</h3>
 <ul>
 <li>
+<a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
+<span>Aug&nbsp;21</span>
+</li>
+<li>
 <a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
 <span>Aug&nbsp;16</span>
 </li>
@@ -189,14 +216,14 @@ the first 250 characters
 </ul>
 <h3>Tags</h3>
 <ul>
-<li><a href="/tags/technical.html">technical (6)</a></li>
-<li><a href="/tags/ruby.html">ruby (4)</a></li>
+<li><a href="/tags/technical.html">technical (7)</a></li>
+<li><a href="/tags/ruby.html">ruby (5)</a></li>
 <li><a href="/tags/blog.html">blog (1)</a></li>
-<li><a href="/tags/how-to.html">how-to (2)</a></li>
+<li><a href="/tags/how-to.html">how-to (3)</a></li>
 <li><a href="/tags/deployment.html">deployment (1)</a></li>
 <li><a href="/tags/emberjs.html">emberjs (1)</a></li>
-<li><a href="/tags/rails.html">rails (2)</a></li>
-<li><a href="/tags/quickread.html">quickread (1)</a></li>
+<li><a href="/tags/rails.html">rails (3)</a></li>
+<li><a href="/tags/quickread.html">quickread (2)</a></li>
 <li><a href="/tags/dragons.html">dragons (1)</a></li>
 <li><a href="/tags/functional.html">functional (2)</a></li>
 <li><a href="/tags/languages.html">languages (2)</a></li>
@@ -206,7 +233,7 @@ the first 250 characters
 </ul>
 <h3>By Year</h3>
 <ul>
-<li><a href="/2015.html">2015 (4)</a></li>
+<li><a href="/2015.html">2015 (5)</a></li>
 <li><a href="/2014.html">2014 (2)</a></li>
 </ul>
 </aside>
@@ -216,6 +243,10 @@ the first 250 characters
 <div class='small-12 medium-4 columns'>
 <h3>Recent Articles</h3>
 <ul>
+<li>
+<a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
+<span>Aug&nbsp;21</span>
+</li>
 <li>
 <a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
 <span>Aug&nbsp;16</span>
@@ -247,18 +278,18 @@ the first 250 characters
 <div class='row'>
 <div class='small-12 medium-6 columns'>
 <ul class='tag-group'>
-<li><a href="/tags/technical.html">technical (6)</a></li>
-<li><a href="/tags/ruby.html">ruby (4)</a></li>
+<li><a href="/tags/technical.html">technical (7)</a></li>
+<li><a href="/tags/ruby.html">ruby (5)</a></li>
 <li><a href="/tags/blog.html">blog (1)</a></li>
-<li><a href="/tags/how-to.html">how-to (2)</a></li>
+<li><a href="/tags/how-to.html">how-to (3)</a></li>
 <li><a href="/tags/deployment.html">deployment (1)</a></li>
 <li><a href="/tags/emberjs.html">emberjs (1)</a></li>
-<li><a href="/tags/rails.html">rails (2)</a></li>
+<li><a href="/tags/rails.html">rails (3)</a></li>
 </ul>
 </div>
 <div class='small-12 medium-6 columns'>
 <ul class='tag-group last'>
-<li><a href="/tags/quickread.html">quickread (1)</a></li>
+<li><a href="/tags/quickread.html">quickread (2)</a></li>
 <li><a href="/tags/dragons.html">dragons (1)</a></li>
 <li><a href="/tags/functional.html">functional (2)</a></li>
 <li><a href="/tags/languages.html">languages (2)</a></li>
@@ -272,7 +303,7 @@ the first 250 characters
 <div class='small-12 medium-4 columns'>
 <h3>By Year</h3>
 <ul>
-<li><a href="/2015.html">2015 (4)</a></li>
+<li><a href="/2015.html">2015 (5)</a></li>
 <li><a href="/2014.html">2014 (2)</a></li>
 </ul>
 </div>
