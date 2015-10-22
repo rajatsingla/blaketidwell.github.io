@@ -101,8 +101,6 @@ set :js_dir, 'javascripts'
 
 set :images_dir, 'images'
 
-set :haml, format: :html5, ugly: true
-
 set :markdown_engine, :redcarpet
 set :markdown, fenced_code_blocks: true, smartypants: true
 
