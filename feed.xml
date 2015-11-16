@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://blog.url.com/2015/11/13/running-docker-without-breaching-the-hull.html"/>
     <id>http://blog.url.com/2015/11/13/running-docker-without-breaching-the-hull.html</id>
     <published>2015-11-12T23:56:00-08:00</published>
-    <updated>2015-11-16T00:56:54-08:00</updated>
+    <updated>2015-11-16T01:17:18-08:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -78,7 +78,7 @@ over to the &lt;a href="https://docs.docker.com/compose/rails/"&gt;docs themselv
 &lt;li&gt;Update and install some packages with &lt;code&gt;apt-get&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Make a new directory and work out of it.&lt;/li&gt;
 &lt;li&gt;Copy over a seed Gemfile(.lock).&lt;/li&gt;
-&lt;li&gt;Install with bundler (&lt;strong&gt;THE OFFENDING LINE :scream:&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;Install with bundler (&lt;strong&gt;THE OFFENDING LINE :scream:&lt;/strong&gt;).&lt;/li&gt;
 &lt;li&gt;&amp;ldquo;Bake&amp;rdquo; the now-bundled app into the container.&lt;/li&gt;
 &lt;/ol&gt;
 
@@ -125,8 +125,8 @@ step from the source code implementation step.&lt;/li&gt;
 been silenced, and the deployment configuration uses a dedicated, unprivileged
 user for managing package installation and starting the relevant app. What&amp;rsquo;s
 more is that it accomplishes this while both leveraging the base Ruby image on
-Docker Hub and avoiding the overhead of RVM or rbenv. All in all, this kind of
-very particular goal really helped to clarify my understanding of Docker, from
+Docker Hub and avoiding the overhead of RVM or rbenv. All in all, this very
+particular goal really helped to clarify my understanding of Docker, from
 permissions all the way to source code copying.  Not least of all, this leaves
 me feeling a bit more at-ease, knowing that there is one less way to succumb to
 some as-yet unknown vulnerability in Docker whilst running errant &lt;code&gt;sudo&lt;/code&gt;
