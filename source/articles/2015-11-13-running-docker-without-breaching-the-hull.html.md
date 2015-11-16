@@ -61,7 +61,7 @@ over to the [docs themselves](https://docs.docker.com/compose/rails/)):
 1. Update and install some packages with `apt-get`.
 1. Make a new directory and work out of it.
 1. Copy over a seed Gemfile(.lock).
-1. Install with bundler (**THE OFFENDING LINE :scream:**)
+1. Install with bundler (**THE OFFENDING LINE :scream:**).
 1. "Bake" the now-bundled app into the container.
 
 ## Look At Me I Can Docker Too
@@ -106,8 +106,8 @@ And there you have it. With a few minor tweaks to the Dockerfile, bundler has
 been silenced, and the deployment configuration uses a dedicated, unprivileged
 user for managing package installation and starting the relevant app. What's
 more is that it accomplishes this while both leveraging the base Ruby image on
-Docker Hub and avoiding the overhead of RVM or rbenv. All in all, this kind of
-very particular goal really helped to clarify my understanding of Docker, from
+Docker Hub and avoiding the overhead of RVM or rbenv. All in all, this very
+particular goal really helped to clarify my understanding of Docker, from
 permissions all the way to source code copying.  Not least of all, this leaves
 me feeling a bit more at-ease, knowing that there is one less way to succumb to
 some as-yet unknown vulnerability in Docker whilst running errant `sudo`
