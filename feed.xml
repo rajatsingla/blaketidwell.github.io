@@ -5,10 +5,134 @@
   <id>http://blog.url.com/</id>
   <link href="http://blog.url.com/"/>
   <link href="http://blog.url.com/feed.xml" rel="self"/>
-  <updated>2015-08-20T20:04:00-07:00</updated>
+  <updated>2015-11-12T23:56:00-08:00</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Running Rails On Docker Without Breaching the Hull</title>
+    <link rel="alternate" href="http://blog.url.com/2015/11/13/running-docker-without-breaching-the-hull.html"/>
+    <id>http://blog.url.com/2015/11/13/running-docker-without-breaching-the-hull.html</id>
+    <published>2015-11-12T23:56:00-08:00</published>
+    <updated>2015-11-16T00:56:54-08:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;As part of my exploration of a minimum set of devops tools, I&amp;rsquo;ve been learning
+how to stack containers full of Rails apps onto the Docker.  There are plenty of
+examples of how to get started with Rails and Postgres on Docker, even one &lt;a href="https://docs.docker.com/compose/rails/"&gt;from
+the whale&amp;rsquo;s mouth&lt;/a&gt;, as it were. Working
+from this example, it was pretty clear to me that one of Docker&amp;rsquo;s major
+strengths is that it makes it &lt;em&gt;really, really easy&lt;/em&gt; to get something running
+with a minimum of fuss; it took all of about a half day to learn enough Docker
+to hoist anchor, and even tweak a few things to my liking. One thing kept nagging
+me about the Docker example, though, and that was a warning from &lt;code&gt;bundler&lt;/code&gt; when
+running &lt;code&gt;docker-compose&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h2&gt;Oh Noes, a Warnthing?!&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Don&amp;#39;t run Bundler as root.&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Running &lt;code&gt;bundler&lt;/code&gt; in this way strikes me as a needless security risk (why sudo
+when you can suDON&amp;rsquo;T PRIVILEGE ESCALATION EXPLOIT YOURSELF), so I set about
+modifying the example file to&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;shut it up and&lt;/li&gt;
+&lt;li&gt;learn some more about Docker.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I&amp;rsquo;ll admit, depending upon your tolerance for warning messages, this kind of
+minutiae may not even show up on your radar. And let me be clear that &lt;strong&gt;this
+post is not a knock against the Docker team&lt;/strong&gt; for this &amp;ldquo;flaw&amp;rdquo; in the example;
+they&amp;rsquo;re doing absolutely amazing stuff by building Docker in the first place and
+they &lt;a href="https://blog.docker.com/2015/05/understanding-docker-security-and-best-practices/"&gt;absolutely give a
+damn&lt;/a&gt;
+&lt;a href="https://github.com/docker/docker/issues/13490"&gt;about security&lt;/a&gt;. As mentioned in
+the intro, this is more about learning Docker by addressing this (arguably
+security-oriented) warning.&lt;/p&gt;
+
+&lt;h2&gt;The :egg:sample From the Dockermentation&lt;/h2&gt;
+
+&lt;p&gt;For reference, the example Dockerfile looks like so:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+FROM ruby:2.2.0
+RUN apt-get update -qq &amp;amp;&amp;amp; apt-get install -y build-essential libpq-dev
+RUN mkdir /myapp
+WORKDIR /myapp
+ADD Gemfile /myapp/Gemfile
+ADD Gemfile.lock /myapp/Gemfile.lock
+RUN bundle install
+ADD . /myapp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s unpack this a bit before moving on (for a more in-depth explanation, head
+over to the &lt;a href="https://docs.docker.com/compose/rails/"&gt;docs themselves&lt;/a&gt;):&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Pull the base image for Ruby 2.2.0.&lt;/li&gt;
+&lt;li&gt;Update and install some packages with &lt;code&gt;apt-get&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Make a new directory and work out of it.&lt;/li&gt;
+&lt;li&gt;Copy over a seed Gemfile(.lock).&lt;/li&gt;
+&lt;li&gt;Install with bundler (&lt;strong&gt;THE OFFENDING LINE :scream:&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Bake&amp;rdquo; the now-bundled app into the container.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Look At Me I Can Docker Too&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href="https://youtu.be/ln5Ar5aHDYM?t=12s"&gt;I Will Do It Nine Times&lt;/a&gt;. Okay, actually
+only one time I will do it:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+FROM ruby:2.2.3
+RUN apt-get update -qq
+RUN apt-get install -y build-essential libpq-dev
+
+RUN mkdir /app
+WORKDIR /app
+ADD . /app
+
+RUN useradd -ms /bin/bash rails
+RUN chown -R rails:rails .
+
+USER rails
+
+ENV GEM_HOME /home/rails/.gems
+RUN gem install bundler
+RUN bundle
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;How is this more different than before, hmm?&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;A &lt;code&gt;rails&lt;/code&gt; user is created and used to install gems with bundler and then run
+the application. No More Sudo Bundle:no_good:. That being said, this still needs to
+be updated to include something like Nginx as a proxy to get around the
+limitation of being unable to start Rails on port 80 without &lt;code&gt;sudo&lt;/code&gt;. To be
+addressed&amp;hellip;&lt;/li&gt;
+&lt;li&gt;The Rails app is &amp;ldquo;newed&amp;rdquo; prior to spinning up the app for the first time.
+This avoids the need to make the placeholder Gemfile as in the Docker
+example, and IMHO, feels like it more clearly separates the containerization
+step from the source code implementation step.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1&gt;Dockered&lt;/h1&gt;
+
+&lt;p&gt;And there you have it. With a few minor tweaks to the Dockerfile, bundler has
+been silenced, and the deployment configuration uses a dedicated, unprivileged
+user for managing package installation and starting the relevant app. What&amp;rsquo;s
+more is that it accomplishes this while both leveraging the base Ruby image on
+Docker Hub and avoiding the overhead of RVM or rbenv. All in all, this kind of
+very particular goal really helped to clarify my understanding of Docker, from
+permissions all the way to source code copying.  Not least of all, this leaves
+me feeling a bit more at-ease, knowing that there is one less way to succumb to
+some as-yet unknown vulnerability in Docker whilst running errant &lt;code&gt;sudo&lt;/code&gt;
+commands in Dockerfiles.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Emulate Default Scope with Around Filter and Scoping</title>
     <link rel="alternate" href="http://blog.url.com/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html"/>
@@ -694,89 +818,6 @@ don&amp;rsquo;t fall into some kind of &lt;a href="/2015/02/07/drinking-the-kool
 &lt;p&gt;And the dragon was all like, &amp;ldquo;Geez, dude, you have no idea how hard is to talk in percent signs and stuff all the time, thanks for URI decoding me.&amp;rdquo; And there was peace and API integration throughout the land FOREVER AND EVER HAPPILY EVER AFTER.&lt;/p&gt;
 
 &lt;h1&gt;THE END&lt;/h1&gt;
-</content>
-  </entry>
-  <entry>
-    <title>LEDs and 303s Static Page on Divshot</title>
-    <link rel="alternate" href="http://blog.url.com/2014/11/24/leds-and-303s-static-page-on-divshot.html"/>
-    <id>http://blog.url.com/2014/11/24/leds-and-303s-static-page-on-divshot.html</id>
-    <published>2014-11-23T16:53:00-08:00</published>
-    <updated>2015-02-17T21:59:12-08:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;p&gt;Took some time to spin up a home page for my music project this weekend, and decided it would be a great opportunity to not only level up my Middleman and design chops, but also try out a new (&lt;em&gt;to me anyway&lt;/em&gt;) static hosting service called Divshot.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h1&gt;The Site&lt;/h1&gt;
-
-&lt;p&gt;I&amp;rsquo;ve produced electronic tracks for over a decade now (going all the way back to Fruityloops 1.0). My current musical project, &lt;a href="http://www.ledsand303s.com"&gt;LEDs and 303s&lt;/a&gt; has been long overdue for its own HQ. Building a quick landing page for this purpose has not only given me renewed motivation to get back to writing music, but also provides another outlet for some design and front-end hackery.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://www.ledsand303s.com"&gt;&lt;img alt="LEDs and 303s Home Page" src="/images/ledshome.png" /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Since I&amp;rsquo;ve been so happy with Middleman for this site, I chose to stick with it for the L303 home page. To keep things simple, it leverages the HTML5 Boilerplate template:&lt;/p&gt;
-&lt;pre class="highlight shell"&gt;&lt;code&gt;  &lt;span class="nv"&gt;$ &lt;/span&gt;middleman init ledsand303s.com --template&lt;span class="o"&gt;=&lt;/span&gt;html5
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;All other CSS was handcoded to keep the CSS size down. As a comparison, this site&amp;rsquo;s primary CSS file comes in at 46.5KB, while &lt;em&gt;LEDs and 303s&lt;/em&gt; is a piddly 7.4KB. There are other differences in approach between the two stylesheets and this is arguably negligible, but the relative size is still telling. This isn&amp;rsquo;t to say I would use this approach for every site, but it is nice to arrive back at this point from a couple years of jumping straight to Bootstrap or Foundation to kick off a site. I also modified the root CSS file slightly to combine all CSS into single file. Instead of using &lt;code&gt;import&lt;/code&gt; statements at the top of &lt;code&gt;main.css&lt;/code&gt;, I opted for the following:&lt;/p&gt;
-&lt;pre class="highlight scss"&gt;&lt;code&gt;&lt;span class="cm"&gt;/*
- *= require normalize
- *= require main
-*/&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1&gt;Background Effect&lt;/h1&gt;
-
-&lt;p&gt;For Le Coolness++, I decided to add a background effect. Actually, it was because the background loading into place one row of pixels at a time was sort of a buzzkill, but same diff. I manage Javascript dependencies using &lt;a href="http://bower.io/"&gt;Bower&lt;/a&gt;. The only configuration tweak of note here is the addition of a &lt;code&gt;.bowerrc&lt;/code&gt; file at the root of the project containing the following:&lt;/p&gt;
-&lt;pre class="highlight json"&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
-  &lt;/span&gt;&lt;span class="s2"&gt;"directory"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"source/js/bower_components"&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This installs all of the Bower packages into a location where they can be easily referenced from the Middleman asset pipeline. This is not strictly necessary, but it does prevent coming back in a few months and being all like:&lt;/p&gt;
-&lt;pre class="highlight coffeescript"&gt;&lt;code&gt;&lt;span class="c1"&gt;#= require ../../../why_isnt_this_in_the_assets_dir/sulk
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You&amp;rsquo;ll also want to add &lt;code&gt;bower_components&lt;/code&gt; to your &lt;code&gt;.gitignore&lt;/code&gt;, to be sure. &lt;a href="https://github.com/alexanderdickson/waitForImages"&gt;waitForImages&lt;/a&gt; is used to detect when the background image is ready, and combined with a smattering of CSS and a simple JS function for the Full Effect:&lt;/p&gt;
-&lt;pre class="highlight scss"&gt;&lt;code&gt;&lt;span class="nv"&gt;$bg-image-tiny&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nf"&gt;image-path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"fall-in-to-the-gap-tiny.jpeg"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-&lt;span class="c1"&gt;// Rest of the CSS here...
-&lt;/span&gt;
-&lt;span class="nc"&gt;.background&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nl"&gt;position&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;fixed&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;bottom&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;left&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;right&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;background-image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="sx"&gt;url('&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="nv"&gt;$bg-image-tiny&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sx"&gt;')&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;background-size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;cover&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;background-position&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;center&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;@include&lt;/span&gt; &lt;span class="nd"&gt;single-transition&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;opacity&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="m"&gt;12s&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ease-in&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-  &lt;span class="k"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nc"&gt;.show&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="nl"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="mi"&gt;.7&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You may notice the background is &amp;#8220;mobile-first&amp;#8221; , i.e. the smallest possible image is used as the default, and media queries are used to display images of increasingly higher resolution.&lt;/p&gt;
-
-&lt;p&gt;Coffeescript to display the background when it is ready is as follows:&lt;/p&gt;
-&lt;pre class="highlight coffeescript"&gt;&lt;code&gt;&lt;span class="c1"&gt;#= require bower_components/waitForImages/dist/jquery.waitforimages.min
-&lt;/span&gt;
-&lt;span class="nx"&gt;$&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-  &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'.background'&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="na"&gt;waitForImages&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
-    &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="na"&gt;addClass&lt;/span&gt; &lt;span class="s"&gt;'show'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1&gt;Divshot&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href="https://divshot.com/"&gt;Divshot&lt;/a&gt; makes it super simple to deploy static sites to their managed hosting platform. You should follow their setup instructions to install the CLI utility, and then log in from the command line. Once that&amp;rsquo;s done, run &lt;code&gt;divshot init&lt;/code&gt;, and when prompted to set the root for the project use &lt;code&gt;./build&lt;/code&gt;. The default values can be used for all of the other options. With this done, run &lt;code&gt;divshot push&lt;/code&gt;, and &lt;em&gt;poof&lt;/em&gt; a website. Divshot goes so far as to offer development, staging, and production instances. If your project benefits from this, you can &amp;#8220;promote&amp;#8221; your app by running &lt;code&gt;divshot promote [source_environment] [target_environment]&lt;/code&gt;. I only use the development and production instances for &lt;em&gt;LEDs and 303s&lt;/em&gt;, but even that&amp;rsquo;s helpful for avoiding blowing up the live site with some unexpected configuration issue.&lt;/p&gt;
-
-&lt;h1&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;This workflow is definitely my new go-to for static sites. There&amp;rsquo;s never been a better time to get to work on my Cats In Space visualization project.&lt;/p&gt;
 </content>
   </entry>
 </feed>

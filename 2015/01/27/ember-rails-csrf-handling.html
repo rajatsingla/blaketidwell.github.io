@@ -4,333 +4,345 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]> ><! <![endif]-->
 <html class='no-js'>
-<!-- <![endif] -->
-<head></head>
-<meta charset='utf-8'>
-<meta content='IE=edge;chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='description'>
-<meta content='width=device-width' name='viewport'>
-<meta content='summary' name='twitter:card'>
-<meta content='@BATidwell' name='twitter:site'>
-<meta content='Ember Rails CSRF Handling' name='twitter:title'>
-<meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='twitter:description'>
-<meta content='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png' name='twitter:image'>
-<meta content='http://www.blaketidwell.com/2015/01/27/ember-rails-csrf-handling.html' name='twitter:url'>
-<title>
-Blake Tidwell - Ember Rails CSRF Handling
-</title>
-<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-<link href="/stylesheets/app.css" rel="stylesheet" type="text/css" />
-<link href='/favicon.ico?v=3' rel='shortcut icon'>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
+  <!-- <![endif] -->
+  <head></head>
+  <meta charset='utf-8'>
+  <meta content='IE=edge;chrome=1' http-equiv='X-UA-Compatible'>
+  <meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='description'>
+  <meta content='width=device-width' name='viewport'>
+  <meta content='summary' name='twitter:card'>
+  <meta content='@BATidwell' name='twitter:site'>
+  <meta content='Ember Rails CSRF Handling' name='twitter:title'>
+  <meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='twitter:description'>
+  <meta content='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png' name='twitter:image'>
+  <meta content='http://www.blaketidwell.com/2015/01/27/ember-rails-csrf-handling.html' name='twitter:url'>
+  <title>
+    Blake Tidwell - Ember Rails CSRF Handling
+  </title>
+  <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+  <link href="/stylesheets/app.css" rel="stylesheet" type="text/css" />
+  <link href='/favicon.ico?v=3' rel='shortcut icon'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
 </html>
 <body>
-<!--[if lt IE 7]>
-<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-<![endif]-->
-<div id='fb-root'></div>
-<div class='row' id='header'>
-<div class='small-12 columns'>
-<div class='row'>
-<div class='small-9 columns'>
-<h1>
-<a href="/">Blake Tidwell</a>
-</h1>
-<h2>Code. Create. Connect.</h2>
-</div>
-<div class='small-3 columns'>
-<img class='avatar show-for-medium-up' src='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png'>
-</div>
-</div>
-<div class='row'>
-<div class='small-12 medium-offset-9 medium-3 columns'>
-<ul class='social inline-list'>
-<li>
-<a href='http://www.linkedin.com/in/blaketidwell'>
-<i class='fi-social-linkedin'></i>
-</a>
-</li>
-<li>
-<a href='https://github.com/blaketidwell'>
-<i class='fi-social-github'></i>
-</a>
-</li>
-<li>
-<a href='https://twitter.com/BATidwell'>
-<i class='fi-social-twitter'></i>
-</a>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class='row' id='container'>
-<div class='small-12 medium-8 columns' id='main' role='main'>
-<article>
-<h1 class='article-title'>Ember Rails CSRF Handling</h1>
-<div class='row share-container'>
-<div class='small-12 columns'>
-<div class='share'>
-<a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
-Tweet
-</a>
-<div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
-</div>
-</div>
-</div>
-<p>To get some more practice with my new Vim + Tmux setup (a topic unto itself, I might add), I ran back through the Ember JS &ldquo;Getting Started&rdquo; guide and wired it to a simple Rails back-end. However, I wanted to adhere to a strict SPA/API architecture, and ran into some CSRF issues as a result.</p>
-
-<p></p>
-
-<p><em>Update: Imagine my surprise when I tried to do some more Googling related to this topic and this very blog post showed up within the first few results a few times. I would like to add, as a Good Internet Citizen, that I am not a security expert, just a security advocate. This is a work in progress, so there is very likely some room for improvement. Specifically, StackOverflow tells me that <a href="http://stackoverflow.com/a/15056471">&ldquo;passing the CSRF token through the API for login is a particularly bad practice&rdquo;</a>. I will be personally confirming whether this applies to the approach outlined below and update accordingly.</em></p>
-
-<h2>The Challenge</h2>
-
-<p>To protect against CSRF attacks, Rails generates an authenticity token for each form submission. If the token isn&rsquo;t present, the request is rejected. This works great for apps that are served up by the Rails app (since said token is available as a meta-tag on the hosting page), but things start to get a little trickier when your single-page app is decoupled from the Rails server (say with something like an S3-oriented deployment, or Divshot). In this scenario, you have to write some custom glue code to ensure the SPA is able to retrieve and then provide the token on each request, and, likewise, to ensure the Rails app checks for it in the correct way. There are plenty of SO threads and blog posts available covering CSRF handling for SPAs, but they all seem to focus on Angular JS, and even then, only cover part of the total solution. I wound up stitching together resources from a handful of locations to get a CSRF fix for Ember that I was satisfied with.</p>
-
-<h2>Server Side Glue</h2>
-
-<p>The Angular JS docs make a <a href="https://docs.angularjs.org/api/ng/service/$http#cross-site-request-forgery-xsrf-protection">suggestion</a> which prompted <a href="http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on/15761835#15761835">this response posted to SO by HyungYuHei</a>. I&rsquo;ve included the relevant snippet below for completeness:</p>
-<pre class="highlight ruby"><code><span class="c1"># app/controllers/application_controller.rb</span>
-
-<span class="c1"># Turn on request forgery protection</span>
-<span class="n">protect_from_forgery</span>
-
-<span class="n">after_filter</span> <span class="ss">:set_csrf_cookie</span>
-
-<span class="k">def</span> <span class="nf">set_csrf_cookie</span>
-  <span class="n">cookies</span><span class="p">[</span><span class="s1">'XSRF-TOKEN'</span><span class="p">]</span> <span class="o">=</span> <span class="n">form_authenticity_token</span> <span class="k">if</span> <span class="n">protect_against_forgery?</span>
-<span class="k">end</span>
-
-<span class="kp">protected</span>
-
-  <span class="c1"># In Rails 4.2 and above</span>
-  <span class="k">def</span> <span class="nf">verified_request?</span>
-    <span class="k">super</span> <span class="o">||</span> <span class="n">valid_authenticity_token?</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s1">'X-XSRF-TOKEN'</span><span class="p">])</span>
-  <span class="k">end</span>
-</code></pre>
-
-<p>This sets the authenticity token as a cookie, and then checks for it in the headers on every request. The snippet worked flawlessly, and provided a great starting point for integrating the front-end of this exercise and Everything Was Amazing&trade;.</p>
-
-<h2>Front End Goop</h2>
-
-<p>The next step is to configure the Ember app to snag the authenticity token out of the cookies and send it with each API request. Unfortunately, as mentioned, the SO thread only covers Angular JS. This left me to dig through the Ember JS docs for a bit, before coming upon <a href="http://emberjs.com/api/data/classes/DS.RESTAdapter.html">this entry</a>. Toward the bottom is a section on customizing request headers. To this effect, I added the following to <code>adapters/application.js</code>:</p>
-<pre class="highlight javascript"><code><span class="kr">export</span> <span class="k">default</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">ActiveModelAdapter</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-  <span class="na">namespace</span><span class="p">:</span> <span class="s1">'api'</span><span class="p">,</span>
-  <span class="na">headers</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="p">{</span>
-      <span class="s2">"X-XSRF-TOKEN"</span><span class="p">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/XSRF</span><span class="se">\-</span><span class="sr">TOKEN</span><span class="se">\=([^</span><span class="sr">;</span><span class="se">]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">),</span> <span class="s2">"1"</span><span class="p">)</span>
-    <span class="p">}</span>
-  <span class="p">}.</span><span class="nx">property</span><span class="p">().</span><span class="kr">volatile</span><span class="p">()</span>
-<span class="p">});</span>
-</code></pre>
-
-<h2>Ultimate Victory</h2>
-
-<p>So, la la la, everything was great, and I rode off into the sunset, OKAY BUT NO, SERIOUSLY, why was I still getting <code>Invalid Authenticity Token: U SUCK</code> error messages?</p>
-
-<h3>Okay, So Not So Ultimate</h3>
-
-<p>And thank goodness, because this wouldn&rsquo;t be much of a blog post without a plot twist at the end where The Developer has to wrestle a flaming error message to the ground with their bare hands. So, I mounted my trusty steed or laptop or whatever, and like, opened up my Developer Tools in Chrome. And I was like &ldquo;Show thy Lizard Face, that I may smite it.&rdquo; And The Foul Cookie Dragon of the Resources Tab was all like:</p>
-<pre class="highlight plaintext"><code>R8xp3FN5QrlQM12GLb28f6%2BtPsYkcYYNfRsYQ3q5ryq%2Bx387750%2BHI%2FCxVUrjZDCiX4eIL63V4BF4NcA7eLddg%3D%3D
-</code></pre>
-
-<p>And I said unto the dragon, &ldquo;Wow, you must be blast at parties&rdquo; or maybe it was like &ldquo;Now Dragon, use your words.&rdquo; but actually I was like WAIT A MINUTE DRAGON what&rsquo;s with all that URL encoded mess you said toward the end there? that seems pretty important, I bet. And wouldn&rsquo;t you know it, that dragon solved the mystery. So I changed:</p>
-<pre class="highlight javascript"><code><span class="k">return</span> <span class="p">{</span>
-  <span class="s2">"X-XSRF-TOKEN"</span><span class="p">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/XSRF</span><span class="se">\-</span><span class="sr">TOKEN</span><span class="se">\=([^</span><span class="sr">;</span><span class="se">]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">),</span> <span class="s2">"1"</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>to&hellip;</p>
-<pre class="highlight javascript"><code><span class="k">return</span> <span class="p">{</span>
-  <span class="s2">"X-XSRF-TOKEN"</span><span class="p">:</span> <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">Ember</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/XSRF</span><span class="se">\-</span><span class="sr">TOKEN</span><span class="se">\=([^</span><span class="sr">;</span><span class="se">]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">),</span> <span class="s2">"1"</span><span class="p">))</span>
-<span class="p">}</span>
-</code></pre>
-
-<p><strong>YES! decodeURIComponent!</strong></p>
-
-<p>And the dragon was all like, &ldquo;Geez, dude, you have no idea how hard is to talk in percent signs and stuff all the time, thanks for URI decoding me.&rdquo; And there was peace and API integration throughout the land FOREVER AND EVER HAPPILY EVER AFTER.</p>
-
-<h1>THE END</h1>
-
-<div class='row'>
-<div class='small-12 columns'>
-<div class='share'>
-<a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
-Tweet
-</a>
-<div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
-</div>
-</div>
-</div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-//<![CDATA[
-                  var disqus_title = 'Ember Rails CSRF Handling'
-                                var disqus_shortname = 'blaketidwell';
-                                          var disqus_identifier = '/2015-01-27-ember-rails-csrf-handling.html';
-          var disqus_url = 'http://www.blaketidwell.com/2015-01-27-ember-rails-csrf-handling.html';
-                  
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-//]]>
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<script type="text/javascript">
-//<![CDATA[
-    var disqus_shortname = 'blaketidwell';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-//]]>
-</script>
-
-</article>
-
-</div>
-<aside class='medium-4 columns show-for-medium-up' id='filters'>
-<h3>Recent Articles</h3>
-<ul>
-<li>
-<a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
-<span>Aug&nbsp;21</span>
-</li>
-<li>
-<a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
-<span>Aug&nbsp;16</span>
-</li>
-<li>
-<a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
-<span>Mar&nbsp; 4</span>
-</li>
-<li>
-<a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
-<span>Feb&nbsp; 7</span>
-</li>
-<li>
-<a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
-<span>Jan&nbsp;27</span>
-</li>
-<li>
-<a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
-<span>Nov&nbsp;24</span>
-</li>
-<li>
-<a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
-<span>Mar&nbsp;23</span>
-</li>
-</ul>
-<h3>Tags</h3>
-<ul>
-<li><a href="/tags/technical.html">technical (7)</a></li>
-<li><a href="/tags/ruby.html">ruby (5)</a></li>
-<li><a href="/tags/blog.html">blog (1)</a></li>
-<li><a href="/tags/how-to.html">how-to (3)</a></li>
-<li><a href="/tags/deployment.html">deployment (1)</a></li>
-<li><a href="/tags/emberjs.html">emberjs (1)</a></li>
-<li><a href="/tags/rails.html">rails (3)</a></li>
-<li><a href="/tags/quickread.html">quickread (2)</a></li>
-<li><a href="/tags/dragons.html">dragons (1)</a></li>
-<li><a href="/tags/functional.html">functional (2)</a></li>
-<li><a href="/tags/languages.html">languages (2)</a></li>
-<li><a href="/tags/erlang.html">erlang (2)</a></li>
-<li><a href="/tags/elixir.html">elixir (2)</a></li>
-<li><a href="/tags/cash-cats.html">cash cats (1)</a></li>
-</ul>
-<h3>By Year</h3>
-<ul>
-<li><a href="/2015.html">2015 (5)</a></li>
-<li><a href="/2014.html">2014 (2)</a></li>
-</ul>
-</aside>
-</div>
-<div id='footer'>
-<div class='row'>
-<div class='small-12 medium-4 columns'>
-<h3>Recent Articles</h3>
-<ul>
-<li>
-<a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
-<span>Aug&nbsp;21</span>
-</li>
-<li>
-<a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
-<span>Aug&nbsp;16</span>
-</li>
-<li>
-<a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
-<span>Mar&nbsp; 4</span>
-</li>
-<li>
-<a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
-<span>Feb&nbsp; 7</span>
-</li>
-<li>
-<a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
-<span>Jan&nbsp;27</span>
-</li>
-<li>
-<a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
-<span>Nov&nbsp;24</span>
-</li>
-<li>
-<a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
-<span>Mar&nbsp;23</span>
-</li>
-</ul>
-</div>
-<div class='small-12 medium-4 columns'>
-<h3>Tags</h3>
-<div class='row'>
-<div class='small-12 medium-6 columns'>
-<ul class='tag-group'>
-<li><a href="/tags/technical.html">technical (7)</a></li>
-<li><a href="/tags/ruby.html">ruby (5)</a></li>
-<li><a href="/tags/blog.html">blog (1)</a></li>
-<li><a href="/tags/how-to.html">how-to (3)</a></li>
-<li><a href="/tags/deployment.html">deployment (1)</a></li>
-<li><a href="/tags/emberjs.html">emberjs (1)</a></li>
-<li><a href="/tags/rails.html">rails (3)</a></li>
-</ul>
-</div>
-<div class='small-12 medium-6 columns'>
-<ul class='tag-group last'>
-<li><a href="/tags/quickread.html">quickread (2)</a></li>
-<li><a href="/tags/dragons.html">dragons (1)</a></li>
-<li><a href="/tags/functional.html">functional (2)</a></li>
-<li><a href="/tags/languages.html">languages (2)</a></li>
-<li><a href="/tags/erlang.html">erlang (2)</a></li>
-<li><a href="/tags/elixir.html">elixir (2)</a></li>
-<li><a href="/tags/cash-cats.html">cash cats (1)</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class='small-12 medium-4 columns'>
-<h3>By Year</h3>
-<ul>
-<li><a href="/2015.html">2015 (5)</a></li>
-<li><a href="/2014.html">2014 (2)</a></li>
-</ul>
-</div>
-</div>
-</div>
-<script src="/javascripts/app.js" type="text/javascript"></script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-22797683-1', 'blaketidwell.com');
-  ga('send', 'pageview');
-</script>
+  <!--[if lt IE 7]>
+    <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+  <![endif]-->
+  <div id='fb-root'></div>
+  <div class='row' id='header'>
+    <div class='small-12 columns'>
+      <div class='row'>
+        <div class='small-9 columns'>
+          <h1>
+            <a href="/">Blake Tidwell</a>
+          </h1>
+          <h2>Code. Create. Connect.</h2>
+        </div>
+        <div class='small-3 columns'>
+          <img class='avatar show-for-medium-up' src='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png'>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='small-12 medium-offset-9 medium-3 columns'>
+          <ul class='social inline-list'>
+            <li>
+              <a href='http://www.linkedin.com/in/blaketidwell'>
+                <i class='fi-social-linkedin'></i>
+              </a>
+            </li>
+            <li>
+              <a href='https://github.com/blaketidwell'>
+                <i class='fi-social-github'></i>
+              </a>
+            </li>
+            <li>
+              <a href='https://twitter.com/BATidwell'>
+                <i class='fi-social-twitter'></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row' id='container'>
+    <div class='small-12 medium-8 columns' id='main' role='main'>
+      <article>
+        <h1 class='article-title'>Ember Rails CSRF Handling</h1>
+        <div class='row share-container'>
+          <div class='small-12 columns'>
+            <div class='share'>
+              <a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+                Tweet
+              </a>
+              <div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+            </div>
+          </div>
+        </div>
+        <p>To get some more practice with my new Vim + Tmux setup (a topic unto itself, I might add), I ran back through the Ember JS &ldquo;Getting Started&rdquo; guide and wired it to a simple Rails back-end. However, I wanted to adhere to a strict SPA/API architecture, and ran into some CSRF issues as a result.</p>
+        
+        <p></p>
+        
+        <p><em>Update: Imagine my surprise when I tried to do some more Googling related to this topic and this very blog post showed up within the first few results a few times. I would like to add, as a Good Internet Citizen, that I am not a security expert, just a security advocate. This is a work in progress, so there is very likely some room for improvement. Specifically, StackOverflow tells me that <a href="http://stackoverflow.com/a/15056471">&ldquo;passing the CSRF token through the API for login is a particularly bad practice&rdquo;</a>. I will be personally confirming whether this applies to the approach outlined below and update accordingly.</em></p>
+        
+        <h2>The Challenge</h2>
+        
+        <p>To protect against CSRF attacks, Rails generates an authenticity token for each form submission. If the token isn&rsquo;t present, the request is rejected. This works great for apps that are served up by the Rails app (since said token is available as a meta-tag on the hosting page), but things start to get a little trickier when your single-page app is decoupled from the Rails server (say with something like an S3-oriented deployment, or Divshot). In this scenario, you have to write some custom glue code to ensure the SPA is able to retrieve and then provide the token on each request, and, likewise, to ensure the Rails app checks for it in the correct way. There are plenty of SO threads and blog posts available covering CSRF handling for SPAs, but they all seem to focus on Angular JS, and even then, only cover part of the total solution. I wound up stitching together resources from a handful of locations to get a CSRF fix for Ember that I was satisfied with.</p>
+        
+        <h2>Server Side Glue</h2>
+        
+        <p>The Angular JS docs make a <a href="https://docs.angularjs.org/api/ng/service/$http#cross-site-request-forgery-xsrf-protection">suggestion</a> which prompted <a href="http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on/15761835#15761835">this response posted to SO by HyungYuHei</a>. I&rsquo;ve included the relevant snippet below for completeness:</p>
+        <pre class="highlight ruby"><code><span class="c1"># app/controllers/application_controller.rb</span>
+        
+        <span class="c1"># Turn on request forgery protection</span>
+        <span class="n">protect_from_forgery</span>
+        
+        <span class="n">after_filter</span> <span class="ss">:set_csrf_cookie</span>
+        
+        <span class="k">def</span> <span class="nf">set_csrf_cookie</span>
+          <span class="n">cookies</span><span class="p">[</span><span class="s1">'XSRF-TOKEN'</span><span class="p">]</span> <span class="o">=</span> <span class="n">form_authenticity_token</span> <span class="k">if</span> <span class="n">protect_against_forgery?</span>
+        <span class="k">end</span>
+        
+        <span class="kp">protected</span>
+        
+          <span class="c1"># In Rails 4.2 and above</span>
+          <span class="k">def</span> <span class="nf">verified_request?</span>
+            <span class="k">super</span> <span class="o">||</span> <span class="n">valid_authenticity_token?</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s1">'X-XSRF-TOKEN'</span><span class="p">])</span>
+          <span class="k">end</span>
+        </code></pre>
+        
+        <p>This sets the authenticity token as a cookie, and then checks for it in the headers on every request. The snippet worked flawlessly, and provided a great starting point for integrating the front-end of this exercise and Everything Was Amazing&trade;.</p>
+        
+        <h2>Front End Goop</h2>
+        
+        <p>The next step is to configure the Ember app to snag the authenticity token out of the cookies and send it with each API request. Unfortunately, as mentioned, the SO thread only covers Angular JS. This left me to dig through the Ember JS docs for a bit, before coming upon <a href="http://emberjs.com/api/data/classes/DS.RESTAdapter.html">this entry</a>. Toward the bottom is a section on customizing request headers. To this effect, I added the following to <code>adapters/application.js</code>:</p>
+        <pre class="highlight javascript"><code><span class="kr">export</span> <span class="k">default</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">ActiveModelAdapter</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+          <span class="na">namespace</span><span class="p">:</span> <span class="s1">'api'</span><span class="p">,</span>
+          <span class="na">headers</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">{</span>
+              <span class="s2">"X-XSRF-TOKEN"</span><span class="p">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/XSRF</span><span class="se">\-</span><span class="sr">TOKEN</span><span class="se">\=([^</span><span class="sr">;</span><span class="se">]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">),</span> <span class="s2">"1"</span><span class="p">)</span>
+            <span class="p">}</span>
+          <span class="p">}.</span><span class="nx">property</span><span class="p">().</span><span class="kr">volatile</span><span class="p">()</span>
+        <span class="p">});</span>
+        </code></pre>
+        
+        <h2>Ultimate Victory</h2>
+        
+        <p>So, la la la, everything was great, and I rode off into the sunset, OKAY BUT NO, SERIOUSLY, why was I still getting <code>Invalid Authenticity Token: U SUCK</code> error messages?</p>
+        
+        <h3>Okay, So Not So Ultimate</h3>
+        
+        <p>And thank goodness, because this wouldn&rsquo;t be much of a blog post without a plot twist at the end where The Developer has to wrestle a flaming error message to the ground with their bare hands. So, I mounted my trusty steed or laptop or whatever, and like, opened up my Developer Tools in Chrome. And I was like &ldquo;Show thy Lizard Face, that I may smite it.&rdquo; And The Foul Cookie Dragon of the Resources Tab was all like:</p>
+        <pre class="highlight plaintext"><code>R8xp3FN5QrlQM12GLb28f6%2BtPsYkcYYNfRsYQ3q5ryq%2Bx387750%2BHI%2FCxVUrjZDCiX4eIL63V4BF4NcA7eLddg%3D%3D
+        </code></pre>
+        
+        <p>And I said unto the dragon, &ldquo;Wow, you must be blast at parties&rdquo; or maybe it was like &ldquo;Now Dragon, use your words.&rdquo; but actually I was like WAIT A MINUTE DRAGON what&rsquo;s with all that URL encoded mess you said toward the end there? that seems pretty important, I bet. And wouldn&rsquo;t you know it, that dragon solved the mystery. So I changed:</p>
+        <pre class="highlight javascript"><code><span class="k">return</span> <span class="p">{</span>
+          <span class="s2">"X-XSRF-TOKEN"</span><span class="p">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/XSRF</span><span class="se">\-</span><span class="sr">TOKEN</span><span class="se">\=([^</span><span class="sr">;</span><span class="se">]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">),</span> <span class="s2">"1"</span><span class="p">)</span>
+        <span class="p">}</span>
+        </code></pre>
+        
+        <p>to&hellip;</p>
+        <pre class="highlight javascript"><code><span class="k">return</span> <span class="p">{</span>
+          <span class="s2">"X-XSRF-TOKEN"</span><span class="p">:</span> <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">Ember</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/XSRF</span><span class="se">\-</span><span class="sr">TOKEN</span><span class="se">\=([^</span><span class="sr">;</span><span class="se">]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">),</span> <span class="s2">"1"</span><span class="p">))</span>
+        <span class="p">}</span>
+        </code></pre>
+        
+        <p><strong>YES! decodeURIComponent!</strong></p>
+        
+        <p>And the dragon was all like, &ldquo;Geez, dude, you have no idea how hard is to talk in percent signs and stuff all the time, thanks for URI decoding me.&rdquo; And there was peace and API integration throughout the land FOREVER AND EVER HAPPILY EVER AFTER.</p>
+        
+        <h1>THE END</h1>
+        <div class='row'>
+          <div class='small-12 columns'>
+            <div class='share'>
+              <a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+                Tweet
+              </a>
+              <div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+            </div>
+          </div>
+        </div>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        //<![CDATA[
+                          var disqus_title = 'Ember Rails CSRF Handling'
+                                        var disqus_shortname = 'blaketidwell';
+                                                  var disqus_identifier = '/2015-01-27-ember-rails-csrf-handling.html';
+                  var disqus_url = 'http://www.blaketidwell.com/2015-01-27-ember-rails-csrf-handling.html';
+                          
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        //]]>
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <script type="text/javascript">
+        //<![CDATA[
+            var disqus_shortname = 'blaketidwell';
+            (function () {
+                var s = document.createElement('script'); s.async = true;
+                s.type = 'text/javascript';
+                s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+        //]]>
+        </script>
+      </article>
+    </div>
+    <aside class='medium-4 columns show-for-medium-up' id='filters'>
+      <h3>Recent Articles</h3>
+      <ul>
+        <li>
+          <a href="/2015/11/13/running-docker-without-breaching-the-hull.html">Running Rails On Docker Without Breaching the Hull</a>
+          <span>Nov&nbsp;13</span>
+        </li>
+        <li>
+          <a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
+          <span>Aug&nbsp;21</span>
+        </li>
+        <li>
+          <a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
+          <span>Aug&nbsp;16</span>
+        </li>
+        <li>
+          <a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
+          <span>Mar&nbsp; 4</span>
+        </li>
+        <li>
+          <a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
+          <span>Feb&nbsp; 7</span>
+        </li>
+        <li>
+          <a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
+          <span>Jan&nbsp;27</span>
+        </li>
+        <li>
+          <a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
+          <span>Nov&nbsp;24</span>
+        </li>
+        <li>
+          <a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
+          <span>Mar&nbsp;23</span>
+        </li>
+      </ul>
+      <h3>Tags</h3>
+      <ul>
+        <li><a href="/tags/technical.html">technical (7)</a></li>
+        <li><a href="/tags/ruby.html">ruby (5)</a></li>
+        <li><a href="/tags/blog.html">blog (1)</a></li>
+        <li><a href="/tags/how-to.html">how-to (3)</a></li>
+        <li><a href="/tags/deployment.html">deployment (1)</a></li>
+        <li><a href="/tags/emberjs.html">emberjs (1)</a></li>
+        <li><a href="/tags/rails.html">rails (3)</a></li>
+        <li><a href="/tags/quickread.html">quickread (2)</a></li>
+        <li><a href="/tags/dragons.html">dragons (1)</a></li>
+        <li><a href="/tags/functional.html">functional (2)</a></li>
+        <li><a href="/tags/languages.html">languages (2)</a></li>
+        <li><a href="/tags/erlang.html">erlang (2)</a></li>
+        <li><a href="/tags/elixir.html">elixir (2)</a></li>
+        <li><a href="/tags/cash-cats.html">cash cats (1)</a></li>
+        <li><a href="/tags/docker.html">docker (1)</a></li>
+        <li><a href="/tags/containers.html">containers (1)</a></li>
+        <li><a href="/tags/hull-integrity.html">hull-integrity (1)</a></li>
+        <li><a href="/tags/security.html">security (1)</a></li>
+      </ul>
+      <h3>By Year</h3>
+      <ul>
+        <li><a href="/2015.html">2015 (6)</a></li>
+        <li><a href="/2014.html">2014 (2)</a></li>
+      </ul>
+    </aside>
+  </div>
+  <div id='footer'>
+    <div class='row'>
+      <div class='small-12 medium-4 columns'>
+        <h3>Recent Articles</h3>
+        <ul>
+          <li>
+            <a href="/2015/11/13/running-docker-without-breaching-the-hull.html">Running Rails On Docker Without Breaching the Hull</a>
+            <span>Nov&nbsp;13</span>
+          </li>
+          <li>
+            <a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
+            <span>Aug&nbsp;21</span>
+          </li>
+          <li>
+            <a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
+            <span>Aug&nbsp;16</span>
+          </li>
+          <li>
+            <a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
+            <span>Mar&nbsp; 4</span>
+          </li>
+          <li>
+            <a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
+            <span>Feb&nbsp; 7</span>
+          </li>
+          <li>
+            <a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
+            <span>Jan&nbsp;27</span>
+          </li>
+          <li>
+            <a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
+            <span>Nov&nbsp;24</span>
+          </li>
+          <li>
+            <a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
+            <span>Mar&nbsp;23</span>
+          </li>
+        </ul>
+      </div>
+      <div class='small-12 medium-4 columns'>
+        <h3>Tags</h3>
+        <div class='row'>
+          <div class='small-12 medium-6 columns'>
+            <ul class='tag-group'>
+              <li><a href="/tags/technical.html">technical (7)</a></li>
+              <li><a href="/tags/ruby.html">ruby (5)</a></li>
+              <li><a href="/tags/blog.html">blog (1)</a></li>
+              <li><a href="/tags/how-to.html">how-to (3)</a></li>
+              <li><a href="/tags/deployment.html">deployment (1)</a></li>
+              <li><a href="/tags/emberjs.html">emberjs (1)</a></li>
+              <li><a href="/tags/rails.html">rails (3)</a></li>
+              <li><a href="/tags/quickread.html">quickread (2)</a></li>
+              <li><a href="/tags/dragons.html">dragons (1)</a></li>
+            </ul>
+          </div>
+          <div class='small-12 medium-6 columns'>
+            <ul class='tag-group last'>
+              <li><a href="/tags/functional.html">functional (2)</a></li>
+              <li><a href="/tags/languages.html">languages (2)</a></li>
+              <li><a href="/tags/erlang.html">erlang (2)</a></li>
+              <li><a href="/tags/elixir.html">elixir (2)</a></li>
+              <li><a href="/tags/cash-cats.html">cash cats (1)</a></li>
+              <li><a href="/tags/docker.html">docker (1)</a></li>
+              <li><a href="/tags/containers.html">containers (1)</a></li>
+              <li><a href="/tags/hull-integrity.html">hull-integrity (1)</a></li>
+              <li><a href="/tags/security.html">security (1)</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class='small-12 medium-4 columns'>
+        <h3>By Year</h3>
+        <ul>
+          <li><a href="/2015.html">2015 (6)</a></li>
+          <li><a href="/2014.html">2014 (2)</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="/javascripts/app.js" type="text/javascript"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-22797683-1', 'blaketidwell.com');
+    ga('send', 'pageview');
+  </script>
 </body>

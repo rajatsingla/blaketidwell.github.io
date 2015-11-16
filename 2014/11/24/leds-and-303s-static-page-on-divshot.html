@@ -4,331 +4,343 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]> ><! <![endif]-->
 <html class='no-js'>
-<!-- <![endif] -->
-<head></head>
-<meta charset='utf-8'>
-<meta content='IE=edge;chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='description'>
-<meta content='width=device-width' name='viewport'>
-<meta content='summary' name='twitter:card'>
-<meta content='@BATidwell' name='twitter:site'>
-<meta content='LEDs and 303s Static Page on Divshot' name='twitter:title'>
-<meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='twitter:description'>
-<meta content='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png' name='twitter:image'>
-<meta content='http://www.blaketidwell.com/2014/11/24/leds-and-303s-static-page-on-divshot.html' name='twitter:url'>
-<title>
-Blake Tidwell - LEDs and 303s Static Page on Divshot
-</title>
-<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-<link href="/stylesheets/app.css" rel="stylesheet" type="text/css" />
-<link href='/favicon.ico?v=3' rel='shortcut icon'>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
+  <!-- <![endif] -->
+  <head></head>
+  <meta charset='utf-8'>
+  <meta content='IE=edge;chrome=1' http-equiv='X-UA-Compatible'>
+  <meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='description'>
+  <meta content='width=device-width' name='viewport'>
+  <meta content='summary' name='twitter:card'>
+  <meta content='@BATidwell' name='twitter:site'>
+  <meta content='LEDs and 303s Static Page on Divshot' name='twitter:title'>
+  <meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='twitter:description'>
+  <meta content='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png' name='twitter:image'>
+  <meta content='http://www.blaketidwell.com/2014/11/24/leds-and-303s-static-page-on-divshot.html' name='twitter:url'>
+  <title>
+    Blake Tidwell - LEDs and 303s Static Page on Divshot
+  </title>
+  <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+  <link href="/stylesheets/app.css" rel="stylesheet" type="text/css" />
+  <link href='/favicon.ico?v=3' rel='shortcut icon'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
 </html>
 <body>
-<!--[if lt IE 7]>
-<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-<![endif]-->
-<div id='fb-root'></div>
-<div class='row' id='header'>
-<div class='small-12 columns'>
-<div class='row'>
-<div class='small-9 columns'>
-<h1>
-<a href="/">Blake Tidwell</a>
-</h1>
-<h2>Code. Create. Connect.</h2>
-</div>
-<div class='small-3 columns'>
-<img class='avatar show-for-medium-up' src='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png'>
-</div>
-</div>
-<div class='row'>
-<div class='small-12 medium-offset-9 medium-3 columns'>
-<ul class='social inline-list'>
-<li>
-<a href='http://www.linkedin.com/in/blaketidwell'>
-<i class='fi-social-linkedin'></i>
-</a>
-</li>
-<li>
-<a href='https://github.com/blaketidwell'>
-<i class='fi-social-github'></i>
-</a>
-</li>
-<li>
-<a href='https://twitter.com/BATidwell'>
-<i class='fi-social-twitter'></i>
-</a>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class='row' id='container'>
-<div class='small-12 medium-8 columns' id='main' role='main'>
-<article>
-<h1 class='article-title'>LEDs and 303s Static Page on Divshot</h1>
-<div class='row share-container'>
-<div class='small-12 columns'>
-<div class='share'>
-<a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
-Tweet
-</a>
-<div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
-</div>
-</div>
-</div>
-<p>Took some time to spin up a home page for my music project this weekend, and decided it would be a great opportunity to not only level up my Middleman and design chops, but also try out a new (<em>to me anyway</em>) static hosting service called Divshot.</p>
-
-<p></p>
-
-<h1>The Site</h1>
-
-<p>I&rsquo;ve produced electronic tracks for over a decade now (going all the way back to Fruityloops 1.0). My current musical project, <a href="http://www.ledsand303s.com">LEDs and 303s</a> has been long overdue for its own HQ. Building a quick landing page for this purpose has not only given me renewed motivation to get back to writing music, but also provides another outlet for some design and front-end hackery.</p>
-
-<p><a href="http://www.ledsand303s.com"><img alt="LEDs and 303s Home Page" src="/images/ledshome.png" /></a></p>
-
-<p>Since I&rsquo;ve been so happy with Middleman for this site, I chose to stick with it for the L303 home page. To keep things simple, it leverages the HTML5 Boilerplate template:</p>
-<pre class="highlight shell"><code>  <span class="nv">$ </span>middleman init ledsand303s.com --template<span class="o">=</span>html5
-</code></pre>
-
-<p>All other CSS was handcoded to keep the CSS size down. As a comparison, this site&rsquo;s primary CSS file comes in at 46.5KB, while <em>LEDs and 303s</em> is a piddly 7.4KB. There are other differences in approach between the two stylesheets and this is arguably negligible, but the relative size is still telling. This isn&rsquo;t to say I would use this approach for every site, but it is nice to arrive back at this point from a couple years of jumping straight to Bootstrap or Foundation to kick off a site. I also modified the root CSS file slightly to combine all CSS into single file. Instead of using <code>import</code> statements at the top of <code>main.css</code>, I opted for the following:</p>
-<pre class="highlight scss"><code><span class="cm">/*
- *= require normalize
- *= require main
-*/</span>
-</code></pre>
-
-<h1>Background Effect</h1>
-
-<p>For Le Coolness++, I decided to add a background effect. Actually, it was because the background loading into place one row of pixels at a time was sort of a buzzkill, but same diff. I manage Javascript dependencies using <a href="http://bower.io/">Bower</a>. The only configuration tweak of note here is the addition of a <code>.bowerrc</code> file at the root of the project containing the following:</p>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"directory"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"source/js/bower_components"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>This installs all of the Bower packages into a location where they can be easily referenced from the Middleman asset pipeline. This is not strictly necessary, but it does prevent coming back in a few months and being all like:</p>
-<pre class="highlight coffeescript"><code><span class="c1">#= require ../../../why_isnt_this_in_the_assets_dir/sulk
-</span></code></pre>
-
-<p>You&rsquo;ll also want to add <code>bower_components</code> to your <code>.gitignore</code>, to be sure. <a href="https://github.com/alexanderdickson/waitForImages">waitForImages</a> is used to detect when the background image is ready, and combined with a smattering of CSS and a simple JS function for the Full Effect:</p>
-<pre class="highlight scss"><code><span class="nv">$bg-image-tiny</span><span class="p">:</span> <span class="nf">image-path</span><span class="p">(</span><span class="s2">"fall-in-to-the-gap-tiny.jpeg"</span><span class="p">);</span>
-
-<span class="c1">// Rest of the CSS here...
-</span>
-<span class="nc">.background</span> <span class="p">{</span>
-  <span class="nl">position</span><span class="p">:</span> <span class="nb">fixed</span><span class="p">;</span>
-  <span class="nl">top</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="nl">bottom</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="nl">left</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="nl">right</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="nl">background-image</span><span class="p">:</span> <span class="sx">url('</span><span class="si">#{</span><span class="nv">$bg-image-tiny</span><span class="si">}</span><span class="sx">')</span><span class="p">;</span>
-  <span class="nl">background-size</span><span class="p">:</span> <span class="n">cover</span><span class="p">;</span>
-  <span class="nl">background-position</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
-  <span class="nl">opacity</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">@include</span> <span class="nd">single-transition</span><span class="p">(</span><span class="n">opacity</span><span class="o">,</span> <span class="m">12s</span><span class="o">,</span> <span class="n">ease-in</span><span class="p">);</span>
-  <span class="k">&amp;</span><span class="nc">.show</span> <span class="p">{</span>
-    <span class="nl">opacity</span><span class="p">:</span> <span class="m">0</span><span class="mi">.7</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>You may notice the background is &#8220;mobile-first&#8221; , i.e. the smallest possible image is used as the default, and media queries are used to display images of increasingly higher resolution.</p>
-
-<p>Coffeescript to display the background when it is ready is as follows:</p>
-<pre class="highlight coffeescript"><code><span class="c1">#= require bower_components/waitForImages/dist/jquery.waitforimages.min
-</span>
-<span class="nx">$</span> <span class="o">-&gt;</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s">'.background'</span><span class="p">).</span><span class="na">waitForImages</span> <span class="o">-&gt;</span>
-    <span class="nx">$</span><span class="p">(</span><span class="err">@</span><span class="p">).</span><span class="na">addClass</span> <span class="s">'show'</span>
-</code></pre>
-
-<h1>Divshot</h1>
-
-<p><a href="https://divshot.com/">Divshot</a> makes it super simple to deploy static sites to their managed hosting platform. You should follow their setup instructions to install the CLI utility, and then log in from the command line. Once that&rsquo;s done, run <code>divshot init</code>, and when prompted to set the root for the project use <code>./build</code>. The default values can be used for all of the other options. With this done, run <code>divshot push</code>, and <em>poof</em> a website. Divshot goes so far as to offer development, staging, and production instances. If your project benefits from this, you can &#8220;promote&#8221; your app by running <code>divshot promote [source_environment] [target_environment]</code>. I only use the development and production instances for <em>LEDs and 303s</em>, but even that&rsquo;s helpful for avoiding blowing up the live site with some unexpected configuration issue.</p>
-
-<h1>Conclusion</h1>
-
-<p>This workflow is definitely my new go-to for static sites. There&rsquo;s never been a better time to get to work on my Cats In Space visualization project.</p>
-
-<div class='row'>
-<div class='small-12 columns'>
-<div class='share'>
-<a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
-Tweet
-</a>
-<div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
-</div>
-</div>
-</div>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-//<![CDATA[
-                  var disqus_title = 'LEDs and 303s Static Page on Divshot'
-                                var disqus_shortname = 'blaketidwell';
-                                          var disqus_identifier = '/2014-11-24-leds-and-303s-static-page-on-divshot.html';
-          var disqus_url = 'http://www.blaketidwell.com/2014-11-24-leds-and-303s-static-page-on-divshot.html';
-                  
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-//]]>
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<script type="text/javascript">
-//<![CDATA[
-    var disqus_shortname = 'blaketidwell';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-//]]>
-</script>
-
-</article>
-
-</div>
-<aside class='medium-4 columns show-for-medium-up' id='filters'>
-<h3>Recent Articles</h3>
-<ul>
-<li>
-<a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
-<span>Aug&nbsp;21</span>
-</li>
-<li>
-<a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
-<span>Aug&nbsp;16</span>
-</li>
-<li>
-<a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
-<span>Mar&nbsp; 4</span>
-</li>
-<li>
-<a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
-<span>Feb&nbsp; 7</span>
-</li>
-<li>
-<a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
-<span>Jan&nbsp;27</span>
-</li>
-<li>
-<a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
-<span>Nov&nbsp;24</span>
-</li>
-<li>
-<a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
-<span>Mar&nbsp;23</span>
-</li>
-</ul>
-<h3>Tags</h3>
-<ul>
-<li><a href="/tags/technical.html">technical (7)</a></li>
-<li><a href="/tags/ruby.html">ruby (5)</a></li>
-<li><a href="/tags/blog.html">blog (1)</a></li>
-<li><a href="/tags/how-to.html">how-to (3)</a></li>
-<li><a href="/tags/deployment.html">deployment (1)</a></li>
-<li><a href="/tags/emberjs.html">emberjs (1)</a></li>
-<li><a href="/tags/rails.html">rails (3)</a></li>
-<li><a href="/tags/quickread.html">quickread (2)</a></li>
-<li><a href="/tags/dragons.html">dragons (1)</a></li>
-<li><a href="/tags/functional.html">functional (2)</a></li>
-<li><a href="/tags/languages.html">languages (2)</a></li>
-<li><a href="/tags/erlang.html">erlang (2)</a></li>
-<li><a href="/tags/elixir.html">elixir (2)</a></li>
-<li><a href="/tags/cash-cats.html">cash cats (1)</a></li>
-</ul>
-<h3>By Year</h3>
-<ul>
-<li><a href="/2015.html">2015 (5)</a></li>
-<li><a href="/2014.html">2014 (2)</a></li>
-</ul>
-</aside>
-</div>
-<div id='footer'>
-<div class='row'>
-<div class='small-12 medium-4 columns'>
-<h3>Recent Articles</h3>
-<ul>
-<li>
-<a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
-<span>Aug&nbsp;21</span>
-</li>
-<li>
-<a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
-<span>Aug&nbsp;16</span>
-</li>
-<li>
-<a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
-<span>Mar&nbsp; 4</span>
-</li>
-<li>
-<a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
-<span>Feb&nbsp; 7</span>
-</li>
-<li>
-<a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
-<span>Jan&nbsp;27</span>
-</li>
-<li>
-<a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
-<span>Nov&nbsp;24</span>
-</li>
-<li>
-<a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
-<span>Mar&nbsp;23</span>
-</li>
-</ul>
-</div>
-<div class='small-12 medium-4 columns'>
-<h3>Tags</h3>
-<div class='row'>
-<div class='small-12 medium-6 columns'>
-<ul class='tag-group'>
-<li><a href="/tags/technical.html">technical (7)</a></li>
-<li><a href="/tags/ruby.html">ruby (5)</a></li>
-<li><a href="/tags/blog.html">blog (1)</a></li>
-<li><a href="/tags/how-to.html">how-to (3)</a></li>
-<li><a href="/tags/deployment.html">deployment (1)</a></li>
-<li><a href="/tags/emberjs.html">emberjs (1)</a></li>
-<li><a href="/tags/rails.html">rails (3)</a></li>
-</ul>
-</div>
-<div class='small-12 medium-6 columns'>
-<ul class='tag-group last'>
-<li><a href="/tags/quickread.html">quickread (2)</a></li>
-<li><a href="/tags/dragons.html">dragons (1)</a></li>
-<li><a href="/tags/functional.html">functional (2)</a></li>
-<li><a href="/tags/languages.html">languages (2)</a></li>
-<li><a href="/tags/erlang.html">erlang (2)</a></li>
-<li><a href="/tags/elixir.html">elixir (2)</a></li>
-<li><a href="/tags/cash-cats.html">cash cats (1)</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class='small-12 medium-4 columns'>
-<h3>By Year</h3>
-<ul>
-<li><a href="/2015.html">2015 (5)</a></li>
-<li><a href="/2014.html">2014 (2)</a></li>
-</ul>
-</div>
-</div>
-</div>
-<script src="/javascripts/app.js" type="text/javascript"></script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-22797683-1', 'blaketidwell.com');
-  ga('send', 'pageview');
-</script>
+  <!--[if lt IE 7]>
+    <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+  <![endif]-->
+  <div id='fb-root'></div>
+  <div class='row' id='header'>
+    <div class='small-12 columns'>
+      <div class='row'>
+        <div class='small-9 columns'>
+          <h1>
+            <a href="/">Blake Tidwell</a>
+          </h1>
+          <h2>Code. Create. Connect.</h2>
+        </div>
+        <div class='small-3 columns'>
+          <img class='avatar show-for-medium-up' src='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png'>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='small-12 medium-offset-9 medium-3 columns'>
+          <ul class='social inline-list'>
+            <li>
+              <a href='http://www.linkedin.com/in/blaketidwell'>
+                <i class='fi-social-linkedin'></i>
+              </a>
+            </li>
+            <li>
+              <a href='https://github.com/blaketidwell'>
+                <i class='fi-social-github'></i>
+              </a>
+            </li>
+            <li>
+              <a href='https://twitter.com/BATidwell'>
+                <i class='fi-social-twitter'></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row' id='container'>
+    <div class='small-12 medium-8 columns' id='main' role='main'>
+      <article>
+        <h1 class='article-title'>LEDs and 303s Static Page on Divshot</h1>
+        <div class='row share-container'>
+          <div class='small-12 columns'>
+            <div class='share'>
+              <a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+                Tweet
+              </a>
+              <div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+            </div>
+          </div>
+        </div>
+        <p>Took some time to spin up a home page for my music project this weekend, and decided it would be a great opportunity to not only level up my Middleman and design chops, but also try out a new (<em>to me anyway</em>) static hosting service called Divshot.</p>
+        
+        <p></p>
+        
+        <h1>The Site</h1>
+        
+        <p>I&rsquo;ve produced electronic tracks for over a decade now (going all the way back to Fruityloops 1.0). My current musical project, <a href="http://www.ledsand303s.com">LEDs and 303s</a> has been long overdue for its own HQ. Building a quick landing page for this purpose has not only given me renewed motivation to get back to writing music, but also provides another outlet for some design and front-end hackery.</p>
+        
+        <p><a href="http://www.ledsand303s.com"><img alt="LEDs and 303s Home Page" src="/images/ledshome.png" /></a></p>
+        
+        <p>Since I&rsquo;ve been so happy with Middleman for this site, I chose to stick with it for the L303 home page. To keep things simple, it leverages the HTML5 Boilerplate template:</p>
+        <pre class="highlight shell"><code>  <span class="nv">$ </span>middleman init ledsand303s.com --template<span class="o">=</span>html5
+        </code></pre>
+        
+        <p>All other CSS was handcoded to keep the CSS size down. As a comparison, this site&rsquo;s primary CSS file comes in at 46.5KB, while <em>LEDs and 303s</em> is a piddly 7.4KB. There are other differences in approach between the two stylesheets and this is arguably negligible, but the relative size is still telling. This isn&rsquo;t to say I would use this approach for every site, but it is nice to arrive back at this point from a couple years of jumping straight to Bootstrap or Foundation to kick off a site. I also modified the root CSS file slightly to combine all CSS into single file. Instead of using <code>import</code> statements at the top of <code>main.css</code>, I opted for the following:</p>
+        <pre class="highlight scss"><code><span class="cm">/*
+         *= require normalize
+         *= require main
+        */</span>
+        </code></pre>
+        
+        <h1>Background Effect</h1>
+        
+        <p>For Le Coolness++, I decided to add a background effect. Actually, it was because the background loading into place one row of pixels at a time was sort of a buzzkill, but same diff. I manage Javascript dependencies using <a href="http://bower.io/">Bower</a>. The only configuration tweak of note here is the addition of a <code>.bowerrc</code> file at the root of the project containing the following:</p>
+        <pre class="highlight json"><code><span class="p">{</span><span class="w">
+          </span><span class="s2">"directory"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"source/js/bower_components"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+        </span></code></pre>
+        
+        <p>This installs all of the Bower packages into a location where they can be easily referenced from the Middleman asset pipeline. This is not strictly necessary, but it does prevent coming back in a few months and being all like:</p>
+        <pre class="highlight coffeescript"><code><span class="c1">#= require ../../../why_isnt_this_in_the_assets_dir/sulk
+        </span></code></pre>
+        
+        <p>You&rsquo;ll also want to add <code>bower_components</code> to your <code>.gitignore</code>, to be sure. <a href="https://github.com/alexanderdickson/waitForImages">waitForImages</a> is used to detect when the background image is ready, and combined with a smattering of CSS and a simple JS function for the Full Effect:</p>
+        <pre class="highlight scss"><code><span class="nv">$bg-image-tiny</span><span class="p">:</span> <span class="nf">image-path</span><span class="p">(</span><span class="s2">"fall-in-to-the-gap-tiny.jpeg"</span><span class="p">);</span>
+        
+        <span class="c1">// Rest of the CSS here...
+        </span>
+        <span class="nc">.background</span> <span class="p">{</span>
+          <span class="nl">position</span><span class="p">:</span> <span class="nb">fixed</span><span class="p">;</span>
+          <span class="nl">top</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+          <span class="nl">bottom</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+          <span class="nl">left</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+          <span class="nl">right</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+          <span class="nl">background-image</span><span class="p">:</span> <span class="sx">url('</span><span class="si">#{</span><span class="nv">$bg-image-tiny</span><span class="si">}</span><span class="sx">')</span><span class="p">;</span>
+          <span class="nl">background-size</span><span class="p">:</span> <span class="n">cover</span><span class="p">;</span>
+          <span class="nl">background-position</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+          <span class="nl">opacity</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+          <span class="k">@include</span> <span class="nd">single-transition</span><span class="p">(</span><span class="n">opacity</span><span class="o">,</span> <span class="m">12s</span><span class="o">,</span> <span class="n">ease-in</span><span class="p">);</span>
+          <span class="k">&amp;</span><span class="nc">.show</span> <span class="p">{</span>
+            <span class="nl">opacity</span><span class="p">:</span> <span class="m">0</span><span class="mi">.7</span><span class="p">;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+        </code></pre>
+        
+        <p>You may notice the background is &#8220;mobile-first&#8221; , i.e. the smallest possible image is used as the default, and media queries are used to display images of increasingly higher resolution.</p>
+        
+        <p>Coffeescript to display the background when it is ready is as follows:</p>
+        <pre class="highlight coffeescript"><code><span class="c1">#= require bower_components/waitForImages/dist/jquery.waitforimages.min
+        </span>
+        <span class="nx">$</span> <span class="o">-&gt;</span>
+          <span class="nx">$</span><span class="p">(</span><span class="s">'.background'</span><span class="p">).</span><span class="na">waitForImages</span> <span class="o">-&gt;</span>
+            <span class="nx">$</span><span class="p">(</span><span class="err">@</span><span class="p">).</span><span class="na">addClass</span> <span class="s">'show'</span>
+        </code></pre>
+        
+        <h1>Divshot</h1>
+        
+        <p><a href="https://divshot.com/">Divshot</a> makes it super simple to deploy static sites to their managed hosting platform. You should follow their setup instructions to install the CLI utility, and then log in from the command line. Once that&rsquo;s done, run <code>divshot init</code>, and when prompted to set the root for the project use <code>./build</code>. The default values can be used for all of the other options. With this done, run <code>divshot push</code>, and <em>poof</em> a website. Divshot goes so far as to offer development, staging, and production instances. If your project benefits from this, you can &#8220;promote&#8221; your app by running <code>divshot promote [source_environment] [target_environment]</code>. I only use the development and production instances for <em>LEDs and 303s</em>, but even that&rsquo;s helpful for avoiding blowing up the live site with some unexpected configuration issue.</p>
+        
+        <h1>Conclusion</h1>
+        
+        <p>This workflow is definitely my new go-to for static sites. There&rsquo;s never been a better time to get to work on my Cats In Space visualization project.</p>
+        <div class='row'>
+          <div class='small-12 columns'>
+            <div class='share'>
+              <a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+                Tweet
+              </a>
+              <div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+            </div>
+          </div>
+        </div>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        //<![CDATA[
+                          var disqus_title = 'LEDs and 303s Static Page on Divshot'
+                                        var disqus_shortname = 'blaketidwell';
+                                                  var disqus_identifier = '/2014-11-24-leds-and-303s-static-page-on-divshot.html';
+                  var disqus_url = 'http://www.blaketidwell.com/2014-11-24-leds-and-303s-static-page-on-divshot.html';
+                          
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        //]]>
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <script type="text/javascript">
+        //<![CDATA[
+            var disqus_shortname = 'blaketidwell';
+            (function () {
+                var s = document.createElement('script'); s.async = true;
+                s.type = 'text/javascript';
+                s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+        //]]>
+        </script>
+      </article>
+    </div>
+    <aside class='medium-4 columns show-for-medium-up' id='filters'>
+      <h3>Recent Articles</h3>
+      <ul>
+        <li>
+          <a href="/2015/11/13/running-docker-without-breaching-the-hull.html">Running Rails On Docker Without Breaching the Hull</a>
+          <span>Nov&nbsp;13</span>
+        </li>
+        <li>
+          <a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
+          <span>Aug&nbsp;21</span>
+        </li>
+        <li>
+          <a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
+          <span>Aug&nbsp;16</span>
+        </li>
+        <li>
+          <a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
+          <span>Mar&nbsp; 4</span>
+        </li>
+        <li>
+          <a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
+          <span>Feb&nbsp; 7</span>
+        </li>
+        <li>
+          <a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
+          <span>Jan&nbsp;27</span>
+        </li>
+        <li>
+          <a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
+          <span>Nov&nbsp;24</span>
+        </li>
+        <li>
+          <a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
+          <span>Mar&nbsp;23</span>
+        </li>
+      </ul>
+      <h3>Tags</h3>
+      <ul>
+        <li><a href="/tags/technical.html">technical (7)</a></li>
+        <li><a href="/tags/ruby.html">ruby (5)</a></li>
+        <li><a href="/tags/blog.html">blog (1)</a></li>
+        <li><a href="/tags/how-to.html">how-to (3)</a></li>
+        <li><a href="/tags/deployment.html">deployment (1)</a></li>
+        <li><a href="/tags/emberjs.html">emberjs (1)</a></li>
+        <li><a href="/tags/rails.html">rails (3)</a></li>
+        <li><a href="/tags/quickread.html">quickread (2)</a></li>
+        <li><a href="/tags/dragons.html">dragons (1)</a></li>
+        <li><a href="/tags/functional.html">functional (2)</a></li>
+        <li><a href="/tags/languages.html">languages (2)</a></li>
+        <li><a href="/tags/erlang.html">erlang (2)</a></li>
+        <li><a href="/tags/elixir.html">elixir (2)</a></li>
+        <li><a href="/tags/cash-cats.html">cash cats (1)</a></li>
+        <li><a href="/tags/docker.html">docker (1)</a></li>
+        <li><a href="/tags/containers.html">containers (1)</a></li>
+        <li><a href="/tags/hull-integrity.html">hull-integrity (1)</a></li>
+        <li><a href="/tags/security.html">security (1)</a></li>
+      </ul>
+      <h3>By Year</h3>
+      <ul>
+        <li><a href="/2015.html">2015 (6)</a></li>
+        <li><a href="/2014.html">2014 (2)</a></li>
+      </ul>
+    </aside>
+  </div>
+  <div id='footer'>
+    <div class='row'>
+      <div class='small-12 medium-4 columns'>
+        <h3>Recent Articles</h3>
+        <ul>
+          <li>
+            <a href="/2015/11/13/running-docker-without-breaching-the-hull.html">Running Rails On Docker Without Breaching the Hull</a>
+            <span>Nov&nbsp;13</span>
+          </li>
+          <li>
+            <a href="/2015/08/21/emulate-default-scope-with-around-filter-and-scoping.html">Emulate Default Scope with Around Filter and Scoping</a>
+            <span>Aug&nbsp;21</span>
+          </li>
+          <li>
+            <a href="/2015/08/16/keeping-your-app-from-flying-off-of-the-rails-with-bdd-part-1.html">Keeping Your App from Flying Off of the Rails with BDD - Part 1 of Question Mark</a>
+            <span>Aug&nbsp;16</span>
+          </li>
+          <li>
+            <a href="/2015/03/04/drinking-the-koolixir-part-2-epers-creepers-the-erlang-toolkit.html">Drinking The Koolixir (Part 2) - EPERs Creepers, The Erlang Toolkit!</a>
+            <span>Mar&nbsp; 4</span>
+          </li>
+          <li>
+            <a href="/2015/02/07/drinking-the-koolixir.html">Drinking The Koolixir (Part 1)</a>
+            <span>Feb&nbsp; 7</span>
+          </li>
+          <li>
+            <a href="/2015/01/27/ember-rails-csrf-handling.html">Ember Rails CSRF Handling</a>
+            <span>Jan&nbsp;27</span>
+          </li>
+          <li>
+            <a href="/2014/11/24/leds-and-303s-static-page-on-divshot.html">LEDs and 303s Static Page on Divshot</a>
+            <span>Nov&nbsp;24</span>
+          </li>
+          <li>
+            <a href="/2014/03/23/starting-from-the-middleman.html">Starting From the Middle(Man)</a>
+            <span>Mar&nbsp;23</span>
+          </li>
+        </ul>
+      </div>
+      <div class='small-12 medium-4 columns'>
+        <h3>Tags</h3>
+        <div class='row'>
+          <div class='small-12 medium-6 columns'>
+            <ul class='tag-group'>
+              <li><a href="/tags/technical.html">technical (7)</a></li>
+              <li><a href="/tags/ruby.html">ruby (5)</a></li>
+              <li><a href="/tags/blog.html">blog (1)</a></li>
+              <li><a href="/tags/how-to.html">how-to (3)</a></li>
+              <li><a href="/tags/deployment.html">deployment (1)</a></li>
+              <li><a href="/tags/emberjs.html">emberjs (1)</a></li>
+              <li><a href="/tags/rails.html">rails (3)</a></li>
+              <li><a href="/tags/quickread.html">quickread (2)</a></li>
+              <li><a href="/tags/dragons.html">dragons (1)</a></li>
+            </ul>
+          </div>
+          <div class='small-12 medium-6 columns'>
+            <ul class='tag-group last'>
+              <li><a href="/tags/functional.html">functional (2)</a></li>
+              <li><a href="/tags/languages.html">languages (2)</a></li>
+              <li><a href="/tags/erlang.html">erlang (2)</a></li>
+              <li><a href="/tags/elixir.html">elixir (2)</a></li>
+              <li><a href="/tags/cash-cats.html">cash cats (1)</a></li>
+              <li><a href="/tags/docker.html">docker (1)</a></li>
+              <li><a href="/tags/containers.html">containers (1)</a></li>
+              <li><a href="/tags/hull-integrity.html">hull-integrity (1)</a></li>
+              <li><a href="/tags/security.html">security (1)</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class='small-12 medium-4 columns'>
+        <h3>By Year</h3>
+        <ul>
+          <li><a href="/2015.html">2015 (6)</a></li>
+          <li><a href="/2014.html">2014 (2)</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="/javascripts/app.js" type="text/javascript"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-22797683-1', 'blaketidwell.com');
+    ga('send', 'pageview');
+  </script>
 </body>
