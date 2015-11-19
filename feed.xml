@@ -10,11 +10,11 @@
     <name>Blog Author</name>
   </author>
   <entry>
-    <title>Running Rails On Docker Without Breaching the Hull</title>
-    <link rel="alternate" href="http://blog.url.com/2015/11/13/running-docker-without-breaching-the-hull.html"/>
-    <id>http://blog.url.com/2015/11/13/running-docker-without-breaching-the-hull.html</id>
+    <title>Bundler Bulkheads for Rails on Docker</title>
+    <link rel="alternate" href="http://blog.url.com/2015/11/13/bundler-bulkheads-for-rails-on-docker.html"/>
+    <id>http://blog.url.com/2015/11/13/bundler-bulkheads-for-rails-on-docker.html</id>
     <published>2015-11-12T23:56:00-08:00</published>
-    <updated>2015-11-16T01:17:18-08:00</updated>
+    <updated>2015-11-18T23:55:20-08:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -25,9 +25,9 @@ the whale&amp;rsquo;s mouth&lt;/a&gt;, as it were. Working
 from this example, it was pretty clear to me that one of Docker&amp;rsquo;s major
 strengths is that it makes it &lt;em&gt;really, really easy&lt;/em&gt; to get something running
 with a minimum of fuss; it took all of about a half day to learn enough Docker
-to hoist anchor, and even tweak a few things to my liking. One thing kept nagging
-me about the Docker example, though, and that was a warning from &lt;code&gt;bundler&lt;/code&gt; when
-running &lt;code&gt;docker-compose&lt;/code&gt;.&lt;/p&gt;
+to hoist anchor, and even tweak a few things to my liking. One thing kept
+nagging me about the Docker example, though, and that was a warning from
+&lt;code&gt;bundler&lt;/code&gt; when running &lt;code&gt;docker-compose&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
@@ -85,7 +85,13 @@ over to the &lt;a href="https://docs.docker.com/compose/rails/"&gt;docs themselv
 &lt;h2&gt;Look At Me I Can Docker Too&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href="https://youtu.be/ln5Ar5aHDYM?t=12s"&gt;I Will Do It Nine Times&lt;/a&gt;. Okay, actually
-only one time I will do it:&lt;/p&gt;
+only one time I will do it.&lt;/p&gt;
+
+&lt;h4&gt;&lt;em&gt;But first, this message from our sponsors&amp;hellip;&lt;/em&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;:tada: &lt;a href="http://ryands.org/"&gt;Shout out to my dude Ryan Schultz&lt;/a&gt; :raising_hand:,
+for hinting that &lt;code&gt;rbenv&lt;/code&gt; was probably overkill and pushing me in the right
+direction with this approach by suggesting I try vendoring gems, etc.&lt;/em&gt;&lt;/p&gt;
 &lt;pre class="highlight plaintext"&gt;&lt;code&gt;
 FROM ruby:2.2.3
 RUN apt-get update -qq
@@ -109,12 +115,12 @@ RUN bundle
 
 &lt;ol&gt;
 &lt;li&gt;A &lt;code&gt;rails&lt;/code&gt; user is created and used to install gems with bundler and then run
-the application. No More Sudo Bundle:no_good:. That being said, this still needs to
-be updated to include something like Nginx as a proxy to get around the
-limitation of being unable to start Rails on port 80 without &lt;code&gt;sudo&lt;/code&gt;. To be
-addressed&amp;hellip;&lt;/li&gt;
+the application. No More Sudo Bundle:no_good:. That being said, this still
+needs to be updated to include something like Nginx as a proxy to get around
+the limitation of being unable to start Rails on port 80 without &lt;code&gt;sudo&lt;/code&gt;. To
+be addressed&amp;hellip;&lt;/li&gt;
 &lt;li&gt;The Rails app is &amp;ldquo;newed&amp;rdquo; prior to spinning up the app for the first time.
-This avoids the need to make the placeholder Gemfile as in the Docker
+This avoids the need to make the placeholder Gemfile as shown in the Docker
 example, and IMHO, feels like it more clearly separates the containerization
 step from the source code implementation step.&lt;/li&gt;
 &lt;/ol&gt;

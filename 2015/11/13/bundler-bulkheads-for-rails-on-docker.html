@@ -12,12 +12,12 @@
   <meta content='width=device-width' name='viewport'>
   <meta content='summary' name='twitter:card'>
   <meta content='@BATidwell' name='twitter:site'>
-  <meta content='Blake Tidwell - Code. Create. Connect.' name='twitter:title'>
+  <meta content='Bundler Bulkheads for Rails on Docker' name='twitter:title'>
   <meta content='Blake Tidwell, professional web developer and aspiring EDM producer, talks bytes, beats, and philosophy.' name='twitter:description'>
   <meta content='http://www.gravatar.com/avatar/b761c938fc4158ea4eed9f8283ac9fc3.png' name='twitter:image'>
-  <meta content='http://www.blaketidwell.com/tags/security.html' name='twitter:url'>
+  <meta content='http://www.blaketidwell.com/2015/11/13/bundler-bulkheads-for-rails-on-docker.html' name='twitter:url'>
   <title>
-    Blake Tidwell
+    Blake Tidwell - Bundler Bulkheads for Rails on Docker
   </title>
   <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
   <link href="/stylesheets/app.css" rel="stylesheet" type="text/css" />
@@ -67,15 +67,174 @@
   </div>
   <div class='row' id='container'>
     <div class='small-12 medium-8 columns' id='main' role='main'>
-      <h1>
-        Articles tagged 'security'
-      </h1>
-      <ul>
-        <li>
-          <a href="/2015/11/13/bundler-bulkheads-for-rails-on-docker.html">Bundler Bulkheads for Rails on Docker</a>
-          <span>Nov 13</span>
-        </li>
-      </ul>
+      <article>
+        <h1 class='article-title'>Bundler Bulkheads for Rails on Docker</h1>
+        <div class='row share-container'>
+          <div class='small-12 columns'>
+            <div class='share'>
+              <a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+                Tweet
+              </a>
+              <div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+            </div>
+          </div>
+        </div>
+        <p>As part of my exploration of a minimum set of devops tools, I&rsquo;ve been learning
+        how to stack containers full of Rails apps onto the Docker.  There are plenty of
+        examples of how to get started with Rails and Postgres on Docker, even one <a href="https://docs.docker.com/compose/rails/">from
+        the whale&rsquo;s mouth</a>, as it were. Working
+        from this example, it was pretty clear to me that one of Docker&rsquo;s major
+        strengths is that it makes it <em>really, really easy</em> to get something running
+        with a minimum of fuss; it took all of about a half day to learn enough Docker
+        to hoist anchor, and even tweak a few things to my liking. One thing kept
+        nagging me about the Docker example, though, and that was a warning from
+        <code>bundler</code> when running <code>docker-compose</code>.</p>
+        
+        <p></p>
+        
+        <h2>Oh Noes, a Warnthing?!</h2>
+        
+        <blockquote>
+        <p><code>Don&#39;t run Bundler as root.</code></p>
+        </blockquote>
+        
+        <p>Running <code>bundler</code> in this way strikes me as a needless security risk (why sudo
+        when you can suDON&rsquo;T PRIVILEGE ESCALATION EXPLOIT YOURSELF), so I set about
+        modifying the example file to</p>
+        
+        <ol>
+        <li>shut it up and</li>
+        <li>learn some more about Docker.</li>
+        </ol>
+        
+        <p>I&rsquo;ll admit, depending upon your tolerance for warning messages, this kind of
+        minutiae may not even show up on your radar. And let me be clear that <strong>this
+        post is not a knock against the Docker team</strong> for this &ldquo;flaw&rdquo; in the example;
+        they&rsquo;re doing absolutely amazing stuff by building Docker in the first place and
+        they <a href="https://blog.docker.com/2015/05/understanding-docker-security-and-best-practices/">absolutely give a
+        damn</a>
+        <a href="https://github.com/docker/docker/issues/13490">about security</a>. As mentioned in
+        the intro, this is more about learning Docker by addressing this (arguably
+        security-oriented) warning.</p>
+        
+        <h2>The <img alt="egg" src="/images/emoji/egg.png" style="vertical-align:middle;" width="20" height="20" />sample From the Dockermentation</h2>
+        
+        <p>For reference, the example Dockerfile looks like so:</p>
+        <pre class="highlight plaintext"><code>
+        FROM ruby:2.2.0
+        RUN apt-get update -qq &amp;&amp; apt-get install -y build-essential libpq-dev
+        RUN mkdir /myapp
+        WORKDIR /myapp
+        ADD Gemfile /myapp/Gemfile
+        ADD Gemfile.lock /myapp/Gemfile.lock
+        RUN bundle install
+        ADD . /myapp
+        </code></pre>
+        
+        <p>Let&rsquo;s unpack this a bit before moving on (for a more in-depth explanation, head
+        over to the <a href="https://docs.docker.com/compose/rails/">docs themselves</a>):</p>
+        
+        <ol>
+        <li>Pull the base image for Ruby 2.2.0.</li>
+        <li>Update and install some packages with <code>apt-get</code>.</li>
+        <li>Make a new directory and work out of it.</li>
+        <li>Copy over a seed Gemfile(.lock).</li>
+        <li>Install with bundler (<strong>THE OFFENDING LINE <img alt="scream" src="/images/emoji/scream.png" style="vertical-align:middle;" width="20" height="20" /></strong>).</li>
+        <li>&ldquo;Bake&rdquo; the now-bundled app into the container.</li>
+        </ol>
+        
+        <h2>Look At Me I Can Docker Too</h2>
+        
+        <p><a href="https://youtu.be/ln5Ar5aHDYM?t=12s">I Will Do It Nine Times</a>. Okay, actually
+        only one time I will do it.</p>
+        
+        <h4><em>But first, this message from our sponsors&hellip;</em></h4>
+        
+        <p><em><img alt="tada" src="/images/emoji/tada.png" style="vertical-align:middle;" width="20" height="20" /> <a href="http://ryands.org/">Shout out to my dude Ryan Schultz</a> <img alt="raising_hand" src="/images/emoji/raising_hand.png" style="vertical-align:middle;" width="20" height="20" />,
+        for hinting that <code>rbenv</code> was probably overkill and pushing me in the right
+        direction with this approach by suggesting I try vendoring gems, etc.</em></p>
+        <pre class="highlight plaintext"><code>
+        FROM ruby:2.2.3
+        RUN apt-get update -qq
+        RUN apt-get install -y build-essential libpq-dev
+        
+        RUN mkdir /app
+        WORKDIR /app
+        ADD . /app
+        
+        RUN useradd -ms /bin/bash rails
+        RUN chown -R rails:rails .
+        
+        USER rails
+        
+        ENV GEM_HOME /home/rails/.gems
+        RUN gem install bundler
+        RUN bundle
+        </code></pre>
+        
+        <p>How is this more different than before, hmm?</p>
+        
+        <ol>
+        <li>A <code>rails</code> user is created and used to install gems with bundler and then run
+        the application. No More Sudo Bundle<img alt="no_good" src="/images/emoji/no_good.png" style="vertical-align:middle;" width="20" height="20" />. That being said, this still
+        needs to be updated to include something like Nginx as a proxy to get around
+        the limitation of being unable to start Rails on port 80 without <code>sudo</code>. To
+        be addressed&hellip;</li>
+        <li>The Rails app is &ldquo;newed&rdquo; prior to spinning up the app for the first time.
+        This avoids the need to make the placeholder Gemfile as shown in the Docker
+        example, and IMHO, feels like it more clearly separates the containerization
+        step from the source code implementation step.</li>
+        </ol>
+        
+        <h1>Dockered</h1>
+        
+        <p>And there you have it. With a few minor tweaks to the Dockerfile, bundler has
+        been silenced, and the deployment configuration uses a dedicated, unprivileged
+        user for managing package installation and starting the relevant app. What&rsquo;s
+        more is that it accomplishes this while both leveraging the base Ruby image on
+        Docker Hub and avoiding the overhead of RVM or rbenv. All in all, this very
+        particular goal really helped to clarify my understanding of Docker, from
+        permissions all the way to source code copying.  Not least of all, this leaves
+        me feeling a bit more at-ease, knowing that there is one less way to succumb to
+        some as-yet unknown vulnerability in Docker whilst running errant <code>sudo</code>
+        commands in Dockerfiles.</p>
+        <div class='row'>
+          <div class='small-12 columns'>
+            <div class='share'>
+              <a class='twitter-share-button' data-count='none' data-hashtags='codecreateconnect' data-related='BATidwell' href='https://twitter.com/share'>
+                Tweet
+              </a>
+              <div class='fb-like' data-action='like' data-layout='button' data-share='true'></div>
+            </div>
+          </div>
+        </div>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        //<![CDATA[
+                          var disqus_title = 'Bundler Bulkheads for Rails on Docker'
+                                        var disqus_shortname = 'blaketidwell';
+                          
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        //]]>
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <script type="text/javascript">
+        //<![CDATA[
+            var disqus_shortname = 'blaketidwell';
+            (function () {
+                var s = document.createElement('script'); s.async = true;
+                s.type = 'text/javascript';
+                s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+        //]]>
+        </script>
+      </article>
     </div>
     <aside class='medium-4 columns show-for-medium-up' id='filters'>
       <h3>Recent Articles</h3>

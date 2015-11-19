@@ -43,8 +43,8 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://www.blaketidwell.com/2015/11/13/running-docker-without-breaching-the-hull.html</loc>
-    <lastmod>2015-11-16T01:17:18-08:00</lastmod>
+    <loc>http://www.blaketidwell.com/2015/11/13/bundler-bulkheads-for-rails-on-docker.html</loc>
+    <lastmod>2015-11-18T23:55:20-08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -151,7 +151,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://www.blaketidwell.com/tags/hull-integrity.html</loc>
+    <loc>http://www.blaketidwell.com/tags/bulkheads.html</loc>
     <lastmod>2014-03-23T21:07:47-07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
