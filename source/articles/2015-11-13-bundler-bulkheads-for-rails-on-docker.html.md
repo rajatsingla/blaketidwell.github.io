@@ -1,7 +1,7 @@
 ---
-title: Running Rails On Docker Without Breaching the Hull
+title: Bundler Bulkheads for Rails on Docker
 date: 2015-11-13 07:56 UTC
-tags: docker, containers, hull-integrity, security
+tags: docker, containers, bulkheads, security
 ---
 
 As part of my exploration of a minimum set of devops tools, I've been learning
@@ -11,9 +11,9 @@ the whale's mouth](https://docs.docker.com/compose/rails/), as it were. Working
 from this example, it was pretty clear to me that one of Docker's major
 strengths is that it makes it _really, really easy_ to get something running
 with a minimum of fuss; it took all of about a half day to learn enough Docker
-to hoist anchor, and even tweak a few things to my liking. One thing kept nagging
-me about the Docker example, though, and that was a warning from `bundler` when
-running `docker-compose`.
+to hoist anchor, and even tweak a few things to my liking. One thing kept
+nagging me about the Docker example, though, and that was a warning from
+`bundler` when running `docker-compose`.
 
 READMORE
 
@@ -67,7 +67,13 @@ over to the [docs themselves](https://docs.docker.com/compose/rails/)):
 ## Look At Me I Can Docker Too
 
 [I Will Do It Nine Times](https://youtu.be/ln5Ar5aHDYM?t=12s). Okay, actually
-only one time I will do it:
+only one time I will do it.
+
+#### *But first, this message from our sponsors...*
+
+*:tada: [Shout out to my dude Ryan Schultz](http://ryands.org/) :raising\_hand:,
+for hinting that `rbenv` was probably overkill and pushing me in the right
+direction with this approach by suggesting I try vendoring gems, etc.*
 
 ```
 
@@ -92,12 +98,12 @@ RUN bundle
 How is this more different than before, hmm?
 
 1. A `rails` user is created and used to install gems with bundler and then run
-   the application. No More Sudo Bundle:no_good:. That being said, this still needs to
-   be updated to include something like Nginx as a proxy to get around the
-   limitation of being unable to start Rails on port 80 without `sudo`. To be
-   addressed...
+   the application. No More Sudo Bundle:no_good:. That being said, this still
+   needs to be updated to include something like Nginx as a proxy to get around
+   the limitation of being unable to start Rails on port 80 without `sudo`. To
+   be addressed...
 1. The Rails app is "newed" prior to spinning up the app for the first time.
-   This avoids the need to make the placeholder Gemfile as in the Docker
+   This avoids the need to make the placeholder Gemfile as shown in the Docker
    example, and IMHO, feels like it more clearly separates the containerization
    step from the source code implementation step.
 
